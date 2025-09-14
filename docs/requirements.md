@@ -64,4 +64,4 @@
 -   **User Profile Picture**: Allow users to upload a profile picture stored in the project folder.
 -   **Password Reset**: Provide a page for users to reset forgotten passwords, ensuring secure verification (e.g., via email link).
 
-> For full technical details, refer to [Full PDF](.\assets\פרויקט מסכם קורס.pdf).
+> For full technical details, refer to [Full PDF](assets/Final_Project_Instructions.pdf).
