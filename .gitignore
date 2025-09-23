@@ -2,7 +2,6 @@
 logs/
 *.log
 
-
 # === Dependency directories === #
 node_modules/
 client/node_modules
@@ -15,8 +14,12 @@ docs/**/~$*
 docs/**/.DS_Store
 docs/**/Thumbs.db
 
+# === Other files === #
 *.bkp
 
-# === Other files === #
+# === Secret ===
 config/
 server/config
+client/config
+.env
+*.env
