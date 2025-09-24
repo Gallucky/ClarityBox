@@ -21,5 +21,4 @@ docs/**/Thumbs.db
 config/
 server/config
 client/config
-.env
-*.env
+*.env*
