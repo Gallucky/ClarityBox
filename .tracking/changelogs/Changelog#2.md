@@ -6,15 +6,11 @@ To see the todo list check the [Todo.md](./Todo.md) file, with snapshots stored 
 
 ---
 
-## 🛠️ Current Commit #3 - 25/09/2025
+## 🛠️ Current Commit #2 - 24/09/2025
 
 ### ➕ Added
 
--   Created the mongoose schemas/models for the MVP edition of the project: `User`, `Post`, `Task`, `Project` models with basic fields and relationships.
--   Created sub-schemas/sub-models for nested structures:
-    -   `Name` for `User`
-    -   `ProfileImage` for `User`
-    -   and even `Task` is a sub-schema inside a `Project`.
+-   Added environment configuration files for different environments: `.env`, `.env.development`, and `.env.production` including global configurations.
 
 ### 🏷️ Changed / Modified
 
@@ -27,3 +23,6 @@ To see the todo list check the [Todo.md](./Todo.md) file, with snapshots stored 
 ### ➖ Removed
 
 -   None
+
+
+[← Back to Changelog.md](../../Changelog.md)

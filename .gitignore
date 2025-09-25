@@ -22,3 +22,5 @@ config/
 server/config
 client/config
 *.env*
+
+.github/copilot-instructions.md
