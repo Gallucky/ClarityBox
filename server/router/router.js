@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { handleWebError } = require("../utils/handleErrors");
-const usersController = require("../features/users/usersController");
-const postsController = require("../features/posts/postsController");
-const projectsController = require("../features/projects/projectsController");
-const tasksController = require("../features/tasks/tasksController");
+const usersController = require("../features/users/routes/usersController");
+const postsController = require("../features/posts/routes/postsController");
+const projectsController = require("../features/projects/routes/projectsController");
+const tasksController = require("../features/tasks/routes/tasksController");
 
 router.use("/users", usersController);
 router.use("/posts", postsController);

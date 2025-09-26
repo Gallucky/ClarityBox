@@ -28,7 +28,6 @@ const auth = async (req, res, next) => {
 
         // Verifying the token.
         const userData = verifyToken(tokenFromClient);
-        // Todo: Check again the logic here again after completing the verifyToken function.
         if (!userData) {
             throw new Error("[Authentication Error]: Invalid/Expired Token or Unauthorized User");
         }

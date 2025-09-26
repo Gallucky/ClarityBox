@@ -7,6 +7,7 @@ const logger = require("./logger/loggerService");
 const router = require("./router/router");
 const { handleWebError } = require("./utils/handleErrors");
 const Log = require("./logger/loggers/customLogger");
+const currentDate = require("./utils/timeStamp");
 
 const getEnv = () => {
     return process.env.ENV === "production" ? ".env.production" : ".env.development";
