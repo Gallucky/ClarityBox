@@ -23,4 +23,11 @@ server/config
 client/config
 *.env*
 
+# === Development files === #
+.vscode/
+*.git-diff
+*.git-status
+eslint-report.log
+
+# === Co-Pilot Instructions === #
 .github/copilot-instructions.md

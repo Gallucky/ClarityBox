@@ -2,12 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-// Todo: Add frontend hosted URL when deploying.
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(",");
+
+// Todo: Add frontend hosted URL to the allowed origins.
 
 // CORS configuration
 app.use(
     cors({
-        origin: ["http://localhost:3000", "http://127.0.0.1:5500", "http://localhost:5173"],
+        origin: ALLOWED_ORIGINS,
         optionsSuccessStatus: 200,
     })
 );
