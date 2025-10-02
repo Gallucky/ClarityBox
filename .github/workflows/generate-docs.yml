@@ -1,0 +1,222 @@
+name: Generate Docs from Issues
+
+on:
+    issues:
+        types: [opened, edited, closed, reopened, labeled, unlabeled]
+    workflow_dispatch:
+
+jobs:
+    generate-docs:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            issues: read
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Configure Git
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            - name: Generate Todo and Changelog
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+                      const path = require('path');
+
+                      // Get current date
+                      const now = new Date();
+                      const dateStr = now.toLocaleDateString('en-GB', { 
+                        day: '2-digit', 
+                        month: '2-digit', 
+                        year: 'numeric' 
+                      });
+
+                      // Read counter files
+                      const trackingDir = '.tracking';
+                      const changelogCounterFile = path.join(trackingDir, '.changelog_counter');
+                      const todoCounterFile = path.join(trackingDir, '.todo_counter');
+
+                      let changelogNum = 1;
+                      let todoNum = 1;
+
+                      if (fs.existsSync(changelogCounterFile)) {
+                        changelogNum = parseInt(fs.readFileSync(changelogCounterFile, 'utf8').trim()) - 1;
+                      }
+                      if (fs.existsSync(todoCounterFile)) {
+                        todoNum = parseInt(fs.readFileSync(todoCounterFile, 'utf8').trim()) - 1;
+                      }
+
+                      // Fetch all issues
+                      const { data: issues } = await github.rest.issues.listForRepo({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        state: 'all',
+                        per_page: 100
+                      });
+
+                      // Filter out pull requests
+                      const actualIssues = issues.filter(issue => !issue.pull_request);
+
+                      // Categorize issues
+                      const categories = {
+                        'backend': { icon: '🔙', title: 'Backend', open: [], closed: [] },
+                        'frontend': { icon: '🖼️', title: 'Frontend', open: [], closed: [] },
+                        'deployment': { icon: '🔧', title: 'Deployment / Environment', open: [], closed: [] },
+                        'extras': { icon: '🧩', title: 'Extras / UI', open: [], closed: [] }
+                      };
+
+                      actualIssues.forEach(issue => {
+                        const labels = issue.labels.map(l => l.name.toLowerCase());
+                        let category = 'extras'; // default
+                        
+                        if (labels.includes('backend')) category = 'backend';
+                        else if (labels.includes('frontend')) category = 'frontend';
+                        else if (labels.includes('deployment') || labels.includes('environment')) category = 'deployment';
+                        
+                        if (issue.state === 'open') {
+                          categories[category].open.push(issue);
+                        } else {
+                          categories[category].closed.push(issue);
+                        }
+                      });
+
+                      // Generate Todo.md
+                      let todoContent = `# TODO
+
+                      Tracks tasks per commit. Snapshot copies are stored in [\`.tracking/todos/\`](./.tracking/todos/).
+
+                      To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [\`.tracking/changelogs/\`](./.tracking/changelogs/).
+
+                      ---
+
+                      ## Current Commit: #${todoNum} - ${dateStr}
+
+                      `;
+
+                      // Add open issues by category
+                      for (const [key, cat] of Object.entries(categories)) {
+                        if (cat.open.length > 0) {
+                          todoContent += `\n### ${cat.icon} ${cat.title}\n\n`;
+                          cat.open.forEach(issue => {
+                            todoContent += `-   [ ] ${issue.title} [#${issue.number}](${issue.html_url})\n`;
+                            if (issue.body && issue.body.trim()) {
+                              const bodyLines = issue.body.split('\n').slice(0, 2); // First 2 lines
+                              bodyLines.forEach(line => {
+                                if (line.trim()) todoContent += `    -   [ ] ${line.trim()}\n`;
+                              });
+                            }
+                          });
+                        }
+                      }
+
+                      // Add completed table
+                      todoContent += `\n### ✔️ Completed\n\n---\n\n| Commit # | Date Completed | Type | Description |\n| --- | --- | --- | --- |\n`;
+
+                      // Add closed issues to completed table
+                      const allClosed = [];
+                      for (const [key, cat] of Object.entries(categories)) {
+                        cat.closed.forEach(issue => {
+                          const closedDate = issue.closed_at ? new Date(issue.closed_at).toLocaleDateString('en-GB', { 
+                            day: '2-digit', 
+                            month: '2-digit', 
+                            year: 'numeric' 
+                          }) : dateStr;
+                          
+                          // Determine if it's in todo or changelog snapshots
+                          const snapshotType = key === 'backend' || key === 'frontend' ? 'changelogs' : 'todos';
+                          const snapshotNum = snapshotType === 'changelogs' ? changelogNum : todoNum;
+                          
+                          allClosed.push({
+                            issue,
+                            date: closedDate,
+                            category: cat,
+                            snapshotType,
+                            snapshotNum
+                          });
+                        });
+                      }
+
+                      // Sort by closed date (newest first)
+                      allClosed.sort((a, b) => new Date(b.issue.closed_at) - new Date(a.issue.closed_at));
+
+                      allClosed.forEach(({ issue, date, category, snapshotType, snapshotNum }) => {
+                        const snapshotLink = `[\`${snapshotNum}\`](./.tracking/${snapshotType}/${snapshotType === 'changelogs' ? 'Changelog' : 'Todo'}#${snapshotNum}.md)`;
+                        todoContent += `| ${snapshotLink} | ${date} | \`${category.icon} ${category.title}\` | [${issue.title}](${issue.html_url}) |\n`;
+                      });
+
+                      todoContent += `\n> Synced at ${now.toUTCString()}\n`;
+
+                      // Write Todo.md
+                      fs.writeFileSync('Todo.md', todoContent);
+
+                      // Generate Changelog.md
+                      let changelogContent = `# Changelog
+
+                      All notable changes to this project are documented here. Commit-level tracking is used, with snapshots stored in [\`.tracking/changelogs/\`](./.tracking/changelogs/).
+
+                      To see the todo list check the [Project Todo](./Todo.md) file, with snapshots stored in [\`.tracking/todos/\`](./.tracking/todos/).
+
+                      The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> \`[🖼️ Frontend]\` \`[🔙 Backend]\`
+
+                      ---
+
+                      ## 🛠️ Current Commit #${changelogNum} - ${dateStr}
+
+                      `;
+
+                      // Group closed issues by type for changelog
+                      const changeTypes = {
+                        'added': { title: '➕ Added', issues: [] },
+                        'changed': { title: '🏷️ Changed / Modified', issues: [] },
+                        'fixed': { title: '🩹 Fixed', issues: [] },
+                        'removed': { title: '➖ Removed', issues: [] }
+                      };
+
+                      allClosed.forEach(({ issue, category }) => {
+                        const labels = issue.labels.map(l => l.name.toLowerCase());
+                        let changeType = 'changed'; // default
+                        
+                        if (labels.includes('enhancement') || labels.includes('feature')) changeType = 'added';
+                        else if (labels.includes('bug') || labels.includes('fix')) changeType = 'fixed';
+                        else if (labels.includes('removed') || labels.includes('deprecated')) changeType = 'removed';
+                        
+                        changeTypes[changeType].issues.push({ issue, category });
+                      });
+
+                      // Write changelog sections
+                      for (const [key, section] of Object.entries(changeTypes)) {
+                        if (section.issues.length > 0) {
+                          changelogContent += `\n### ${section.title}\n\n`;
+                          section.issues.forEach(({ issue, category }) => {
+                            changelogContent += `-   **[${issue.title}](${issue.html_url})** \`[${category.icon} ${category.title}]\`\n`;
+                            if (issue.body && issue.body.trim()) {
+                              changelogContent += `    ${issue.body.split('\n')[0]}\n`;
+                            }
+                            changelogContent += `\n`;
+                          });
+                        }
+                      }
+
+                      changelogContent += `\n---\n`;
+
+                      // Write Changelog.md
+                      fs.writeFileSync('Changelog.md', changelogContent);
+
+                      console.log('Generated Todo.md and Changelog.md successfully!');
+
+            - name: Commit and push changes
+              run: |
+                  git add Todo.md Changelog.md
+                  if git diff --staged --quiet; then
+                    echo "No changes to commit"
+                  else
+                    git commit -m "docs: regenerate from issues"
+                    git push origin HEAD:main
+                  fi
