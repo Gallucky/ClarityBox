@@ -27,7 +27,6 @@ jobs:
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
-                  git fetch origin main
 
             - name: Generate Todo and Changelog
               uses: actions/github-script@v7
@@ -55,7 +54,6 @@ jobs:
                       // Read current counter values
                       if (fs.existsSync(changelogCounterFile)) {
                         const counterValue = parseInt(fs.readFileSync(changelogCounterFile, 'utf8').trim());
-                        // The counter file contains NEXT number, so current is counter - 1
                         changelogNum = counterValue > 1 ? counterValue - 1 : 1;
                       }
                       if (fs.existsSync(todoCounterFile)) {
@@ -87,7 +85,7 @@ jobs:
 
                       actualIssues.forEach(issue => {
                         const labels = issue.labels.map(l => l.name.toLowerCase());
-                        let category = 'extras'; // default
+                        let category = 'extras';
                         
                         if (labels.includes('backend')) category = 'backend';
                         else if (labels.includes('frontend')) category = 'frontend';
@@ -168,7 +166,7 @@ jobs:
                         closedByDate[item.date].push(item);
                       });
 
-                      // Assign snapshot numbers (most recent date gets current number, older dates get decreasing numbers)
+                      // Assign snapshot numbers
                       const dates = Object.keys(closedByDate).sort((a, b) => {
                         const [dayA, monthA, yearA] = a.split('/');
                         const [dayB, monthB, yearB] = b.split('/');
@@ -214,7 +212,7 @@ jobs:
 
                       allClosed.forEach(({ issue, category }) => {
                         const labels = issue.labels.map(l => l.name.toLowerCase());
-                        let changeType = 'changed'; // default
+                        let changeType = 'changed';
                         
                         if (labels.includes('enhancement') || labels.includes('feature')) changeType = 'added';
                         else if (labels.includes('bug') || labels.includes('fix')) changeType = 'fixed';
@@ -256,12 +254,28 @@ jobs:
             - name: Commit and push changes
               run: |
                   git add Todo.md Changelog.md
+
                   if git diff --staged --quiet; then
                     echo "No changes to commit"
-                  else
-                    git commit -m "docs: regenerate from issues"
-                    
-                    # Pull and rebase before pushing to avoid conflicts
-                    git pull --rebase origin main || true
-                    git push origin HEAD:main
+                    exit 0
                   fi
+
+                  git commit -m "docs: regenerate from issues"
+
+                  # Retry push with pull if needed
+                  MAX_RETRIES=3
+                  RETRY_COUNT=0
+
+                  while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+                    if git push origin HEAD:main; then
+                      echo "Push successful"
+                      exit 0
+                    else
+                      echo "Push failed, pulling and retrying..."
+                      git pull --rebase origin main
+                      RETRY_COUNT=$((RETRY_COUNT + 1))
+                    fi
+                  done
+
+                  echo "Failed to push after $MAX_RETRIES attempts"
+                  exit 1

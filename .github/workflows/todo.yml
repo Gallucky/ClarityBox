@@ -29,7 +29,6 @@ jobs:
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
-                  git fetch origin main
 
             - name: Sync Todo Snapshot
               run: |
@@ -52,13 +51,29 @@ jobs:
             - name: Commit and push changes
               run: |
                   git add .tracking/
+
                   if git diff --staged --quiet; then
                     echo "No changes to commit"
-                  else
-                    CURRENT_NUM=$(cat .tracking/.todo_counter)
-                    git commit -m "chore: sync todo snapshot #$((CURRENT_NUM - 1))"
-                    
-                    # Pull and rebase before pushing to avoid conflicts
-                    git pull --rebase origin main || true
-                    git push origin HEAD:main
+                    exit 0
                   fi
+
+                  CURRENT_NUM=$(cat .tracking/.todo_counter)
+                  git commit -m "chore: sync todo snapshot #$((CURRENT_NUM - 1))"
+
+                  # Retry push with pull if needed
+                  MAX_RETRIES=3
+                  RETRY_COUNT=0
+
+                  while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+                    if git push origin HEAD:main; then
+                      echo "Push successful"
+                      exit 0
+                    else
+                      echo "Push failed, pulling and retrying..."
+                      git pull --rebase origin main
+                      RETRY_COUNT=$((RETRY_COUNT + 1))
+                    fi
+                  done
+
+                  echo "Failed to push after $MAX_RETRIES attempts"
+                  exit 1
