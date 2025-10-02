@@ -50,3 +50,4 @@
     | [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔙 Backend` | Set up / initialize the project's backend folders/files structure. |
     | [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔧 Deployment / Environment` | Create `.tracking/todos/` and `.tracking/changelogs/` directories for snapshots. |
     | [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🧩 Extras / UI` | Add `Changelog.md` and `Todo.md` for tracking. |
+- [ ] Synced at Thu Oct  2 19:40:52 UTC 2025
