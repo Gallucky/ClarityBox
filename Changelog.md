@@ -13,6 +13,9 @@ The following tags are used throughout the changelog to categorize changes based
 
 ### ➕ Added
 
+-   **[Documentation Enhancement](https://github.com/Gallucky/ClarityBox/issues/18)** `[🔧 Deployment / Environment]`
+    ## Documentation Enhancement
+
 -   **[Create tracking directories for snapshots](https://github.com/Gallucky/ClarityBox/issues/17)** `[🔧 Deployment / Environment]`
     Created .tracking/todos/ and .tracking/changelogs/ directories for version snapshots.
 

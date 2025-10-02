@@ -41,6 +41,7 @@ To check the current changelog see the [Project's Changelog](./Changelog.md) fil
 
 | Commit # | Date Completed | Type | Description |
 | --- | --- | --- | --- |
+| [`5`](./.tracking/todos/Todo#5.md) | 02/10/2025 | `🔧 Deployment / Environment` | [Documentation Enhancement](https://github.com/Gallucky/ClarityBox/issues/18) |
 | [`5`](./.tracking/todos/Todo#5.md) | 02/10/2025 | `🔧 Deployment / Environment` | [Create tracking directories for snapshots](https://github.com/Gallucky/ClarityBox/issues/17) |
 | [`5`](./.tracking/changelogs/Changelog#5.md) | 02/10/2025 | `🔙 Backend` | [Set up backend project structure](https://github.com/Gallucky/ClarityBox/issues/16) |
 | [`5`](./.tracking/changelogs/Changelog#5.md) | 02/10/2025 | `🔙 Backend` | [Integrate logging middleware for request monitoring](https://github.com/Gallucky/ClarityBox/issues/15) |
@@ -50,4 +51,4 @@ To check the current changelog see the [Project's Changelog](./Changelog.md) fil
 | [`5`](./.tracking/changelogs/Changelog#5.md) | 02/10/2025 | `🔙 Backend` | [Create mongoose schemas/models for MVP](https://github.com/Gallucky/ClarityBox/issues/11) |
 | [`5`](./.tracking/changelogs/Changelog#5.md) | 02/10/2025 | `🔙 Backend` | [Add authentication middleware for protected routes](https://github.com/Gallucky/ClarityBox/issues/10) |
 
-> Synced at Thu, 02 Oct 2025 20:46:54 GMT
+> Synced at Thu, 02 Oct 2025 20:51:23 GMT
