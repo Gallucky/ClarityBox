@@ -4,6 +4,8 @@ on:
     push:
         branches:
             - main
+        paths:
+            - "Todo.md"
     workflow_dispatch:
 
 jobs:
@@ -49,5 +51,8 @@ jobs:
                   else
                     CURRENT_NUM=$(cat .tracking/.todo_counter)
                     git commit -m "chore: sync todo snapshot #$((CURRENT_NUM - 1))"
+                    
+                    # Pull and rebase before pushing to avoid conflicts
+                    git pull --rebase origin main || true
                     git push origin HEAD:main
                   fi

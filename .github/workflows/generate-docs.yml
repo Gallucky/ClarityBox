@@ -254,5 +254,8 @@ jobs:
                     echo "No changes to commit"
                   else
                     git commit -m "docs: regenerate from issues"
+                    
+                    # Pull and rebase before pushing to avoid conflicts
+                    git pull --rebase origin main || true
                     git push origin HEAD:main
                   fi

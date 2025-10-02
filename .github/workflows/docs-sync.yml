@@ -1,13 +1,15 @@
-name: Sync Todo
+name: Docs Sync
 
 on:
     push:
         branches:
             - main
+        paths:
+            - "Changelog.md"
     workflow_dispatch:
 
 jobs:
-    sync-todo:
+    docs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
@@ -23,35 +25,34 @@ jobs:
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
 
-            - name: Update Todo
+            - name: Sync docs
               run: |
-                  echo "- [ ] Synced at $(date -u)" >> Todo.md
-
-            - name: Sync Todo Snapshot
-              run: |
-                  mkdir -p .tracking/todos
+                  mkdir -p .tracking/changelogs
 
                   # Read counter or initialize to 1
-                  COUNTER_FILE=".tracking/.todo_counter"
+                  COUNTER_FILE=".tracking/.changelog_counter"
                   if [ -f "$COUNTER_FILE" ]; then
                     NEXT_NUM=$(cat "$COUNTER_FILE")
                   else
                     NEXT_NUM=1
                   fi
 
-                  # Copy todo with sequential number
-                  cp Todo.md ".tracking/todos/Todo#${NEXT_NUM}.md"
+                  # Copy changelog with sequential number
+                  cp Changelog.md ".tracking/changelogs/Changelog#${NEXT_NUM}.md"
 
                   # Increment counter
                   echo $((NEXT_NUM + 1)) > "$COUNTER_FILE"
 
             - name: Commit and push changes
               run: |
-                  git add .
+                  git add .tracking/
                   if git diff --staged --quiet; then
                     echo "No changes to commit"
                   else
-                    CURRENT_NUM=$(cat .tracking/.todo_counter)
-                    git commit -m "chore: sync todo snapshot #$((CURRENT_NUM - 1))"
+                    CURRENT_NUM=$(cat .tracking/.changelog_counter)
+                    git commit -m "docs: sync changelog snapshot #$((CURRENT_NUM - 1))"
+                    
+                    # Pull and rebase before pushing to avoid conflicts
+                    git pull --rebase origin main || true
                     git push origin HEAD:main
                   fi
