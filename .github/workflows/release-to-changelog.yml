@@ -1,0 +1,32 @@
+name: Release to Changelog
+
+on:
+    release:
+        types: [published]
+
+jobs:
+    update_changelog:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Update Changelog.md with Release Notes
+              run: |
+                  RELEASE_TAG=${{ github.event.release.tag_name }}
+                  DATE=$(date +'%Y-%m-%d')
+                  {
+                    echo "## [$RELEASE_TAG] - $DATE"
+                    echo ""
+                    echo "${{ github.event.release.body }}"
+                    echo ""
+                    cat Changelog.md
+                  } > tmp.md
+                  mv tmp.md Changelog.md
+
+            - name: Commit updated Changelog
+              run: |
+                  git config user.name "github-actions"
+                  git config user.email "github-actions@github.com"
+                  git add Changelog.md
+                  git commit -m "docs(changelog): update with release ${{ github.event.release.tag_name }}"
+                  git push

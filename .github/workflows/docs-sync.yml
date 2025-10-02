@@ -1,0 +1,30 @@
+name: Sync Docs & Snapshots
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+    sync_docs:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Get commit hash
+              run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+            - name: Snapshot Changelog & Todo
+              run: |
+                  mkdir -p .tracking/changelogs
+                  mkdir -p .tracking/todos
+                  cp Changelog.md ".tracking/changelogs/Changelog#${COMMIT_HASH}.md"
+                  cp Todo.md ".tracking/todos/Todo#${COMMIT_HASH}.md"
+
+            - name: Commit snapshots
+              run: |
+                  git config user.name "github-actions"
+                  git config user.email "github-actions@github.com"
+                  git add .tracking/
+                  git commit -m "docs: snapshot Changelog & Todo ($COMMIT_HASH)" || echo "No changes"
+                  git push
