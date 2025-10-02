@@ -5,28 +5,32 @@ on:
         types: [published]
 
 jobs:
-    update_changelog:
+    update-changelog:
         runs-on: ubuntu-latest
+
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout repo
+              uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
 
-            - name: Update Changelog.md with Release Notes
-              run: |
-                  RELEASE_TAG=${{ github.event.release.tag_name }}
-                  DATE=$(date +'%Y-%m-%d')
-                  {
-                    echo "## [$RELEASE_TAG] - $DATE"
-                    echo ""
-                    echo "${{ github.event.release.body }}"
-                    echo ""
-                    cat Changelog.md
-                  } > tmp.md
-                  mv tmp.md Changelog.md
-
-            - name: Commit updated Changelog
+            - name: Configure Git
               run: |
                   git config user.name "github-actions"
-                  git config user.email "github-actions@github.com"
+                  git config user.email "github-actions@users.noreply.github.com"
+
+            - name: Update changelog
+              run: |
+                  echo "## $(date -u)" >> Changelog.md
+                  echo "" >> Changelog.md
+                  echo "Release $GITHUB_REF_NAME" >> Changelog.md
+                  echo "" >> Changelog.md
+
+            - name: Commit changes
+              run: |
                   git add Changelog.md
-                  git commit -m "docs(changelog): update with release ${{ github.event.release.tag_name }}"
-                  git push
+                  git commit -m "docs: update changelog for $GITHUB_REF_NAME" || echo "No changes to commit"
+
+            - name: Push changes with PAT
+              run: |
+                  git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} HEAD:main
