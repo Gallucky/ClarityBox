@@ -50,4 +50,4 @@ To check the current changelog see the [Project's Changelog](./Changelog.md) fil
 | [`5`](./.tracking/changelogs/Changelog#5.md) | 02/10/2025 | `🔙 Backend` | [Create mongoose schemas/models for MVP](https://github.com/Gallucky/ClarityBox/issues/11) |
 | [`5`](./.tracking/changelogs/Changelog#5.md) | 02/10/2025 | `🔙 Backend` | [Add authentication middleware for protected routes](https://github.com/Gallucky/ClarityBox/issues/10) |
 
-> Synced at Thu, 02 Oct 2025 20:43:57 GMT
+> Synced at Thu, 02 Oct 2025 20:45:51 GMT
