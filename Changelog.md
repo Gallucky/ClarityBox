@@ -8,51 +8,34 @@ The following tags are used throughout the changelog to categorize changes based
 
 ---
 
-## 🛠️ Current Commit #5 - 26/09/2025
+## 🛠️ Current Commit #5 - 02/10/2025
+
 
 ### ➕ Added
 
--   **User Controller Structure** `[🔙 Backend]`
-    -   [`usersController.js`](./server/features/users/routes/usersController.js): Created comprehensive controller structure with route definitions:
-        -   `GET /users` - Get all users (admin only)
-        -   `GET /users/:id` - Get user by ID (user or admin access)
-        -   `POST /users` - Register new user
-        -   `POST /users/login` - User login
-        -   `PUT /users/:id` - Update user data (user only)
-        -   `DELETE /users/:id` - Delete user (user or admin access)
-    -   Added proper authentication middleware integration with role-based access control
-    -   Added comprehensive JSDoc documentation for all routes
-    -   Integrated custom RouterLogger for request tracking
-    -   Added proper error handling using `handleWebError` utility
-    -   **Note**: Service layer functions still need implementation (`getUsers`, `getUser`, `registerUser`, etc.)
+-   **[Create tracking directories for snapshots](https://github.com/Gallucky/ClarityBox/issues/17)** `[🔧 Deployment / Environment]`
+    Created .tracking/todos/ and .tracking/changelogs/ directories for version snapshots.
 
-### 🏷️ Changed / Modified
+-   **[Set up backend project structure](https://github.com/Gallucky/ClarityBox/issues/16)** `[🔙 Backend]`
+    Initialized backend folders and files structure with proper organization.
 
--   **Router Configuration** `[🔙 Backend]`
+-   **[Integrate logging middleware for request monitoring](https://github.com/Gallucky/ClarityBox/issues/15)** `[🔙 Backend]`
+    Added morgan middleware for HTTP request logging and monitoring.
 
-    [`router.js`](./server/router/router.js): Updated import paths to match new controller structure:
+-   **[Add custom logger using winston](https://github.com/Gallucky/ClarityBox/issues/14)** `[🔙 Backend]`
+    Integrated winston library for custom logging throughout the application.
 
-    -   Fixed import path for `usersController`:<br> `'../features/users/usersController'` → `'../features/users/routes/usersController'`
-    -   Updated import paths for other controllers to follow consistent `/routes/` structure
+-   **[Set up centralized error handling middleware](https://github.com/Gallucky/ClarityBox/issues/13)** `[🔙 Backend]`
+    Implemented centralized error handling middleware for consistent error responses.
 
--   **Authentication Service** `[🔙 Backend]`
+-   **[Set up deployment and environment configurations](https://github.com/Gallucky/ClarityBox/issues/12)** `[🔧 Deployment / Environment]`
+    Configured deployment and environment variables using dotenv.
 
-    [`authService.js`](./server/auth/authService.js): Removed outdated TODO comment about verifying token logic
+-   **[Create mongoose schemas/models for MVP](https://github.com/Gallucky/ClarityBox/issues/11)** `[🔙 Backend]`
+    Created mongoose schemas and models for:
 
--   **Server Configuration** `[🔙 Backend]`
+-   **[Add authentication middleware for protected routes](https://github.com/Gallucky/ClarityBox/issues/10)** `[🔙 Backend]`
+    Implemented authentication middleware to protect routes requiring user authentication.
 
-    [`server.js`](./server/server.js): Added import for `currentDate` utility from `./utils/timeStamp`
-
-### 🩹 Fixed
-
--   **Import Path Consistency** `[🔙 Backend]`
-
-    Fixed controller import paths in router to match the actual file structure with `/routes/` subdirectories
-
-### ➖ Removed
-
--   **Code Cleanup** `[🔙 Backend]`
-
-    Removed outdated TODO comment from authentication service regarding token verification logic
 
 ---
