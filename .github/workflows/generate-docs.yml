@@ -38,7 +38,7 @@ jobs:
                         year: 'numeric' 
                       });
 
-                      // Read counter files
+                      // Read counter files and get CURRENT numbers (not next)
                       const trackingDir = '.tracking';
                       const changelogCounterFile = path.join(trackingDir, '.changelog_counter');
                       const todoCounterFile = path.join(trackingDir, '.todo_counter');
@@ -46,12 +46,19 @@ jobs:
                       let changelogNum = 1;
                       let todoNum = 1;
 
+                      // Read current counter values
                       if (fs.existsSync(changelogCounterFile)) {
-                        changelogNum = parseInt(fs.readFileSync(changelogCounterFile, 'utf8').trim()) - 1;
+                        const counterValue = parseInt(fs.readFileSync(changelogCounterFile, 'utf8').trim());
+                        // The counter file contains NEXT number, so current is counter - 1
+                        changelogNum = counterValue > 1 ? counterValue - 1 : 1;
                       }
                       if (fs.existsSync(todoCounterFile)) {
-                        todoNum = parseInt(fs.readFileSync(todoCounterFile, 'utf8').trim()) - 1;
+                        const counterValue = parseInt(fs.readFileSync(todoCounterFile, 'utf8').trim());
+                        todoNum = counterValue > 1 ? counterValue - 1 : 1;
                       }
+
+                      console.log(`Current changelog commit: #${changelogNum}`);
+                      console.log(`Current todo commit: #${todoNum}`);
 
                       // Fetch all issues
                       const { data: issues } = await github.rest.issues.listForRepo({
@@ -88,17 +95,11 @@ jobs:
                       });
 
                       // Generate Todo.md
-                      let todoContent = `# TODO
-
-                      Tracks tasks per commit. Snapshot copies are stored in [\`.tracking/todos/\`](./.tracking/todos/).
-
-                      To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [\`.tracking/changelogs/\`](./.tracking/changelogs/).
-
-                      ---
-
-                      ## Current Commit: #${todoNum} - ${dateStr}
-
-                      `;
+                      let todoContent = "# TODO\n\n";
+                      todoContent += "Tracks tasks per commit. Snapshot copies are stored in [`.tracking/todos/`](./.tracking/todos/).\n\n";
+                      todoContent += "To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).\n\n";
+                      todoContent += "---\n\n";
+                      todoContent += `## Current Commit: #${todoNum} - ${dateStr}\n\n`;
 
                       // Add open issues by category
                       for (const [key, cat] of Object.entries(categories)) {
@@ -107,13 +108,24 @@ jobs:
                           cat.open.forEach(issue => {
                             todoContent += `-   [ ] ${issue.title} [#${issue.number}](${issue.html_url})\n`;
                             if (issue.body && issue.body.trim()) {
-                              const bodyLines = issue.body.split('\n').slice(0, 2); // First 2 lines
+                              const bodyLines = issue.body.split('\n').filter(line => line.trim()).slice(0, 3);
                               bodyLines.forEach(line => {
-                                if (line.trim()) todoContent += `    -   [ ] ${line.trim()}\n`;
+                                if (line.trim() && line.trim().startsWith('-')) {
+                                  todoContent += `    ${line.trim()}\n`;
+                                }
                               });
                             }
                           });
                         }
+                      }
+
+                      // Check if there are no open issues in any category
+                      const hasOpenIssues = Object.values(categories).some(cat => cat.open.length > 0);
+                      if (!hasOpenIssues) {
+                        todoContent += `\n### 🔙 Backend\n\n> There are no new tasks for this section currently.\n`;
+                        todoContent += `\n### 🖼️ Frontend\n\n> There are no new tasks for this section currently.\n`;
+                        todoContent += `\n### 🔧 Deployment / Environment\n\n> There are no new tasks for this section currently.\n`;
+                        todoContent += `\n### 🧩 Extras / UI\n\n> There are no new tasks for this section currently.\n`;
                       }
 
                       // Add completed table
@@ -129,16 +141,11 @@ jobs:
                             year: 'numeric' 
                           }) : dateStr;
                           
-                          // Determine if it's in todo or changelog snapshots
-                          const snapshotType = key === 'backend' || key === 'frontend' ? 'changelogs' : 'todos';
-                          const snapshotNum = snapshotType === 'changelogs' ? changelogNum : todoNum;
-                          
                           allClosed.push({
                             issue,
                             date: closedDate,
                             category: cat,
-                            snapshotType,
-                            snapshotNum
+                            key: key
                           });
                         });
                       }
@@ -146,8 +153,35 @@ jobs:
                       // Sort by closed date (newest first)
                       allClosed.sort((a, b) => new Date(b.issue.closed_at) - new Date(a.issue.closed_at));
 
-                      allClosed.forEach(({ issue, date, category, snapshotType, snapshotNum }) => {
-                        const snapshotLink = `[\`${snapshotNum}\`](./.tracking/${snapshotType}/${snapshotType === 'changelogs' ? 'Changelog' : 'Todo'}#${snapshotNum}.md)`;
+                      // Group closed issues by date to assign snapshot numbers
+                      const closedByDate = {};
+                      allClosed.forEach(item => {
+                        if (!closedByDate[item.date]) {
+                          closedByDate[item.date] = [];
+                        }
+                        closedByDate[item.date].push(item);
+                      });
+
+                      // Assign snapshot numbers (most recent date gets current number, older dates get decreasing numbers)
+                      const dates = Object.keys(closedByDate).sort((a, b) => {
+                        const [dayA, monthA, yearA] = a.split('/');
+                        const [dayB, monthB, yearB] = b.split('/');
+                        return new Date(yearB, monthB - 1, dayB) - new Date(yearA, monthA - 1, dayA);
+                      });
+
+                      let currentSnapNum = Math.max(changelogNum, todoNum);
+                      const dateToSnapNum = {};
+                      dates.forEach(date => {
+                        dateToSnapNum[date] = currentSnapNum;
+                        currentSnapNum = Math.max(1, currentSnapNum - 1);
+                      });
+
+                      allClosed.forEach(({ issue, date, category, key }) => {
+                        const snapshotType = (key === 'backend' || key === 'frontend') ? 'changelogs' : 'todos';
+                        const snapshotFile = snapshotType === 'changelogs' ? 'Changelog' : 'Todo';
+                        const snapshotNum = dateToSnapNum[date];
+                        
+                        const snapshotLink = `[\`${snapshotNum}\`](./.tracking/${snapshotType}/${snapshotFile}#${snapshotNum}.md)`;
                         todoContent += `| ${snapshotLink} | ${date} | \`${category.icon} ${category.title}\` | [${issue.title}](${issue.html_url}) |\n`;
                       });
 
@@ -157,19 +191,12 @@ jobs:
                       fs.writeFileSync('Todo.md', todoContent);
 
                       // Generate Changelog.md
-                      let changelogContent = `# Changelog
-
-                      All notable changes to this project are documented here. Commit-level tracking is used, with snapshots stored in [\`.tracking/changelogs/\`](./.tracking/changelogs/).
-
-                      To see the todo list check the [Project Todo](./Todo.md) file, with snapshots stored in [\`.tracking/todos/\`](./.tracking/todos/).
-
-                      The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> \`[🖼️ Frontend]\` \`[🔙 Backend]\`
-
-                      ---
-
-                      ## 🛠️ Current Commit #${changelogNum} - ${dateStr}
-
-                      `;
+                      let changelogContent = "# Changelog\n\n";
+                      changelogContent += "All notable changes to this project are documented here. Commit-level tracking is used, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).\n\n";
+                      changelogContent += "To see the todo list check the [Project Todo](./Todo.md) file, with snapshots stored in [`.tracking/todos/`](./.tracking/todos/).\n\n";
+                      changelogContent += "The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> `[🖼️ Frontend]` `[🔙 Backend]`\n\n";
+                      changelogContent += "---\n\n";
+                      changelogContent += `## 🛠️ Current Commit #${changelogNum} - ${dateStr}\n\n`;
 
                       // Group closed issues by type for changelog
                       const changeTypes = {
@@ -191,17 +218,26 @@ jobs:
                       });
 
                       // Write changelog sections
+                      let hasAnyChanges = false;
                       for (const [key, section] of Object.entries(changeTypes)) {
                         if (section.issues.length > 0) {
+                          hasAnyChanges = true;
                           changelogContent += `\n### ${section.title}\n\n`;
                           section.issues.forEach(({ issue, category }) => {
                             changelogContent += `-   **[${issue.title}](${issue.html_url})** \`[${category.icon} ${category.title}]\`\n`;
                             if (issue.body && issue.body.trim()) {
-                              changelogContent += `    ${issue.body.split('\n')[0]}\n`;
+                              const firstLine = issue.body.split('\n').find(line => line.trim());
+                              if (firstLine) {
+                                changelogContent += `    ${firstLine.trim()}\n`;
+                              }
                             }
                             changelogContent += `\n`;
                           });
                         }
+                      }
+
+                      if (!hasAnyChanges) {
+                        changelogContent += `\n### ➕ Added\n\n> No changes in this commit.\n`;
                       }
 
                       changelogContent += `\n---\n`;
