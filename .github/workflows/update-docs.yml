@@ -58,8 +58,8 @@ jobs:
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v6
               with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  branch: tracking/${{ steps.counter.outputs.commit_num }}
+                  token: ${{ secrets.GH_PAT }}
+                  branch: tracking-updates
                   commit-message: "docs: tracking update commit ${{ steps.counter.outputs.commit_num }}"
                   title: "Tracking Update #${{ steps.counter.outputs.commit_num }}"
                   body: "Automated docs update for commit #${{ steps.counter.outputs.commit_num }}"
