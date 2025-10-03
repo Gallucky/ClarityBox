@@ -4,6 +4,13 @@ set -euo pipefail
 DATE="$(date +'%Y-%m-%d')"
 ISSUES_FILE="issues.json"
 
+# Debug: Check what we're working with
+echo "=== DEBUG INFO ===" >&2
+echo "Total issues in file: $(jq 'length' "$ISSUES_FILE")" >&2
+echo "Open issues: $(jq '[.[] | select(.state == "open")] | length' "$ISSUES_FILE")" >&2
+echo "Closed issues: $(jq '[.[] | select(.state == "closed")] | length' "$ISSUES_FILE")" >&2
+echo "==================" >&2
+
 # ==================== CHANGELOG ====================
 cat > Changelog.md <<'CHANGEHEADER'
 # Changelog

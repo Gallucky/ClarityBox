@@ -31,8 +31,15 @@ jobs:
               run: |
                   OWNER=${{ github.repository_owner }}
                   REPO=${{ github.event.repository.name }}
-                  gh api repos/$OWNER/$REPO/issues --paginate \
+
+                  # Fetch both open and closed issues
+                  gh api repos/$OWNER/$REPO/issues --paginate -f state=all \
                     --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' > issues.json
+
+                  # Debug: show what we got
+                  echo "Total issues fetched: $(jq 'length' issues.json)"
+                  echo "Open issues: $(jq '[.[] | select(.state == "open")] | length' issues.json)"
+                  echo "Closed issues: $(jq '[.[] | select(.state == "closed")] | length' issues.json)"
 
             - name: Make script executable
               run: chmod +x .github/scripts/update-docs.sh
