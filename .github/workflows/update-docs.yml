@@ -29,14 +29,15 @@ jobs:
               env:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
-                  OWNER=${{ github.repository_owner }}
-                  REPO=${{ github.event.repository.name }}
+                  # Correctly get OWNER and REPO from $GITHUB_REPOSITORY
+                  OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+                  REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
 
-                  # Fetch both open and closed issues
+                  # Fetch all issues (open + closed)
                   gh api repos/$OWNER/$REPO/issues --paginate -f state=all \
                     --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' > issues.json
 
-                  # Debug: show what we got
+                  # Debug: show counts
                   echo "Total issues fetched: $(jq 'length' issues.json)"
                   echo "Open issues: $(jq '[.[] | select(.state == "open")] | length' issues.json)"
                   echo "Closed issues: $(jq '[.[] | select(.state == "closed")] | length' issues.json)"
