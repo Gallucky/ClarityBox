@@ -25,14 +25,9 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y gh jq
 
-            # --- Authenticate GH CLI with GH_PAT ---
-            - name: Authenticate GH CLI
+            - name: Collect Issues
               env:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
-              run: |
-                  echo $GH_TOKEN | gh auth login --with-token
-
-            - name: Collect Issues
               run: |
                   # Get OWNER and REPO reliably
                   OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
