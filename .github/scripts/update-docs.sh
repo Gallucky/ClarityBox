@@ -1,42 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-COMMIT_NUM="$1"
 DATE="$(date +'%Y-%m-%d')"
 ISSUES_FILE="issues.json"
 
-mkdir -p .tracking/todos .tracking/changelogs
+# ==================== CHANGELOG ====================
+cat > Changelog.md <<'CHANGEHEADER'
+# Changelog
 
-# Todo header (exact required text at start)
-cat > Todo.md <<'TODOHEADER'
-# Todo
-Todos:
-Tracks tasks per commit. Snapshot copies are stored in [`.tracking/todos/`](./.tracking/todos/).
+All notable changes to this project are documented here.
 
-To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
+To see the todo list check the [Project Todo](./Todo.md) file.
 
----
-Changelogs:
-All notable changes to this project are documented here. Commit-level tracking is used, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
-
-To see the todo list check the [Project Todo](./Todo.md) file, with snapshots stored in [`.tracking/todos/`](./.tracking/todos/).
-
-The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> `[💻 Frontend]` `[🔧 Backend]`
+The following tags are used throughout the changelog to categorize changes:
+`[💻 Frontend]` `[🔧 Backend]` `[🐛 Bug]` `[✨ Enhancement]` `[⭐ Feature]` `[🔨 Fix]` `[📚 Documentation]` `[🚀 Deployment]` `[⚠️ Deprecated]` `[🗑️ Removed]` `[🌍 Environment]` `[📌 Other]`
 
 ---
-TODOHEADER
 
-echo >> Todo.md
-echo "Commit $COMMIT_NUM - $DATE" >> Todo.md
-echo >> Todo.md
+CHANGEHEADER
 
-cat >> Todo.md <<'TABLE'
-| Commit # | Date of Completion | Type | Issue # | Description |
-|----------|-------------------|------|---------|-------------|
-TABLE
+# In Progress section
+echo "## 🔄 In Progress" >> Changelog.md
+echo >> Changelog.md
 
-# Build rows from issues.json (safe single-row per issue, prefer mapped label)
-jq -r --arg COMMIT_NUM "$COMMIT_NUM" --arg DATE "$DATE" '
+jq -r '
   def map_label:
     if . == "Backend" then "🔧 Backend"
     elif . == "Bug" then "🐛 Bug"
@@ -51,33 +38,69 @@ jq -r --arg COMMIT_NUM "$COMMIT_NUM" --arg DATE "$DATE" '
     elif . == "Removed" then "🗑️ Removed"
     else null end;
 
+  [.[] | select(.state == "open")] |
+  sort_by(.number) |
   .[] |
-  ( (.labels | map(map_label) | map(select(. != null)) | .[0]) // (.labels[0] | map_label) // "📌 Other" ) as $type |
-  "|["+$COMMIT_NUM+"](./.tracking/todos/todo-"+$COMMIT_NUM+".md)|"+$DATE+"|"+$type+"|[#"+(.number|tostring)+"]("+.url+")|"+(.title)
-' "$ISSUES_FILE" >> Todo.md
-
-# Changelog header (same intro block)
-cat > Changelog.md <<'CHANGEHEADER'
-# Changelog
-Todos:
-Tracks tasks per commit. Snapshot copies are stored in [`.tracking/todos/`](./.tracking/todos/).
-
-To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
-
----
-Changelogs:
-All notable changes to this project are documented here. Commit-level tracking is used, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
-
-To see the todo list check the [Project Todo](./Todo.md) file, with snapshots stored in [`.tracking/todos/`](./.tracking/todos/).
-
-The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> `[💻 Frontend]` `[🔧 Backend]`
-
----
-CHANGEHEADER
+  ( (.labels | map(map_label) | map(select(. != null)) | .[0]) // "📌 Other" ) as $type |
+  "- " + $type + " [#" + (.number|tostring) + "](" + .url + ") - " + .title
+' "$ISSUES_FILE" >> Changelog.md
 
 echo >> Changelog.md
-echo "Commit $COMMIT_NUM - $DATE" >> Changelog.md
 
-# Snapshots
-cp Changelog.md .tracking/changelogs/changelog-"$COMMIT_NUM".md
-cp Todo.md .tracking/todos/todo-"$COMMIT_NUM".md
+# Completed section (at bottom)
+echo "## ✅ Completed" >> Changelog.md
+echo >> Changelog.md
+
+jq -r '
+  def map_label:
+    if . == "Backend" then "🔧 Backend"
+    elif . == "Bug" then "🐛 Bug"
+    elif . == "Deployment" then "🚀 Deployment"
+    elif . == "Deprecated" then "⚠️ Deprecated"
+    elif . == "Documentation" then "📚 Documentation"
+    elif . == "Enhancement" then "✨ Enhancement"
+    elif . == "Environment" then "🌍 Environment"
+    elif . == "Feature" then "⭐ Feature"
+    elif . == "Fix" then "🔨 Fix"
+    elif . == "Frontend" then "💻 Frontend"
+    elif . == "Removed" then "🗑️ Removed"
+    else null end;
+
+  [.[] | select(.state == "closed")] |
+  sort_by(.closed_at) | reverse |
+  .[] |
+  ( (.labels | map(map_label) | map(select(. != null)) | .[0]) // "📌 Other" ) as $type |
+  ( if .closed_at then (.closed_at | split("T")[0]) else "N/A" end ) as $date |
+  "- " + $type + " [#" + (.number|tostring) + "](" + .url + ") - " + .title + " _(Completed: " + $date + ")_"
+' "$ISSUES_FILE" >> Changelog.md
+
+
+# ==================== TODO ====================
+cat > Todo.md <<'TODOHEADER'
+# Todo
+
+Tracks all project tasks and issues.
+
+To check the changelog see the [Project's Changelog](./Changelog.md) file.
+
+---
+
+TODOHEADER
+
+echo "## 📋 All Issues" >> Todo.md
+echo >> Todo.md
+
+cat >> Todo.md <<'TABLE'
+| Issue # | Created At | Completed At | Title | Status |
+|---------|------------|--------------|-------|--------|
+TABLE
+
+# Build table rows with your preferred column order
+jq -r '
+  sort_by(.number) | reverse |
+  .[] |
+  ( if .created_at then (.created_at | split("T")[0]) else "N/A" end ) as $created |
+  ( if .closed_at then (.closed_at | split("T")[0]) else "-" end ) as $completed |
+  ( if .state == "open" then "🔄 Open" else "✅ Closed" end ) as $status |
+  "| [#" + (.number|tostring) + "](" + .url + ") | " + $created + " | " + $completed + " | " + .title + " | " + $status + " |"
+' "$ISSUES_FILE" >> Todo.md

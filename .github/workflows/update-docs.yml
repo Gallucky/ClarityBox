@@ -3,6 +3,11 @@ name: Update Tracking Docs
 on:
     push:
         branches: [main]
+        paths-ignore:
+            - "Changelog.md"
+            - "Todo.md"
+    issues:
+        types: [opened, closed, reopened, labeled, unlabeled, edited]
 
 permissions:
     contents: write
@@ -20,26 +25,6 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y gh jq
 
-            - name: Get & increment counter (repo variable)
-              id: counter
-              env:
-                  GH_TOKEN: ${{ secrets.GH_PAT }}
-              run: |
-                  VAR_NAME=TRACKING_COMMIT_COUNTER
-                  OWNER=${{ github.repository_owner }}
-                  REPO=${{ github.event.repository.name }}
-
-                  CURRENT=$(gh api repos/$OWNER/$REPO/actions/variables/$VAR_NAME --jq .value 2>/dev/null || echo 0)
-                  NEXT=$((CURRENT + 1))
-
-                  if gh api repos/$OWNER/$REPO/actions/variables/$VAR_NAME --jq .value >/dev/null 2>&1; then
-                    gh api repos/$OWNER/$REPO/actions/variables/$VAR_NAME -X PATCH -f name=$VAR_NAME -f value=$NEXT
-                  else
-                    gh api repos/$OWNER/$REPO/actions/variables -X POST -f name=$VAR_NAME -f value=$NEXT
-                  fi
-
-                  echo "commit_num=$NEXT" >> "$GITHUB_OUTPUT"
-
             - name: Collect Issues
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,23 +32,30 @@ jobs:
                   OWNER=${{ github.repository_owner }}
                   REPO=${{ github.event.repository.name }}
                   gh api repos/$OWNER/$REPO/issues --paginate \
-                    --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name]}]' > issues.json
+                    --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' > issues.json
+
+            - name: Make script executable
+              run: chmod +x .github/scripts/update-docs.sh
 
             - name: Make script executable
               run: chmod +x .github/scripts/update-docs.sh
 
             - name: Generate docs (script)
-              run: ./.github/scripts/update-docs.sh "${{ steps.counter.outputs.commit_num }}"
+              run: ./.github/scripts/update-docs.sh
 
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v6
               with:
                   token: ${{ secrets.GH_PAT }}
                   branch: tracking-updates
-                  commit-message: "docs: tracking update commit ${{ steps.counter.outputs.commit_num }}"
-                  title: "Tracking Update #${{ steps.counter.outputs.commit_num }}"
-                  body: "Automated docs update for commit #${{ steps.counter.outputs.commit_num }}"
+                  commit-message: "docs: update tracking documentation"
+                  title: "Update Tracking Documentation"
+                  body: |
+                      Automated documentation update
+
+                      Updated files:
+                      - Changelog.md
+                      - Todo.md
                   add-paths: |
                       Changelog.md
                       Todo.md
-                      .tracking/
