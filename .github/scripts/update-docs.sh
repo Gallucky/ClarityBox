@@ -32,7 +32,7 @@ label_with_icon() {
 # Format labels array into backtick-wrapped icons
 format_labels() {
   # $1 is a JSON array of label objects
-  echo "$1" | jq -r '.[] | "\(.name)"' | while read -r lbl; do
+  echo "$1" | jq -r '.[].name' | while read -r lbl; do
     echo -n "\`$(label_with_icon "$lbl")\` "
   done
 }
@@ -52,7 +52,7 @@ status_icon() {
   state="$1"
   case "$state" in
     open) echo "💬 Open" ;;
-    pending|ongoing) echo "⏳ $state" ;;
+    pending|ongoing) echo "⏳ On Going" ;;
     closed) echo "✅ Closed" ;;
     *) echo "$state" ;;
   esac
@@ -63,38 +63,40 @@ status_icon() {
 > "$TODO_FILE"
 
 # --- Changelog header ---
-echo "# Changelog" >> "$CHANGELOG_FILE"
-echo "" >> "$CHANGELOG_FILE"
-echo "The following tags are used throughout the changelog to categorize changes:" >> "$CHANGELOG_FILE"
-echo "" >> "$CHANGELOG_FILE"
-echo "\
-\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \
-\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\` \
-\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`" >> "$CHANGELOG_FILE"
-echo "" >> "$CHANGELOG_FILE"
-echo "> To see the current todo list, check the [Todo](./Todo.md) file." >> "$CHANGELOG_FILE"
-echo "---" >> "$CHANGELOG_FILE"
+cat <<EOF >> "$CHANGELOG_FILE"
+# Changelog
+
+The following tags are used throughout the changelog to categorize changes:
+
+\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\`
+\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\`
+\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
+
+> To see the current todo list, check the [Todo](./Todo.md) file.
+---
+EOF
 
 # --- Todo header ---
-echo "# Todo" >> "$TODO_FILE"
-echo "" >> "$TODO_FILE"
-echo "The following tags are used throughout the changelog to categorize changes:" >> "$TODO_FILE"
-echo "" >> "$TODO_FILE"
-echo "\
-\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \
-\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\` \
-\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`" >> "$TODO_FILE"
-echo "" >> "$TODO_FILE"
-echo "> To see the changelogs for this commit, check the [Changelog](./Changelog.md) file." >> "$TODO_FILE"
-echo "---" >> "$TODO_FILE"
-echo "| Issue # | Created At | Closed At | Title | Status | Labels |" >> "$TODO_FILE"
-echo "|---------|------------|-----------|-------|--------|--------|" >> "$TODO_FILE"
+cat <<EOF >> "$TODO_FILE"
+# Todo
+
+The following tags are used throughout the changelog to categorize changes:
+
+\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\`
+\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\`
+\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
+
+> To see the changelogs for this commit, check the [Changelog](./Changelog.md) file.
+---
+| Issue # | Created At | Closed At | Title | Status | Labels |
+|---------|------------|-----------|-------|--------|--------|
+EOF
 
 # --- Load tasks ---
 open_tasks=$(jq '[.[] | select(.state != "closed")]' "$ISSUES_JSON")
 closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$ISSUES_JSON")
 
-# --- Write open tasks ---
+# --- Write open tasks first ---
 echo "$open_tasks" | jq -c '.[]' | while read -r task; do
   number=$(jq -r '.number' <<< "$task")
   issue_link="[$number]($REPO_URL/$number)"
@@ -126,7 +128,7 @@ jq --arg today "$today" '[.[] | select(.state=="closed" and (.closed_at | starts
 
 if [[ $(jq length new_closed.json) -gt 0 ]]; then
   echo "" >> "$CHANGELOG_FILE"
-  echo "### Tasks completed in this update" >> "$CHANGELOG_FILE"
+  echo "### 🏁 Tasks completed in this update" >> "$CHANGELOG_FILE"
   echo "" >> "$CHANGELOG_FILE"
   echo "| Issue # | Completed At | Title | Labels |" >> "$CHANGELOG_FILE"
   echo "|---------|--------------|-------|--------|" >> "$CHANGELOG_FILE"
@@ -136,9 +138,6 @@ if [[ $(jq length new_closed.json) -gt 0 ]]; then
     issue_link="[$number]($REPO_URL/$number)"
     closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
     title=$(jq -r '.title' <<< "$task")
-    # Prepend all label icons to title
-    icon_labels=$(jq '.labels' <<< "$task" | format_labels)
-    title="$icon_labels $title"
     labels=$(jq '.labels' <<< "$task" | format_labels)
     echo "| $issue_link | $closed | $title | $labels |" >> "$CHANGELOG_FILE"
   done
