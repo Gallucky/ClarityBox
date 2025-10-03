@@ -31,7 +31,7 @@ label_with_icon() {
 
 # Format labels array into backtick-wrapped icons
 format_labels() {
-  jq -r '.[]' <<< "$1" | while read -r lbl; do
+  jq -r '.[].name' <<< "$1" | while read -r lbl; do
     echo -n "\`$(label_with_icon "$lbl")\` "
   done
 }
