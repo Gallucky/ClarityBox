@@ -34,3 +34,4 @@ The following tags are used throughout the changelog to categorize changes:
 | [24](https://github.com/Gallucky/ClarityBox/issues/24) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
 | [25](https://github.com/Gallucky/ClarityBox/issues/25) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
 | [26](https://github.com/Gallucky/ClarityBox/issues/26) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
+| [27](https://github.com/Gallucky/ClarityBox/issues/27) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
