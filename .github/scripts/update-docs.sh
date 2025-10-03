@@ -103,8 +103,13 @@ The following tags are used throughout the changelog to categorize changes based
 EOF
 
 # --- Load tasks ---
-open_tasks=$(jq '[.[] | select(.state != "closed" and (.pull_request == null))]' "$ISSUES_JSON")
-closed_today=$(jq --arg today "$(date +%Y-%m-%d)" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)) and (.pull_request == null))]' "$ISSUES_JSON")
+open_tasks=$(jq '[.[] | select(.state != "closed" and (.pull_request == null or .pull_request == false))]' "$ISSUES_JSON")
+
+# Closed today
+closed_today=$(jq --arg today "$(date +%Y-%m-%d)" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)) and (.pull_request == null or .pull_request == false))]' "$ISSUES_JSON")
+
+# All closed issues (sorted by most recent first)
+all_closed=$(jq '[.[] | select(.state == "closed" and (.pull_request == null or .pull_request == false))] | sort_by(.closed_at) | reverse' "$ISSUES_JSON")
 
 # --- Function to write tasks ---
 write_tasks() {
@@ -145,10 +150,25 @@ write_tasks() {
 
 # --- Write tasks ---
 write_tasks "$open_tasks" "$TODO_FILE"
+
+# Today's completed tasks section
+echo "" >> "$CHANGELOG_FILE"
+echo "### 🏁 Tasks Completed Today" >> "$CHANGELOG_FILE"
+echo "" >> "$CHANGELOG_FILE"
 if [[ $(jq length <<< "$closed_today") -gt 0 ]]; then
-  echo "" >> "$CHANGELOG_FILE"
-  echo "### 🏁 Tasks completed in this update" >> "$CHANGELOG_FILE"
   write_tasks "$closed_today" "$CHANGELOG_FILE" 0
+else
+  echo "> No tasks were completed today." >> "$CHANGELOG_FILE"
+fi
+
+# All completed tasks section
+echo "" >> "$CHANGELOG_FILE"
+echo "### 📋 All Completed Tasks" >> "$CHANGELOG_FILE"
+echo "" >> "$CHANGELOG_FILE"
+if [[ $(jq length <<< "$all_closed") -gt 0 ]]; then
+  write_tasks "$all_closed" "$CHANGELOG_FILE" 0
+else
+  echo "> No completed tasks available." >> "$CHANGELOG_FILE"
 fi
 
 echo "Debug: Script completed. Check $TODO_FILE and $CHANGELOG_FILE"
