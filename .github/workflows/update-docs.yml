@@ -23,7 +23,7 @@ jobs:
             - name: Get & increment counter (repo variable)
               id: counter
               env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
                   VAR_NAME=TRACKING_COMMIT_COUNTER
                   OWNER=${{ github.repository_owner }}
