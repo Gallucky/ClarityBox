@@ -35,18 +35,13 @@ format_labels() {
   local labels_json="${1:-$(cat)}"
   local output=""
   while read -r label; do
-    # Extract name and color from the JSON
-    local name=$(jq -r '.name' <<< "$label")
-    local color=$(jq -r '.color' <<< "$label")
-    # Map icon
-    local icon_label=$(label_with_icon "$name")
-    # Append HTML span with color
-    output+="<span style=\"color:#$color\">$icon_label</span> <br>"
-  done <<< "$(jq -c '.[]' <<< "$labels_json")"
-  # Remove trailing <br>
-  echo "${output%<br>}"
+    label="${label//$'\r'/}"
+    label=$(label_with_icon "$label")
+    output+="<br>\`$label\`"
+  done <<< "$(jq -r '.[]' <<< "$labels_json")"
+  # remove leading <br>
+  echo "${output#<br>}"
 }
-
 
 format_date() {
   local iso_date="$1"
