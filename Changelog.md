@@ -11,6 +11,7 @@ The following tags are used throughout the changelog to categorize changes:
 
 | Issue # | Completed At | Title | Labels |
 |---------|--------------|-------|--------|
+| [28](https://github.com/Gallucky/ClarityBox/issues/28) | 03/10/2025 |  Update Tracking Documentation |  |
 | [27](https://github.com/Gallucky/ClarityBox/issues/27) | 03/10/2025 |  Update Tracking Documentation |  |
 | [26](https://github.com/Gallucky/ClarityBox/issues/26) | 03/10/2025 |  Update Tracking Documentation |  |
 | [25](https://github.com/Gallucky/ClarityBox/issues/25) | 03/10/2025 |  Update Tracking Documentation |  |
