@@ -31,12 +31,20 @@ label_with_icon() {
 
 # Format labels array into backtick-wrapped icons
 format_labels() {
-  labels_json="$1"
-  # Iterate over each label in the JSON array
-  jq -r '.[]' <<< "$labels_json" | while read -r label; do
-    echo -n "\`$(label_with_icon "$label")\` "
-  done
+    local labels_json="$1"
+    local output=""
+    while read -r label; do
+        # Clean carriage return (for Windows-style JSON)
+        label="${label//$'\r'/}"
+        # Map to icon
+        label=$(label_with_icon "$label")
+        # Append safely with space
+        output+="$label "
+    done <<< "$(jq -r '.[]' <<< "$labels_json")"
+    # Trim trailing space
+    echo "${output%" "}"
 }
+
 
 
 # Format ISO date to DD/MM/YYYY
