@@ -78,7 +78,9 @@ cat <<EOF >> "$TODO_FILE"
 
 Tracks tasks per commit.
 
-The following tags are used throughout the todo list to categorize tasks based on frontend and backend sides:<br> \`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\` \`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
+The following tags are used throughout the todo list to categorize tasks based on frontend and backend sides:<br>
+\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \`📚 Documentation\`<br>
+\`🔨 Fix\` \`🚀 Deployment\` \`⚠️ Deprecated\` \`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
 
 > To see the changelogs / changes, check the [Changelog](./Changelog.md) file.
 
@@ -101,8 +103,8 @@ The following tags are used throughout the changelog to categorize changes based
 EOF
 
 # --- Load tasks ---
-open_tasks=$(jq '[.[] | select(.state != "closed" and (.pull_request | not))]' "$ISSUES_JSON")
-closed_today=$(jq --arg today "$(date +%Y-%m-%d)" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)) and (.pull_request | not))]' "$ISSUES_JSON")
+open_tasks=$(jq '[.[] | select(.state != "closed" and (.pull_request == null))]' "$ISSUES_JSON")
+closed_today=$(jq --arg today "$(date +%Y-%m-%d)" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)) and (.pull_request == null))]' "$ISSUES_JSON")
 
 # --- Function to write tasks ---
 write_tasks() {
@@ -117,10 +119,10 @@ write_tasks() {
 
   if [[ "$show_status" -eq 1 ]]; then
     echo "| Issue # | Created | Closed | Title | Status | Labels |" >> "$file"
-    echo "|:------:|:------:|:-----:|:----:|:----:|:----:|" >> "$file"
+    echo "|:------:|:------:|:-----:|:-----|:----:|:-----|" >> "$file"
   else
     echo "| Issue # | Completed At | Title | Labels |" >> "$file"
-    echo "|:------:|:------------:|:----:|:----:|" >> "$file"
+    echo "|:------:|:------------:|:-----|:-----|" >> "$file"
   fi
 
   while read -r task; do
