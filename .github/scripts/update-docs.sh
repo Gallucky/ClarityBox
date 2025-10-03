@@ -37,9 +37,10 @@ format_labels() {
   while read -r label; do
     label="${label//$'\r'/}"
     label=$(label_with_icon "$label")
-    output+="\`$label\` "
+    output+="<br>\`$label\`"
   done <<< "$(jq -r '.[]' <<< "$labels_json")"
-  echo "${output%" "}"
+  # remove leading <br>
+  echo "${output#<br>}"
 }
 
 format_date() {
@@ -50,10 +51,10 @@ format_date() {
 status_icon() {
   local state="$1"
   case "$state" in
-    open) echo "💬 Open" ;;
-    pending|ongoing) echo "⏳ On Going" ;;
-    closed) echo "✅ Closed" ;;
-    *) echo "$state" ;;
+    open) echo "\`💬 Open\`" ;;
+    pending|ongoing) echo "\`⏳ On Going\`" ;;
+    closed) echo "\`✅ Closed\`" ;;
+    *) echo "\`$state\`" ;;
   esac
 }
 
@@ -71,20 +72,41 @@ fi
 > "$TODO_FILE"
 > "$CHANGELOG_FILE"
 
-# --- Write Todo ---
-{
-  echo "# Todo"
-  echo ""
-  echo "> To see the changelogs for this commit, check the [Changelog](./Changelog.md) file."
-  echo "---"
-} >> "$TODO_FILE"
+# --- Write Todo header ---
+cat <<EOF >> "$TODO_FILE"
+# TODO title
 
+Tracks tasks per commit.
+
+The following tags are used throughout the todo list to categorize tasks based on frontend and backend sides:<br> \`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\` \`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
+
+> To see the changelogs / changes, check the [Changelog](./Changelog.md) file.
+
+---
+EOF
+
+# --- Write Changelog header ---
+cat <<EOF >> "$CHANGELOG_FILE"
+# Changelog title
+
+All notable changes to this project are documented here. Commit-level tracking is used.
+
+The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> \`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\` \`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
+
+> To see the todo list check the [Todo](./Todo.md) file.
+
+---
+EOF
+
+# --- Load tasks ---
 open_tasks=$(jq '[.[] | select(.state != "closed" and (.pull_request | not))]' "$ISSUES_JSON")
+closed_today=$(jq --arg today "$(date +%Y-%m-%d)" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)) and (.pull_request | not))]' "$ISSUES_JSON")
 
+# --- Function to write tasks ---
 write_tasks() {
   local tasks_json="$1"
   local file="$2"
-  local show_status="${3:-1}"   # default 1 = include status and created/closed columns
+  local show_status="${3:-1}" # default 1 = include status/created/closed
 
   if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
     echo "_No tasks available._" >> "$file"
@@ -92,11 +114,11 @@ write_tasks() {
   fi
 
   if [[ "$show_status" -eq 1 ]]; then
-    echo "| Issue | Created | Closed | Title | Status | Labels |" >> "$file"
-    echo "|-------|---------|--------|-------|--------|--------|" >> "$file"
+    echo "| Issue # | Created | Closed | Title | Status | Labels |" >> "$file"
+    echo "|:------:|:------:|:-----:|:----:|:----:|:----:|" >> "$file"
   else
     echo "| Issue # | Completed At | Title | Labels |" >> "$file"
-    echo "|---------|--------------|-------|--------|" >> "$file"
+    echo "|:------:|:------------:|:----:|:----:|" >> "$file"
   fi
 
   while read -r task; do
@@ -117,24 +139,11 @@ write_tasks() {
   done < <(jq -c '.[]' <<< "$tasks_json")
 }
 
+# --- Write tasks ---
 write_tasks "$open_tasks" "$TODO_FILE"
-
-# --- Write Changelog (closed today) ---
-today=$(date +%Y-%m-%d)
-closed_today=$(jq --arg today "$today" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)) and (.pull_request | not))]' "$ISSUES_JSON")
-
 if [[ $(jq length <<< "$closed_today") -gt 0 ]]; then
-  {
-    echo ""
-    echo "# Changelog"
-    echo ""
-    echo "> To see the current todo list, check the [Todo](./Todo.md) file."
-    echo "---"
-    echo ""
-    echo "### 🏁 Tasks completed in this update"
-    echo ""
-  } >> "$CHANGELOG_FILE"
-
+  echo "" >> "$CHANGELOG_FILE"
+  echo "### 🏁 Tasks completed in this update" >> "$CHANGELOG_FILE"
   write_tasks "$closed_today" "$CHANGELOG_FILE" 0
 fi
 
