@@ -1,158 +1,98 @@
-#!/usr/bin/env bash
-set -e
+name: Update Tracking Docs
 
-CHANGELOG_FILE="Changelog.md"
-TODO_FILE="Todo.md"
-ISSUES_JSON="issues.json"
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "Changelog.md"
+      - "Todo.md"
+  issues:
+    types: [opened, closed, reopened, labeled, unlabeled, edited]
 
-REPO_URL="https://github.com/$GITHUB_REPOSITORY/issues"
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
 
-# --- Helper functions ---
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    steps:
+      # --- Checkout repo ---
+      - uses: actions/checkout@v4
 
-label_with_icon() {
-  label="$1"
-  case "$label" in
-    Frontend) echo "💻 Frontend" ;;
-    Backend) echo "🔧 Backend" ;;
-    Bug) echo "🐛 Bug" ;;
-    Enhancement) echo "✨ Enhancement" ;;
-    Feature) echo "⭐ Feature" ;;
-    Fix) echo "🔨 Fix" ;;
-    Documentation) echo "📚 Documentation" ;;
-    Deployment) echo "🚀 Deployment" ;;
-    Deprecated) echo "⚠️ Deprecated" ;;
-    Removed) echo "🗑️ Removed" ;;
-    Environment) echo "🌍 Environment" ;;
-    Other|"") echo "📌 Other" ;;
-    *) echo "📌 $label" ;;
-  esac
-}
+      # --- Install GH CLI and jq ---
+      - name: Install GH CLI and jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh jq
 
-format_labels() {
-  local labels_json="$1"
-  local output=""
-  while read -r label; do
-    label="${label//$'\r'/}"        # Remove Windows carriage return
-    label=$(label_with_icon "$label")
-    output+="$label "
-  done <<< "$(jq -r '.[]' <<< "$labels_json")"
-  echo "${output%" "}"
-}
+      # --- Collect Issues (no gh auth login needed) ---
+      - name: Collect Issues
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+          REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
 
-format_date() {
-  local iso_date="$1"
-  if [[ "$iso_date" == "-" || -z "$iso_date" ]]; then
-    echo "-"
-  else
-    date -d "$iso_date" +"%d/%m/%Y"
-  fi
-}
+          gh api repos/$OWNER/$REPO/issues?state=all --paginate \
+            --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' \
+            > issues.json
 
-status_icon() {
-  local state="$1"
-  case "$state" in
-    open) echo "💬 Open" ;;
-    pending|ongoing) echo "⏳ On Going" ;;
-    closed) echo "✅ Closed" ;;
-    *) echo "$state" ;;
-  esac
-}
+      # --- Make script executable ---
+      - name: Make script executable
+        run: chmod +x .github/scripts/update-docs.sh
 
-# --- Safety check for issues.json ---
-if [[ ! -s "$ISSUES_JSON" ]]; then
-  echo "Error: $ISSUES_JSON not found or empty."
-  exit 1
-fi
+      # --- Generate docs ---
+      - name: Generate docs
+        run: ./.github/scripts/update-docs.sh
 
-if ! jq empty "$ISSUES_JSON" >/dev/null 2>&1; then
-  echo "Error: $ISSUES_JSON is not valid JSON."
-  exit 1
-fi
+      # --- Check for changes ---
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add Changelog.md Todo.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
 
-# --- Clear output files ---
-> "$CHANGELOG_FILE"
-> "$TODO_FILE"
+      # --- Debug changes if any ---
+      - name: Debug changes to be committed
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          echo "=== Git status ==="
+          git status
+          echo "=== Git diff ==="
+          git diff --cached
 
-# --- Headers ---
-cat <<EOF >> "$CHANGELOG_FILE"
-# Changelog
+      # --- Force-update the branch only if changes exist ---
+      - name: Force-update tracking branch
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git checkout -B tracking-updates
+          git commit -m "docs: update tracking documentation" || echo "No changes to commit"
+          git push origin tracking-updates --force
 
-The following tags are used throughout the changelog to categorize changes:
+      # --- Create Pull Request only if changes exist ---
+      - name: Create Pull Request
+        if: steps.git-check.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PAT }}
+          branch: tracking-updates
+          base: main
+          commit-message: "docs: update tracking documentation"
+          title: "Update Tracking Documentation"
+          body: |
+            Automated documentation update
 
-\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\`
-\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\`
-\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
-
-> To see the current todo list, check the [Todo](./Todo.md) file.
----
-EOF
-
-cat <<EOF >> "$TODO_FILE"
-# Todo
-
-The following tags are used throughout the changelog to categorize changes:
-
-\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\`
-\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\`
-\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
-
-> To see the changelogs for this commit, check the [Changelog](./Changelog.md) file.
----
-| Issue # | Created At | Closed At | Title | Status | Labels |
-|---------|------------|-----------|-------|--------|--------|
-EOF
-
-# --- Load tasks ---
-open_tasks=$(jq '[.[] | select(.state != "closed")]' "$ISSUES_JSON")
-closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$ISSUES_JSON")
-
-# --- Function to write tasks ---
-write_tasks() {
-  local tasks_json="$1"
-  local file="$2"
-  if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
-    echo "Debug: No tasks to write for $file"
-    return
-  fi
-
-  for task in $(jq -c '.[]' <<< "$tasks_json"); do
-    number=$(jq -r '.number' <<< "$task")
-    issue_link="[$number]($REPO_URL/$number)"
-    created=$(format_date "$(jq -r '.created_at' <<< "$task")")
-    closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
-    title=$(jq -r '.title' <<< "$task")
-    state=$(jq -r '.state' <<< "$task")
-    status=$(status_icon "$state")
-    labels=$(jq -c '.labels' <<< "$task" | format_labels)
-    echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
-  done
-}
-
-# --- Write todos ---
-write_tasks "$open_tasks" "$TODO_FILE"
-write_tasks "$closed_tasks" "$TODO_FILE"
-
-# --- Changelog: tasks closed today ---
-today=$(date +%Y-%m-%d)
-jq --arg today "$today" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)))]' "$ISSUES_JSON" > new_closed.json
-
-if [[ $(jq length new_closed.json) -gt 0 ]]; then
-  echo "" >> "$CHANGELOG_FILE"
-  echo "### 🏁 Tasks completed in this update" >> "$CHANGELOG_FILE"
-  echo "" >> "$CHANGELOG_FILE"
-  echo "| Issue # | Completed At | Title | Labels |" >> "$CHANGELOG_FILE"
-  echo "|---------|--------------|-------|--------|" >> "$CHANGELOG_FILE"
-
-  for task in $(jq -c '.[]' new_closed.json); do
-    number=$(jq -r '.number' <<< "$task")
-    issue_link="[$number]($REPO_URL/$number)"
-    closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
-    title=$(jq -r '.title' <<< "$task")
-    labels=$(jq -c '.labels' <<< "$task" | format_labels)
-    echo "| $issue_link | $closed | $title | $labels |" >> "$CHANGELOG_FILE"
-  done
-fi
-
-rm -f new_closed.json
-
-echo "Debug: Script completed. Check $TODO_FILE and $CHANGELOG_FILE"
+            Updated files:
+            - Changelog.md
+            - Todo.md
+          add-paths: |
+            Changelog.md
+            Todo.md
