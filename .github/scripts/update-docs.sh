@@ -37,13 +37,12 @@ CHANGEHEADER
 echo "## 🔄 In Progress" >> Changelog.md
 echo >> Changelog.md
 
-jq -r --argfile config "$LABEL_CONFIG" '
+jq -r '
   [.[] | select(.state=="open")] |
   sort_by(.number) |
   .[] |
   "- [" + (.labels[0] // "Other") + "] [#" + (.number|tostring) + "](" + .url + ") - " + .title
 ' "$ISSUES_FILE" | while read -r line; do
-  # Map labels using bash function
   issue_label=$(echo "$line" | sed -n 's/- \[\(.*\)\] .*/\1/p')
   mapped_label=$(map_label "$issue_label")
   echo "$line" | sed "s/\[$issue_label\]/$mapped_label/" >> Changelog.md

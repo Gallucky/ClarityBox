@@ -63,11 +63,13 @@ jobs:
                   echo "=== Git diff ==="
                   git diff --cached
 
-            # --- Force-update the branch ---
+            # --- Reset branch to main and force-update ---
             - name: Force-update tracking branch
               if: steps.git-check.outputs.changes == 'true'
               run: |
-                  git checkout -B tracking-updates
+                  git fetch origin main
+                  git checkout -B tracking-updates origin/main
+                  git add Changelog.md Todo.md
                   git commit -m "docs: update tracking documentation" || echo "No changes to commit"
                   git push origin tracking-updates --force
 
