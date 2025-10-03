@@ -94,39 +94,41 @@ closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$I
 
 # --- Function to write tasks ---
 write_tasks() {
-  local tasks_json="${1:-}"
-  local file="${2:-}"
+  local tasks_json="$1"
+  local file="$2"
 
   echo "Debug: write_tasks called with file='$file'"
-  echo "Debug: tasks_json length = $(jq length <<< "${tasks_json:-[]}" 2>/dev/null || echo "invalid")"
-
-  if [[ -z "$tasks_json" || -z "$file" ]]; then
-    echo "Error: write_tasks called without correct arguments"
-    return 1
-  fi
+  echo "Debug: tasks_json length = $(jq length <<< "$tasks_json")"
 
   if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
-    echo "Debug: No tasks to write for $file"
-    return 0
+    echo "_No tasks available._" > "$file"
+    return
   fi
 
-  local count=0
-  while IFS= read -r task; do
-    number=$(jq -r '.number' <<< "$task")
-    issue_link="[$number]($REPO_URL/$number)"
-    created=$(format_date "$(jq -r '.created_at' <<< "$task")")
-    closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
-    title=$(jq -r '.title' <<< "$task")
-    state=$(jq -r '.state' <<< "$task")
-    status=$(status_icon "$state")
-    labels=$(format_labels "$(jq -c '.labels' <<< "$task")")
+  {
+    echo "| Issue | Created | Closed | Title | Status | Labels |"
+    echo "|-------|---------|--------|-------|--------|--------|"
 
-    echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
-    ((count++))
-  done < <(jq -c '.[]' <<< "$tasks_json")
+    local count=0
+    while read -r task; do
+      echo "Debug: processing task $count" >&2
+      echo "Raw task: $task" >&2
 
-  echo "Debug: Wrote $count tasks into $file"
+      number=$(jq -r .number <<< "$task") || { echo "Error extracting number" >&2; continue; }
+      issue_link="[$number]($(jq -r .url <<< "$task"))"
+      created=$(format_date "$(jq -r .created_at <<< "$task")")
+      closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
+      title=$(jq -r .title <<< "$task")
+      state=$(jq -r .state <<< "$task")
+      status=$(status_icon "$state")
+      labels=$(jq -c .labels <<< "$task" | format_labels)
+
+      echo "| $issue_link | $created | $closed | $title | $status | $labels |"
+      (( count++ ))
+    done < <(jq -c '.[]' <<< "$tasks_json")
+  } > "$file"
 }
+
 
 
 
