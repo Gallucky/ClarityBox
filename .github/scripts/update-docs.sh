@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-# Paths
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
 ISSUES_JSON="issues.json"
 
-# Clear existing files
+# Clear files
 > "$CHANGELOG_FILE"
 > "$TODO_FILE"
 
@@ -20,56 +19,80 @@ echo "\
 \`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`" >> "$CHANGELOG_FILE"
 echo "" >> "$CHANGELOG_FILE"
 
-# --- Load issues from JSON ---
+# --- Load tasks ---
 open_tasks=$(jq '[.[] | select(.state != "closed")]' "$ISSUES_JSON")
 closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$ISSUES_JSON")
 
-# --- Generate Todo.md table ---
-echo "| Task | Status | Closed At | Labels | URL |" >> "$TODO_FILE"
-echo "|------|--------|-----------|--------|-----|" >> "$TODO_FILE"
-
-# Helper function to format labels
+# --- Helper: format labels with backticks ---
 format_labels() {
   jq -r '[.[] | "`" + . + "`"] | join(" ")' <<< "$1"
 }
 
-# Write open tasks first
+# --- Todo.md table header (original order) ---
+echo "| Issue # | Created At | Closed At | Title | Status | Labels | URL |" >> "$TODO_FILE"
+echo "|---------|------------|-----------|-------|--------|--------|-----|" >> "$TODO_FILE"
+
+# --- Write open tasks first ---
 echo "$open_tasks" | jq -c '.[]' | while read -r task; do
+  number=$(jq -r '.number' <<< "$task")
+  created=$(jq -r '.created_at' <<< "$task")
+  closed=$(jq -r '.closed_at // "-"' <<< "$task")
   title=$(jq -r '.title' <<< "$task")
   state=$(jq -r '.state' <<< "$task")
-  closed_at=$(jq -r '.closed_at // "-"' <<< "$task")
   labels=$(format_labels "$(jq -r '.labels' <<< "$task")")
   url=$(jq -r '.url' <<< "$task")
-  echo "| $title | $state | $closed_at | $labels | $url |" >> "$TODO_FILE"
+  echo "| $number | $created | $closed | $title | $state | $labels | $url |" >> "$TODO_FILE"
 done
 
-# Then write closed tasks sorted by closed_at (oldest last)
+# --- Write closed tasks at bottom ---
 echo "$closed_tasks" | jq -c '.[]' | while read -r task; do
+  number=$(jq -r '.number' <<< "$task")
+  created=$(jq -r '.created_at' <<< "$task")
+  closed=$(jq -r '.closed_at // "-"' <<< "$task")
   title=$(jq -r '.title' <<< "$task")
   state=$(jq -r '.state' <<< "$task")
-  closed_at=$(jq -r '.closed_at // "-"' <<< "$task")
   labels=$(format_labels "$(jq -r '.labels' <<< "$task")")
   url=$(jq -r '.url' <<< "$task")
-  echo "| $title | $state | $closed_at | $labels | $url |" >> "$TODO_FILE"
+  echo "| $number | $created | $closed | $title | $state | $labels | $url |" >> "$TODO_FILE"
 done
 
-# --- Changelog: only tasks closed in this run ---
-# Assuming you track which tasks were newly closed in this run by date
-# e.g., if you generate issues.json right after updating tasks, filter by today
+# --- Changelog: tasks closed in this run (with table, title with icon, labels in backticks) ---
 today=$(date +%Y-%m-%d)
 jq --arg today "$today" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)))]' "$ISSUES_JSON" > new_closed.json
 
 if [[ $(jq length new_closed.json) -gt 0 ]]; then
-  echo "## Tasks completed in this update" >> "$CHANGELOG_FILE"
   echo "" >> "$CHANGELOG_FILE"
+  echo "### Tasks completed in this update" >> "$CHANGELOG_FILE"
+  echo "" >> "$CHANGELOG_FILE"
+  echo "| Issue # | Completed At | Title | Labels | URL |" >> "$CHANGELOG_FILE"
+  echo "|---------|--------------|-------|--------|-----|" >> "$CHANGELOG_FILE"
+
   jq -c '.[]' new_closed.json | while read -r task; do
+    number=$(jq -r '.number' <<< "$task")
+    closed=$(jq -r '.closed_at' <<< "$task")
     title=$(jq -r '.title' <<< "$task")
-    closed_at=$(jq -r '.closed_at' <<< "$task")
+    # Prepend icon if available (take first label as example)
+    first_label=$(jq -r '.labels[0] // ""' <<< "$task")
+    icon=$(case "$first_label" in
+      Frontend) echo "💻" ;;
+      Backend) echo "🔧" ;;
+      Bug) echo "🐛" ;;
+      Enhancement) echo "✨" ;;
+      Feature) echo "⭐" ;;
+      Fix) echo "🔨" ;;
+      Documentation) echo "📚" ;;
+      Deployment) echo "🚀" ;;
+      Deprecated) echo "⚠️" ;;
+      Removed) echo "🗑️" ;;
+      Environment) echo "🌍" ;;
+      Other|"") echo "📌" ;;
+      *) echo "📌" ;;
+    esac)
+    title="$icon $title"
     labels=$(format_labels "$(jq -r '.labels' <<< "$task")")
     url=$(jq -r '.url' <<< "$task")
-    echo "- [$closed_at] $title | Labels: $labels | URL: $url" >> "$CHANGELOG_FILE"
+    echo "| $number | $closed | $title | $labels | $url |" >> "$CHANGELOG_FILE"
   done
 fi
 
-# Clean up
 rm -f new_closed.json
