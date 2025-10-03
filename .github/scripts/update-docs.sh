@@ -90,15 +90,23 @@ closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$I
 
 # --- Function to write tasks ---
 write_tasks() {
-  local tasks_json="$1"
-  local file="$2"
+  local tasks_json="${1:-}"
+  local file="${2:-}"
 
-  if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
-    echo "Debug: No tasks to write for $file"
-    return
+  # Check if arguments are provided
+  if [[ -z "$tasks_json" || -z "$file" ]]; then
+    echo "Error: write_tasks called without correct arguments"
+    return 1
   fi
 
-  jq -c '.[]' <<< "$tasks_json" | while read -r task; do
+  # If the JSON has no tasks, skip
+  if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
+    echo "Debug: No tasks to write for $file"
+    return 0
+  fi
+
+  # Process each task safely
+  while IFS= read -r task; do
     number=$(jq -r '.number' <<< "$task")
     issue_link="[$number]($REPO_URL/$number)"
     created=$(format_date "$(jq -r '.created_at' <<< "$task")")
@@ -106,10 +114,12 @@ write_tasks() {
     title=$(jq -r '.title' <<< "$task")
     state=$(jq -r '.state' <<< "$task")
     status=$(status_icon "$state")
-    labels=$(jq -c '.labels // []' <<< "$task" | format_labels)
+    labels=$(jq -c '.labels' <<< "$task" | format_labels)
+
     echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
-  done
+  done < <(jq -c '.[]' <<< "$tasks_json")
 }
+
 
 
 # --- Write tasks ---
