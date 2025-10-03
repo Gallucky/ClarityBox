@@ -1,13 +1,17 @@
+# Changelog title
 
-# Changelog
+All notable changes to this project are documented here. Commit-level tracking is used.
 
-> To see the current todo list, check the [Todo](./Todo.md) file.
+The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> `💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `🔨 Fix` `📚 Documentation` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
+
+> To see the todo list check the [Todo](./Todo.md) file.
+
 ---
 
 ### 🏁 Tasks completed in this update
-
 | Issue # | Completed At | Title | Labels |
-|---------|--------------|-------|--------|
+|:------:|:------------:|:----:|:----:|
+| [37](https://github.com/Gallucky/ClarityBox/pull/37) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [36](https://github.com/Gallucky/ClarityBox/pull/36) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [35](https://github.com/Gallucky/ClarityBox/pull/35) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [34](https://github.com/Gallucky/ClarityBox/pull/34) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
