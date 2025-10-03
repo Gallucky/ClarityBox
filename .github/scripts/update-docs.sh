@@ -32,12 +32,15 @@ label_with_icon() {
 # Format labels array into backtick-wrapped icons
 format_labels() {
   # $1 is a JSON array of label objects
-  labels="$1"
-
-  for label in $labels; do
-    echo -n "\`$(label_with_icon "$label")\` "
+  local arr
+  mapfile -t arr < <(echo "$1" | jq -r '.[].name')
+  local output=""
+  for lbl in "${arr[@]}"; do
+    output+="\`$(label_with_icon "$lbl")\` "
   done
+  echo "$output"
 }
+
 
 # Format ISO date to DD/MM/YYYY
 format_date() {
