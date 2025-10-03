@@ -1,0 +1,115 @@
+name: Update Tracking Docs
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    contents: write
+    pull-requests: write
+    issues: read
+
+jobs:
+    update-docs:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            # Increment commit counter stored as a repo variable
+            - name: Get & increment counter
+              id: counter
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const varName = "TRACKING_COMMIT_COUNTER";
+                      const vars = await github.rest.actions.getRepoVariables({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo
+                      });
+                      let val = vars.data.variables.find(v => v.name === varName)?.value || "0";
+                      let next = (parseInt(val,10) + 1).toString();
+                      await github.rest.actions.updateRepoVariable({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        name: varName,
+                        value: next
+                      });
+                      core.setOutput("commit_num", next);
+
+            # Get issues from GitHub API
+            - name: Collect Issues
+              id: issues
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const issues = await github.paginate(
+                        github.rest.issues.listForRepo, {
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          state: "all",
+                          sort: "updated",
+                          direction: "desc",
+                          per_page: 20
+                        }
+                      );
+                      const mapped = issues.map(i => ({
+                        number: i.number,
+                        title: i.title,
+                        state: i.state,
+                        url: i.html_url,
+                        labels: i.labels.map(l => l.name)
+                      }));
+                      core.setOutput("json", JSON.stringify(mapped));
+
+            # Update Changelog & Todo files
+            - name: Update Docs
+              run: |
+                  COMMIT_NUM=${{ steps.counter.outputs.commit_num }}
+                  DATE=$(date +'%Y-%m-%d')
+
+                  mkdir -p .tracking/todos .tracking/changelogs
+
+                  echo "# Changelog" > Changelog.md
+                  echo "All notable changes to this project are documented here." >> Changelog.md
+                  echo -e "\nCommit $COMMIT_NUM - $DATE\n" >> Changelog.md
+
+                  echo "# Todo" > Todo.md
+                  echo "Tracks tasks per commit. Snapshot copies are stored in [.tracking/todos/](./.tracking/todos/)." >> Todo.md
+                  echo -e "\nCommit $COMMIT_NUM - $DATE\n" >> Todo.md
+                  echo "| Commit # | Date of Completion | Type | Issue # | Description |" >> Todo.md
+                  echo "|----------|-------------------|------|---------|-------------|" >> Todo.md
+
+                  echo '${{ steps.issues.outputs.json }}' | jq -r \
+                    --arg COMMIT_NUM "$COMMIT_NUM" --arg DATE "$DATE" \
+                    --argfile map .github/label-config.yml '
+                      .[] | 
+                      .labels as $labels |
+                      "|["+$COMMIT_NUM+"](.tracking/todos/todo-"+$COMMIT_NUM+".md)|"+
+                      $DATE+"|"+
+                      ( ($map.mapping | to_entries[] | select($labels[]? == .key) | .value) // "📌 Other") +"|"+
+                      "[#"+(.number|tostring)+"]("+.url+")|"+
+                      .title
+                    ' >> Todo.md
+
+                  cp Changelog.md .tracking/changelogs/changelog-$COMMIT_NUM.md
+                  cp Todo.md .tracking/todos/todo-$COMMIT_NUM.md
+
+            # Commit only tracking files to new branch
+            - name: Commit & Push
+              run: |
+                  COMMIT_NUM=${{ steps.counter.outputs.commit_num }}
+                  BRANCH="tracking/$COMMIT_NUM"
+                  git config user.name "github-actions"
+                  git config user.email "actions@github.com"
+                  git checkout -b $BRANCH
+                  git add Changelog.md Todo.md .tracking/
+                  git commit -m "docs: tracking update commit $COMMIT_NUM"
+                  git push origin $BRANCH
+
+            # Create PR for review
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v6
+              with:
+                  branch: tracking/${{ steps.counter.outputs.commit_num }}
+                  title: "Tracking Update #${{ steps.counter.outputs.commit_num }}"
+                  body: "Automated docs update for commit #${{ steps.counter.outputs.commit_num }}"

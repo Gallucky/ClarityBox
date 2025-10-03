@@ -1,0 +1,13 @@
+mapping:
+    Backend: "🔧 Backend"
+    Bug: "🐛 Bug"
+    Deployment: "🚀 Deployment"
+    Deprecated: "⚠️ Deprecated"
+    Documentation: "📚 Documentation"
+    Enhancement: "✨ Enhancement"
+    Environment: "🌍 Environment"
+    Feature: "⭐ Feature"
+    Fix: "🔨 Fix"
+    Frontend: "💻 Frontend"
+    Removed: "🗑️ Removed"
+    Other: "📌 Other"
