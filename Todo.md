@@ -25,3 +25,9 @@
 | [32](https://github.com/Gallucky/ClarityBox/pull/32) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed | `📌 Other` |
 | [33](https://github.com/Gallucky/ClarityBox/pull/33) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed | `📌 Other` |
 | [34](https://github.com/Gallucky/ClarityBox/pull/34) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed | `📌 Other` |
+# Todo
+
+> To see the changelogs for this commit, check the [Changelog](./Changelog.md) file.
+---
+_No tasks available._
+_No tasks available._
