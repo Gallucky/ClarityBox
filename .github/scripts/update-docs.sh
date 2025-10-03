@@ -124,7 +124,7 @@ write_tasks() {
       labels=$(format_labels "$(jq -c .labels <<< "$task")")
 
       echo "| $issue_link | $created | $closed | $title | $status | $labels |"
-      (( count++ ))
+      count=$((count + 1))
     done < <(jq -c '.[]' <<< "$tasks_json")
   } > "$file"
 }
