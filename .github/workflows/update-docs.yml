@@ -17,7 +17,6 @@ permissions:
 jobs:
     update-docs:
         runs-on: ubuntu-latest
-
         steps:
             # --- Checkout repo ---
             - uses: actions/checkout@v4
@@ -28,40 +27,24 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y gh jq
 
-            # --- Collect Issues safely ---
+            # --- Collect Issues (no gh auth login needed) ---
             - name: Collect Issues
               env:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
-                  set -euo pipefail
-
                   OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
                   REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
 
-                  # Authenticate GH CLI
-                  echo "$GH_TOKEN" | gh auth login --with-token
-
-                  # Fetch all issues, safely handle empty labels
                   gh api repos/$OWNER/$REPO/issues?state=all --paginate \
-                    --jq '[.[] | {number, title, state, url: .html_url, labels: ([.labels[].name] // []), closed_at, created_at}]' \
+                    --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' \
                     > issues.json
-
-                  # Normalize line endings (avoid CR issues)
-                  sed -i 's/\r$//' issues.json
-
-                  # Debug: show number of issues fetched
-                  echo "Issues fetched: $(jq length issues.json)"
 
             # --- Make script executable ---
             - name: Make script executable
               run: chmod +x .github/scripts/update-docs.sh
 
-            # --- Show issues.json for debug ---
-            - name: Show issues.json
-              run: cat issues.json
-
             # --- Generate docs ---
-            - name: Generate docs (script)
+            - name: Generate docs
               run: ./.github/scripts/update-docs.sh
 
             # --- Check for changes ---
@@ -77,7 +60,7 @@ jobs:
                     echo "changes=true" >> $GITHUB_OUTPUT
                   fi
 
-            # --- Debug: show what will be committed ---
+            # --- Debug changes if any ---
             - name: Debug changes to be committed
               if: steps.git-check.outputs.changes == 'true'
               run: |
