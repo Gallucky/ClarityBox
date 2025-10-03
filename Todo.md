@@ -2,7 +2,9 @@
 
 The following tags are used throughout the changelog to categorize changes:
 
-`💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `🔨 Fix` `📚 Documentation` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
+`💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature`
+`🔨 Fix` `📚 Documentation` `🚀 Deployment` `⚠️ Deprecated`
+`🗑️ Removed` `🌍 Environment` `📌 Other`
 
 > To see the changelogs for this commit, check the [Changelog](./Changelog.md) file.
 ---
@@ -36,3 +38,4 @@ The following tags are used throughout the changelog to categorize changes:
 | [26](https://github.com/Gallucky/ClarityBox/issues/26) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
 | [27](https://github.com/Gallucky/ClarityBox/issues/27) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
 | [28](https://github.com/Gallucky/ClarityBox/issues/28) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
+| [29](https://github.com/Gallucky/ClarityBox/issues/29) | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | ✅ Closed |  |
