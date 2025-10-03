@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 IFS=$'\n\t'
+
+# Debug mode
+set -x   # print every command before executing
+
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
 ISSUES_JSON="issues.json"
