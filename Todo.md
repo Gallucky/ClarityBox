@@ -2,13 +2,15 @@
 
 Tracks tasks per commit.
 
-The following tags are used throughout the todo list to categorize tasks based on frontend and backend sides:<br> `💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `🔨 Fix` `📚 Documentation` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
+The following tags are used throughout the todo list to categorize tasks based on frontend and backend sides:<br>
+`💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `📚 Documentation`<br>
+`🔨 Fix` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
 
 > To see the changelogs / changes, check the [Changelog](./Changelog.md) file.
 
 ---
 | Issue # | Created | Closed | Title | Status | Labels |
-|:------:|:------:|:-----:|:----:|:----:|:----:|
+|:------:|:------:|:-----:|:-----|:----:|:-----|
 | [9](https://github.com/Gallucky/ClarityBox/issues/9) | 02/10/2025 | - | Add basic UI components for MVP | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement` |
 | [8](https://github.com/Gallucky/ClarityBox/issues/8) | 02/10/2025 | - | Set up / initialize the project's frontend folders/files structure | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement` |
 | [7](https://github.com/Gallucky/ClarityBox/issues/7) | 02/10/2025 | - | Write routes tests using Postman | `💬 Open` | `🔧 Backend` |

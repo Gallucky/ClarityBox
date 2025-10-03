@@ -12,7 +12,8 @@ The following tags are used throughout the changelog to categorize changes based
 
 ### 🏁 Tasks completed in this update
 | Issue # | Completed At | Title | Labels |
-|:------:|:------------:|:----:|:----:|
+|:------:|:------------:|:-----|:-----|
+| [39](https://github.com/Gallucky/ClarityBox/pull/39) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [38](https://github.com/Gallucky/ClarityBox/pull/38) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [37](https://github.com/Gallucky/ClarityBox/pull/37) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [36](https://github.com/Gallucky/ClarityBox/pull/36) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
