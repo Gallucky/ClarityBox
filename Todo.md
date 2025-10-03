@@ -1,25 +1,35 @@
-| Task | Status | Closed At | Labels | URL |
-|------|--------|-----------|--------|-----|
-| Add basic UI components for MVP | open | - | `Frontend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/9 |
-| Set up / initialize the project's frontend folders/files structure | open | - | `Frontend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/8 |
-| Write routes tests using Postman | open | - | `Backend` | https://github.com/Gallucky/ClarityBox/issues/7 |
-| Follow controller structure pattern for Posts, Projects, and Tasks | open | - | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/6 |
-| Add password hashing with bcrypt in User model hooks | open | - | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/5 |
-| Implement authentication routes | open | - | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/4 |
-| Complete User service layer functions | open | - | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/3 |
-| Write basic validation for incoming requests | open | - | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/2 |
-| Add routes for the created models (User, Post, Task, Project) | open | - | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/1 |
-| Add authentication middleware for protected routes | closed | 2025-10-02T20:06:19Z | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/10 |
-| Create mongoose schemas/models for MVP | closed | 2025-10-02T20:06:23Z | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/11 |
-| Set up deployment and environment configurations | closed | 2025-10-02T20:06:26Z | `Deployment` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/12 |
-| Set up centralized error handling middleware | closed | 2025-10-02T20:06:30Z | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/13 |
-| Add custom logger using winston | closed | 2025-10-02T20:06:34Z | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/14 |
-| Integrate logging middleware for request monitoring | closed | 2025-10-02T20:06:38Z | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/15 |
-| Set up backend project structure | closed | 2025-10-02T20:06:42Z | `Backend` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/16 |
-| Create tracking directories for snapshots | closed | 2025-10-02T20:06:45Z | `Deployment` `Enhancement` | https://github.com/Gallucky/ClarityBox/issues/17 |
-| Documentation Enhancement | closed | 2025-10-02T20:51:16Z | `Deployment` `Enhancement` `Documentation` | https://github.com/Gallucky/ClarityBox/issues/18 |
-| Tracking Update #5 | closed | 2025-10-03T11:54:23Z |  | https://github.com/Gallucky/ClarityBox/pull/19 |
-| Tracking Update #6 | closed | 2025-10-03T12:04:58Z |  | https://github.com/Gallucky/ClarityBox/pull/20 |
-| Tracking Update #7 | closed | 2025-10-03T12:18:39Z |  | https://github.com/Gallucky/ClarityBox/pull/21 |
-| Update Tracking Documentation | closed | 2025-10-03T12:20:52Z |  | https://github.com/Gallucky/ClarityBox/pull/22 |
-| Update Tracking Documentation | closed | 2025-10-03T13:33:51Z |  | https://github.com/Gallucky/ClarityBox/pull/23 |
+# Todo
+
+The following tags are used throughout the changelog to categorize changes:
+
+`💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `🔨 Fix` `📚 Documentation` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
+
+To see the changelogs for this commit, check the [Changelog](./Changelog.md) file.
+---
+| Issue # | Created At | Closed At | Title | Status | Labels | URL |
+|---------|------------|-----------|-------|--------|--------|-----|
+| 9 | 02/10/2025 | - | Add basic UI components for MVP | open |  | https://github.com/Gallucky/ClarityBox/issues/9 |
+| 8 | 02/10/2025 | - | Set up / initialize the project's frontend folders/files structure | open |  | https://github.com/Gallucky/ClarityBox/issues/8 |
+| 7 | 02/10/2025 | - | Write routes tests using Postman | open |  | https://github.com/Gallucky/ClarityBox/issues/7 |
+| 6 | 02/10/2025 | - | Follow controller structure pattern for Posts, Projects, and Tasks | open |  | https://github.com/Gallucky/ClarityBox/issues/6 |
+| 5 | 02/10/2025 | - | Add password hashing with bcrypt in User model hooks | open |  | https://github.com/Gallucky/ClarityBox/issues/5 |
+| 4 | 02/10/2025 | - | Implement authentication routes | open |  | https://github.com/Gallucky/ClarityBox/issues/4 |
+| 3 | 02/10/2025 | - | Complete User service layer functions | open |  | https://github.com/Gallucky/ClarityBox/issues/3 |
+| 2 | 02/10/2025 | - | Write basic validation for incoming requests | open |  | https://github.com/Gallucky/ClarityBox/issues/2 |
+| 1 | 02/10/2025 | - | Add routes for the created models (User, Post, Task, Project) | open |  | https://github.com/Gallucky/ClarityBox/issues/1 |
+| 10 | 02/10/2025 | 02/10/2025 | Add authentication middleware for protected routes | closed |  | https://github.com/Gallucky/ClarityBox/issues/10 |
+| 11 | 02/10/2025 | 02/10/2025 | Create mongoose schemas/models for MVP | closed |  | https://github.com/Gallucky/ClarityBox/issues/11 |
+| 12 | 02/10/2025 | 02/10/2025 | Set up deployment and environment configurations | closed |  | https://github.com/Gallucky/ClarityBox/issues/12 |
+| 13 | 02/10/2025 | 02/10/2025 | Set up centralized error handling middleware | closed |  | https://github.com/Gallucky/ClarityBox/issues/13 |
+| 14 | 02/10/2025 | 02/10/2025 | Add custom logger using winston | closed |  | https://github.com/Gallucky/ClarityBox/issues/14 |
+| 15 | 02/10/2025 | 02/10/2025 | Integrate logging middleware for request monitoring | closed |  | https://github.com/Gallucky/ClarityBox/issues/15 |
+| 16 | 02/10/2025 | 02/10/2025 | Set up backend project structure | closed |  | https://github.com/Gallucky/ClarityBox/issues/16 |
+| 17 | 02/10/2025 | 02/10/2025 | Create tracking directories for snapshots | closed |  | https://github.com/Gallucky/ClarityBox/issues/17 |
+| 18 | 02/10/2025 | 02/10/2025 | Documentation Enhancement | closed |  | https://github.com/Gallucky/ClarityBox/issues/18 |
+| 19 | 03/10/2025 | 03/10/2025 | Tracking Update #5 | closed |  | https://github.com/Gallucky/ClarityBox/pull/19 |
+| 20 | 03/10/2025 | 03/10/2025 | Tracking Update #6 | closed |  | https://github.com/Gallucky/ClarityBox/pull/20 |
+| 21 | 03/10/2025 | 03/10/2025 | Tracking Update #7 | closed |  | https://github.com/Gallucky/ClarityBox/pull/21 |
+| 22 | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | closed |  | https://github.com/Gallucky/ClarityBox/pull/22 |
+| 23 | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | closed |  | https://github.com/Gallucky/ClarityBox/pull/23 |
+| 24 | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | closed |  | https://github.com/Gallucky/ClarityBox/pull/24 |
+| 25 | 03/10/2025 | 03/10/2025 | Update Tracking Documentation | closed |  | https://github.com/Gallucky/ClarityBox/pull/25 |
