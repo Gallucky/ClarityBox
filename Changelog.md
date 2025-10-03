@@ -1,17 +1,25 @@
 # Changelog
-Todos:
-Tracks tasks per commit. Snapshot copies are stored in [`.tracking/todos/`](./.tracking/todos/).
 
-To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
+All notable changes to this project are documented here.
 
----
-Changelogs:
-All notable changes to this project are documented here. Commit-level tracking is used, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
+To see the todo list check the [Project Todo](./Todo.md) file.
 
-To see the todo list check the [Project Todo](./Todo.md) file, with snapshots stored in [`.tracking/todos/`](./.tracking/todos/).
-
-The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> `[💻 Frontend]` `[🔧 Backend]`
+The following tags are used throughout the changelog to categorize changes:
+`[💻 Frontend]` `[🔧 Backend]` `[🐛 Bug]` `[✨ Enhancement]` `[⭐ Feature]` `[🔨 Fix]` `[📚 Documentation]` `[🚀 Deployment]` `[⚠️ Deprecated]` `[🗑️ Removed]` `[🌍 Environment]` `[📌 Other]`
 
 ---
 
-Commit 6 - 2025-10-03
+## 🔄 In Progress
+
+- 🔧 Backend [#1](https://github.com/Gallucky/ClarityBox/issues/1) - Add routes for the created models (User, Post, Task, Project)
+- 🔧 Backend [#2](https://github.com/Gallucky/ClarityBox/issues/2) - Write basic validation for incoming requests
+- 🔧 Backend [#3](https://github.com/Gallucky/ClarityBox/issues/3) - Complete User service layer functions
+- 🔧 Backend [#4](https://github.com/Gallucky/ClarityBox/issues/4) - Implement authentication routes
+- 🔧 Backend [#5](https://github.com/Gallucky/ClarityBox/issues/5) - Add password hashing with bcrypt in User model hooks
+- 🔧 Backend [#6](https://github.com/Gallucky/ClarityBox/issues/6) - Follow controller structure pattern for Posts, Projects, and Tasks
+- 🔧 Backend [#7](https://github.com/Gallucky/ClarityBox/issues/7) - Write routes tests using Postman
+- 💻 Frontend [#8](https://github.com/Gallucky/ClarityBox/issues/8) - Set up / initialize the project's frontend folders/files structure
+- 💻 Frontend [#9](https://github.com/Gallucky/ClarityBox/issues/9) - Add basic UI components for MVP
+
+## ✅ Completed
+
