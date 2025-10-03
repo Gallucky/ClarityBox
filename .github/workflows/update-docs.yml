@@ -19,11 +19,6 @@ jobs:
               run: |
                   sudo apt-get update
                   sudo apt-get install -y gh jq
-            - name: Make script executable
-              run: chmod +x .github/scripts/update-docs.sh
-
-            - name: Generate docs (script)
-              run: ./.github/scripts/update-docs.sh "${{ steps.counter.outputs.commit_num }}"
 
             - name: Get & increment counter (repo variable)
               id: counter
@@ -37,7 +32,6 @@ jobs:
                   CURRENT=$(gh api repos/$OWNER/$REPO/actions/variables/$VAR_NAME --jq .value 2>/dev/null || echo 0)
                   NEXT=$((CURRENT + 1))
 
-                  # If variable exists: PATCH, else POST
                   if gh api repos/$OWNER/$REPO/actions/variables/$VAR_NAME --jq .value >/dev/null 2>&1; then
                     gh api repos/$OWNER/$REPO/actions/variables/$VAR_NAME -X PATCH -f name=$VAR_NAME -f value=$NEXT
                   else
@@ -54,6 +48,9 @@ jobs:
                   REPO=${{ github.event.repository.name }}
                   gh api repos/$OWNER/$REPO/issues --paginate \
                     --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name]}]' > issues.json
+
+            - name: Make script executable
+              run: chmod +x .github/scripts/update-docs.sh
 
             - name: Generate docs (script)
               run: ./.github/scripts/update-docs.sh "${{ steps.counter.outputs.commit_num }}"
