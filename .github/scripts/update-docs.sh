@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# set -euo pipefail
 
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
