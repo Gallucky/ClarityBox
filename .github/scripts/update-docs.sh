@@ -36,7 +36,7 @@ format_labels() {
   while read -r label; do
     label="${label//$'\r'/}"
     label=$(label_with_icon "$label")
-    output+="$label "
+    output+="\`$label\` "
   done <<< "$(jq -r '.[]' <<< "$labels_json")"
   echo "${output%" "}"
 }
@@ -128,10 +128,6 @@ write_tasks() {
     done < <(jq -c '.[]' <<< "$tasks_json")
   } > "$file"
 }
-
-
-
-
 
 # --- Write tasks ---
 write_tasks "$open_tasks" "$TODO_FILE"
