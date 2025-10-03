@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
-# Debug mode
-set -x   # print every command before executing
 
+IFS=$'\n\t'
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
 ISSUES_JSON="issues.json"
@@ -118,7 +116,7 @@ write_tasks() {
     title=$(jq -r '.title' <<< "$task")
     state=$(jq -r '.state' <<< "$task")
     status=$(status_icon "$state")
-    labels=$(jq -c '.labels' <<< "$task" | format_labels)
+    labels=$(format_labels "$(jq -c '.labels' <<< "$task")")
 
     echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
     ((count++))
