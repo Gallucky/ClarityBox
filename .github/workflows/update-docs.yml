@@ -35,17 +35,13 @@ jobs:
                   OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
                   REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
 
-                  # Fetch issues safely
+                  # Fetch issues safely, excluding pull requests
                   gh api repos/$OWNER/$REPO/issues?state=all --paginate \
-                    --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' \
+                    --jq '[.[] | select(.pull_request == null) | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at, pull_request}]' \
                     > issues.json || { echo "Failed to fetch issues"; exit 1; }
 
                   # Validate JSON
                   jq empty issues.json || { echo "issues.json is not valid JSON"; exit 1; }
-
-                  # Debug output
-                  echo "Fetched issues.json:"
-                  cat issues.json
 
             # --- Make script executable ---
             - name: Make script executable
