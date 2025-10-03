@@ -27,7 +27,7 @@ jobs:
 
             - name: Collect Issues
               env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
                   OWNER=${{ github.repository_owner }}
                   REPO=${{ github.event.repository.name }}
@@ -40,9 +40,6 @@ jobs:
                   echo "Total issues fetched: $(jq 'length' issues.json)"
                   echo "Open issues: $(jq '[.[] | select(.state == "open")] | length' issues.json)"
                   echo "Closed issues: $(jq '[.[] | select(.state == "closed")] | length' issues.json)"
-
-            - name: Make script executable
-              run: chmod +x .github/scripts/update-docs.sh
 
             - name: Make script executable
               run: chmod +x .github/scripts/update-docs.sh
