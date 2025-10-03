@@ -31,15 +31,13 @@ label_with_icon() {
 
 # Format labels array into backtick-wrapped icons
 format_labels() {
-  # $1 is a JSON array of label objects
-  local json_array="$1"
-  local output=""
-  mapfile -t arr < <(echo "$json_array" | jq -r '.[].name')
-  for lbl in "${arr[@]}"; do
-    output+="\`$(label_with_icon "$lbl")\` "
+  labels_json="$1"
+  # Iterate over each label in the JSON array
+  jq -r '.[]' <<< "$labels_json" | while read -r label; do
+    echo -n "\`$(label_with_icon "$label")\` "
   done
-  echo "$output"
 }
+
 
 # Format ISO date to DD/MM/YYYY
 format_date() {
@@ -109,7 +107,7 @@ for task in $(echo "$open_tasks" | jq -c '.[]'); do
   title=$(jq -r '.title' <<< "$task")
   state=$(jq -r '.state' <<< "$task")
   status=$(status_icon "$state")
-  labels=$(format_labels "$(jq '.labels' <<< "$task")")
+  labels=$(jq -c '.labels' <<< "$task" | format_labels)
   echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$TODO_FILE"
 done
 
@@ -122,7 +120,7 @@ for task in $(echo "$closed_tasks" | jq -c '.[]'); do
   title=$(jq -r '.title' <<< "$task")
   state=$(jq -r '.state' <<< "$task")
   status=$(status_icon "$state")
-  labels=$(format_labels "$(jq '.labels' <<< "$task")")
+  labels=$(jq -c '.labels' <<< "$task" | format_labels)
   echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$TODO_FILE"
 done
 
@@ -142,7 +140,7 @@ if [[ $(jq length new_closed.json) -gt 0 ]]; then
     issue_link="[$number]($REPO_URL/$number)"
     closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
     title=$(jq -r '.title' <<< "$task")
-    labels=$(format_labels "$(jq '.labels' <<< "$task")")
+    labels=$(jq -c '.labels' <<< "$task" | format_labels)
     echo "| $issue_link | $closed | $title | $labels |" >> "$CHANGELOG_FILE"
   done
 fi
