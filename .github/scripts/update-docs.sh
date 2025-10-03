@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+IFS=$'\n\t'
+# Debug mode
+set -x   # print every command before executing
 
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
@@ -93,19 +96,20 @@ write_tasks() {
   local tasks_json="${1:-}"
   local file="${2:-}"
 
-  # Check if arguments are provided
+  echo "Debug: write_tasks called with file='$file'"
+  echo "Debug: tasks_json length = $(jq length <<< "${tasks_json:-[]}" 2>/dev/null || echo "invalid")"
+
   if [[ -z "$tasks_json" || -z "$file" ]]; then
     echo "Error: write_tasks called without correct arguments"
     return 1
   fi
 
-  # If the JSON has no tasks, skip
   if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
     echo "Debug: No tasks to write for $file"
     return 0
   fi
 
-  # Process each task safely
+  local count=0
   while IFS= read -r task; do
     number=$(jq -r '.number' <<< "$task")
     issue_link="[$number]($REPO_URL/$number)"
@@ -117,8 +121,12 @@ write_tasks() {
     labels=$(jq -c '.labels' <<< "$task" | format_labels)
 
     echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
+    ((count++))
   done < <(jq -c '.[]' <<< "$tasks_json")
+
+  echo "Debug: Wrote $count tasks into $file"
 }
+
 
 
 
