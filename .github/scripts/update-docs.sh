@@ -31,7 +31,7 @@ label_with_icon() {
 }
 
 format_labels() {
-  local labels_json="$1"
+  local labels_json="${1:-$(cat)}"
   local output=""
   while read -r label; do
     label="${label//$'\r'/}"
@@ -121,7 +121,7 @@ write_tasks() {
       title=$(jq -r .title <<< "$task")
       state=$(jq -r .state <<< "$task")
       status=$(status_icon "$state")
-      labels=$(jq -c .labels <<< "$task" | format_labels)
+      labels=$(format_labels "$(jq -c .labels <<< "$task")")
 
       echo "| $issue_link | $created | $closed | $title | $status | $labels |"
       (( count++ ))
