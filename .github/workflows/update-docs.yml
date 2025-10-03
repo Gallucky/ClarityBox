@@ -27,7 +27,7 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y gh jq
 
-            # --- Collect Issues (no gh auth login needed) ---
+            # --- Collect Issues ---
             - name: Collect Issues
               env:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
@@ -35,9 +35,17 @@ jobs:
                   OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
                   REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
 
+                  # Fetch issues safely
                   gh api repos/$OWNER/$REPO/issues?state=all --paginate \
                     --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' \
-                    > issues.json
+                    > issues.json || { echo "Failed to fetch issues"; exit 1; }
+
+                  # Validate JSON
+                  jq empty issues.json || { echo "issues.json is not valid JSON"; exit 1; }
+
+                  # Debug output
+                  echo "Fetched issues.json:"
+                  cat issues.json
 
             # --- Make script executable ---
             - name: Make script executable
@@ -53,23 +61,12 @@ jobs:
               run: |
                   git add Changelog.md Todo.md
                   if git diff --cached --quiet; then
-                    echo "No changes to commit"
                     echo "changes=false" >> $GITHUB_OUTPUT
                   else
-                    echo "Changes detected"
                     echo "changes=true" >> $GITHUB_OUTPUT
                   fi
 
-            # --- Debug changes if any ---
-            - name: Debug changes to be committed
-              if: steps.git-check.outputs.changes == 'true'
-              run: |
-                  echo "=== Git status ==="
-                  git status
-                  echo "=== Git diff ==="
-                  git diff --cached
-
-            # --- Force-update the branch only if changes exist ---
+            # --- Force-update the branch ---
             - name: Force-update tracking branch
               if: steps.git-check.outputs.changes == 'true'
               run: |
@@ -77,7 +74,7 @@ jobs:
                   git commit -m "docs: update tracking documentation" || echo "No changes to commit"
                   git push origin tracking-updates --force
 
-            # --- Create Pull Request only if changes exist ---
+            # --- Create Pull Request ---
             - name: Create Pull Request
               if: steps.git-check.outputs.changes == 'true'
               uses: peter-evans/create-pull-request@v6

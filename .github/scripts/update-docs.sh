@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
 ISSUES_JSON="issues.json"
-
 REPO_URL="https://github.com/$GITHUB_REPOSITORY/issues"
 
 # --- Helper functions ---
-
 label_with_icon() {
   label="$1"
   case "$label" in
@@ -32,7 +30,7 @@ format_labels() {
   local labels_json="$1"
   local output=""
   while read -r label; do
-    label="${label//$'\r'/}"        # Remove Windows carriage return
+    label="${label//$'\r'/}"
     label=$(label_with_icon "$label")
     output+="$label "
   done <<< "$(jq -r '.[]' <<< "$labels_json")"
@@ -41,11 +39,7 @@ format_labels() {
 
 format_date() {
   local iso_date="$1"
-  if [[ "$iso_date" == "-" || -z "$iso_date" ]]; then
-    echo "-"
-  else
-    date -d "$iso_date" +"%d/%m/%Y"
-  fi
+  [[ "$iso_date" == "-" || -z "$iso_date" ]] && echo "-" || date -d "$iso_date" +"%d/%m/%Y"
 }
 
 status_icon() {
@@ -58,7 +52,7 @@ status_icon() {
   esac
 }
 
-# --- Safety check for issues.json ---
+# --- Validate JSON before proceeding ---
 if [[ ! -s "$ISSUES_JSON" ]]; then
   echo "Error: $ISSUES_JSON not found or empty."
   exit 1
@@ -77,24 +71,12 @@ fi
 cat <<EOF >> "$CHANGELOG_FILE"
 # Changelog
 
-The following tags are used throughout the changelog to categorize changes:
-
-\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\`
-\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\`
-\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
-
 > To see the current todo list, check the [Todo](./Todo.md) file.
 ---
 EOF
 
 cat <<EOF >> "$TODO_FILE"
 # Todo
-
-The following tags are used throughout the changelog to categorize changes:
-
-\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\`
-\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\`
-\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`
 
 > To see the changelogs for this commit, check the [Changelog](./Changelog.md) file.
 ---
@@ -128,7 +110,7 @@ write_tasks() {
   done
 }
 
-# --- Write todos ---
+# --- Write tasks ---
 write_tasks "$open_tasks" "$TODO_FILE"
 write_tasks "$closed_tasks" "$TODO_FILE"
 
@@ -143,16 +125,8 @@ if [[ $(jq length new_closed.json) -gt 0 ]]; then
   echo "| Issue # | Completed At | Title | Labels |" >> "$CHANGELOG_FILE"
   echo "|---------|--------------|-------|--------|" >> "$CHANGELOG_FILE"
 
-  for task in $(jq -c '.[]' new_closed.json); do
-    number=$(jq -r '.number' <<< "$task")
-    issue_link="[$number]($REPO_URL/$number)"
-    closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
-    title=$(jq -r '.title' <<< "$task")
-    labels=$(jq -c '.labels' <<< "$task" | format_labels)
-    echo "| $issue_link | $closed | $title | $labels |" >> "$CHANGELOG_FILE"
-  done
+  write_tasks "$(cat new_closed.json)" "$CHANGELOG_FILE"
 fi
 
 rm -f new_closed.json
-
 echo "Debug: Script completed. Check $TODO_FILE and $CHANGELOG_FILE"
