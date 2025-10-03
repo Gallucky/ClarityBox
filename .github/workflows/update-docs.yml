@@ -84,6 +84,7 @@ jobs:
               with:
                   token: ${{ secrets.GH_PAT }}
                   branch: tracking-updates
+                  base: main
                   commit-message: "docs: update tracking documentation"
                   title: "Update Tracking Documentation"
                   body: |
