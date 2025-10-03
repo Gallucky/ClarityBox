@@ -5,6 +5,8 @@ on:
 
 jobs:
     lint-and-build:
+        # Skip CI if the PR is from the tracking-updates branch
+        if: github.head_ref != 'tracking-updates'
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
