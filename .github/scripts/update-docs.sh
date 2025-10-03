@@ -1,113 +1,75 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
-DATE="$(date +'%Y-%m-%d')"
-ISSUES_FILE="issues.json"
+# Paths
+CHANGELOG_FILE="Changelog.md"
+TODO_FILE="Todo.md"
+ISSUES_JSON="issues.json"
 
-# Debug: Check what we're working with
-echo "=== DEBUG INFO ===" >&2
-echo "Total issues in file: $(jq 'length' "$ISSUES_FILE")" >&2
-echo "Open issues: $(jq '[.[] | select(.state == "open")] | length' "$ISSUES_FILE")" >&2
-echo "Closed issues: $(jq '[.[] | select(.state == "closed")] | length' "$ISSUES_FILE")" >&2
-echo "==================" >&2
+# Clear existing files
+> "$CHANGELOG_FILE"
+> "$TODO_FILE"
 
-# ==================== CHANGELOG ====================
-cat > Changelog.md <<'CHANGEHEADER'
-# Changelog
+# --- Changelog header ---
+echo "## Changelog" >> "$CHANGELOG_FILE"
+echo "" >> "$CHANGELOG_FILE"
+echo "The following tags are used throughout the changelog to categorize changes:" >> "$CHANGELOG_FILE"
+echo "\
+\`💻 Frontend\` \`🔧 Backend\` \`🐛 Bug\` \`✨ Enhancement\` \`⭐ Feature\` \
+\`🔨 Fix\` \`📚 Documentation\` \`🚀 Deployment\` \`⚠️ Deprecated\` \
+\`🗑️ Removed\` \`🌍 Environment\` \`📌 Other\`" >> "$CHANGELOG_FILE"
+echo "" >> "$CHANGELOG_FILE"
 
-All notable changes to this project are documented here.
+# --- Load issues from JSON ---
+open_tasks=$(jq '[.[] | select(.state != "closed")]' "$ISSUES_JSON")
+closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$ISSUES_JSON")
 
-To see the todo list check the [Project Todo](./Todo.md) file.
+# --- Generate Todo.md table ---
+echo "| Task | Status | Closed At | Labels | URL |" >> "$TODO_FILE"
+echo "|------|--------|-----------|--------|-----|" >> "$TODO_FILE"
 
-The following tags are used throughout the changelog to categorize changes:
-`[💻 Frontend]` `[🔧 Backend]` `[🐛 Bug]` `[✨ Enhancement]` `[⭐ Feature]` `[🔨 Fix]` `[📚 Documentation]` `[🚀 Deployment]` `[⚠️ Deprecated]` `[🗑️ Removed]` `[🌍 Environment]` `[📌 Other]`
+# Helper function to format labels
+format_labels() {
+  jq -r '[.[] | "`" + . + "`"] | join(" ")' <<< "$1"
+}
 
----
+# Write open tasks first
+echo "$open_tasks" | jq -c '.[]' | while read -r task; do
+  title=$(jq -r '.title' <<< "$task")
+  state=$(jq -r '.state' <<< "$task")
+  closed_at=$(jq -r '.closed_at // "-"' <<< "$task")
+  labels=$(format_labels "$(jq -r '.labels' <<< "$task")")
+  url=$(jq -r '.url' <<< "$task")
+  echo "| $title | $state | $closed_at | $labels | $url |" >> "$TODO_FILE"
+done
 
-CHANGEHEADER
+# Then write closed tasks sorted by closed_at (oldest last)
+echo "$closed_tasks" | jq -c '.[]' | while read -r task; do
+  title=$(jq -r '.title' <<< "$task")
+  state=$(jq -r '.state' <<< "$task")
+  closed_at=$(jq -r '.closed_at // "-"' <<< "$task")
+  labels=$(format_labels "$(jq -r '.labels' <<< "$task")")
+  url=$(jq -r '.url' <<< "$task")
+  echo "| $title | $state | $closed_at | $labels | $url |" >> "$TODO_FILE"
+done
 
-# In Progress section
-echo "## 🔄 In Progress" >> Changelog.md
-echo >> Changelog.md
+# --- Changelog: only tasks closed in this run ---
+# Assuming you track which tasks were newly closed in this run by date
+# e.g., if you generate issues.json right after updating tasks, filter by today
+today=$(date +%Y-%m-%d)
+jq --arg today "$today" '[.[] | select(.state=="closed" and (.closed_at | startswith($today)))]' "$ISSUES_JSON" > new_closed.json
 
-jq -r '
-  def map_label:
-    if . == "Backend" then "🔧 Backend"
-    elif . == "Bug" then "🐛 Bug"
-    elif . == "Deployment" then "🚀 Deployment"
-    elif . == "Deprecated" then "⚠️ Deprecated"
-    elif . == "Documentation" then "📚 Documentation"
-    elif . == "Enhancement" then "✨ Enhancement"
-    elif . == "Environment" then "🌍 Environment"
-    elif . == "Feature" then "⭐ Feature"
-    elif . == "Fix" then "🔨 Fix"
-    elif . == "Frontend" then "💻 Frontend"
-    elif . == "Removed" then "🗑️ Removed"
-    else null end;
+if [[ $(jq length new_closed.json) -gt 0 ]]; then
+  echo "## Tasks completed in this update" >> "$CHANGELOG_FILE"
+  echo "" >> "$CHANGELOG_FILE"
+  jq -c '.[]' new_closed.json | while read -r task; do
+    title=$(jq -r '.title' <<< "$task")
+    closed_at=$(jq -r '.closed_at' <<< "$task")
+    labels=$(format_labels "$(jq -r '.labels' <<< "$task")")
+    url=$(jq -r '.url' <<< "$task")
+    echo "- [$closed_at] $title | Labels: $labels | URL: $url" >> "$CHANGELOG_FILE"
+  done
+fi
 
-  [.[] | select(.state == "open")] |
-  sort_by(.number) |
-  .[] |
-  ( (.labels | map(map_label) | map(select(. != null)) | .[0]) // "📌 Other" ) as $type |
-  "- " + $type + " [#" + (.number|tostring) + "](" + .url + ") - " + .title
-' "$ISSUES_FILE" >> Changelog.md
-
-echo >> Changelog.md
-
-# Completed section (at bottom)
-echo "## ✅ Completed" >> Changelog.md
-echo >> Changelog.md
-
-jq -r '
-  def map_label:
-    if . == "Backend" then "🔧 Backend"
-    elif . == "Bug" then "🐛 Bug"
-    elif . == "Deployment" then "🚀 Deployment"
-    elif . == "Deprecated" then "⚠️ Deprecated"
-    elif . == "Documentation" then "📚 Documentation"
-    elif . == "Enhancement" then "✨ Enhancement"
-    elif . == "Environment" then "🌍 Environment"
-    elif . == "Feature" then "⭐ Feature"
-    elif . == "Fix" then "🔨 Fix"
-    elif . == "Frontend" then "💻 Frontend"
-    elif . == "Removed" then "🗑️ Removed"
-    else null end;
-
-  [.[] | select(.state == "closed")] |
-  sort_by(.closed_at) | reverse |
-  .[] |
-  ( (.labels | map(map_label) | map(select(. != null)) | .[0]) // "📌 Other" ) as $type |
-  ( if .closed_at then (.closed_at | split("T")[0]) else "N/A" end ) as $date |
-  "- " + $type + " [#" + (.number|tostring) + "](" + .url + ") - " + .title + " _(Completed: " + $date + ")_"
-' "$ISSUES_FILE" >> Changelog.md
-
-
-# ==================== TODO ====================
-cat > Todo.md <<'TODOHEADER'
-# Todo
-
-Tracks all project tasks and issues.
-
-To check the changelog see the [Project's Changelog](./Changelog.md) file.
-
----
-
-TODOHEADER
-
-echo "## 📋 All Issues" >> Todo.md
-echo >> Todo.md
-
-cat >> Todo.md <<'TABLE'
-| Issue # | Created At | Completed At | Title | Status |
-|---------|------------|--------------|-------|--------|
-TABLE
-
-# Build table rows with your preferred column order
-jq -r '
-  sort_by(.number) | reverse |
-  .[] |
-  ( if .created_at then (.created_at | split("T")[0]) else "N/A" end ) as $created |
-  ( if .closed_at then (.closed_at | split("T")[0]) else "-" end ) as $completed |
-  ( if .state == "open" then "🔄 Open" else "✅ Closed" end ) as $status |
-  "| [#" + (.number|tostring) + "](" + .url + ") | " + $created + " | " + $completed + " | " + .title + " | " + $status + " |"
-' "$ISSUES_FILE" >> Todo.md
+# Clean up
+rm -f new_closed.json
