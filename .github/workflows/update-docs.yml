@@ -34,7 +34,7 @@ jobs:
                   REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
 
                   # Fetch all issues (open + closed)
-                  gh api repos/$OWNER/$REPO/issues --paginate -f state=all \
+                  gh api repos/$OWNER/$REPO/issues?state=all --paginate \
                     --jq '[.[] | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at}]' > issues.json
 
             - name: Make script executable
