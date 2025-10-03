@@ -9,7 +9,6 @@ REPO_URL="https://github.com/$GITHUB_REPOSITORY/issues"
 
 # --- Helper functions ---
 
-# Map label to icon + name
 label_with_icon() {
   label="$1"
   case "$label" in
@@ -29,25 +28,17 @@ label_with_icon() {
   esac
 }
 
-# Format labels array into backtick-wrapped icons
 format_labels() {
-    local labels_json="$1"
-    local output=""
-    while read -r label; do
-        # Clean carriage return (for Windows-style JSON)
-        label="${label//$'\r'/}"
-        # Map to icon
-        label=$(label_with_icon "$label")
-        # Append safely with space
-        output+="$label "
-    done <<< "$(jq -r '.[]' <<< "$labels_json")"
-    # Trim trailing space
-    echo "${output%" "}"
+  local labels_json="$1"
+  local output=""
+  while read -r label; do
+    label="${label//$'\r'/}"        # Remove Windows carriage return
+    label=$(label_with_icon "$label")
+    output+="$label "
+  done <<< "$(jq -r '.[]' <<< "$labels_json")"
+  echo "${output%" "}"
 }
 
-
-
-# Format ISO date to DD/MM/YYYY
 format_date() {
   local iso_date="$1"
   if [[ "$iso_date" == "-" || -z "$iso_date" ]]; then
@@ -57,7 +48,6 @@ format_date() {
   fi
 }
 
-# Map status to icon
 status_icon() {
   local state="$1"
   case "$state" in
@@ -68,11 +58,22 @@ status_icon() {
   esac
 }
 
-# --- Clear files ---
+# --- Safety check for issues.json ---
+if [[ ! -s "$ISSUES_JSON" ]]; then
+  echo "Error: $ISSUES_JSON not found or empty."
+  exit 1
+fi
+
+if ! jq empty "$ISSUES_JSON" >/dev/null 2>&1; then
+  echo "Error: $ISSUES_JSON is not valid JSON."
+  exit 1
+fi
+
+# --- Clear output files ---
 > "$CHANGELOG_FILE"
 > "$TODO_FILE"
 
-# --- Changelog header ---
+# --- Headers ---
 cat <<EOF >> "$CHANGELOG_FILE"
 # Changelog
 
@@ -86,7 +87,6 @@ The following tags are used throughout the changelog to categorize changes:
 ---
 EOF
 
-# --- Todo header ---
 cat <<EOF >> "$TODO_FILE"
 # Todo
 
@@ -106,31 +106,31 @@ EOF
 open_tasks=$(jq '[.[] | select(.state != "closed")]' "$ISSUES_JSON")
 closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$ISSUES_JSON")
 
-# --- Write open tasks first ---
-for task in $(echo "$open_tasks" | jq -c '.[]'); do
-  number=$(jq -r '.number' <<< "$task")
-  issue_link="[$number]($REPO_URL/$number)"
-  created=$(format_date "$(jq -r '.created_at' <<< "$task")")
-  closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
-  title=$(jq -r '.title' <<< "$task")
-  state=$(jq -r '.state' <<< "$task")
-  status=$(status_icon "$state")
-  labels=$(jq -c '.labels' <<< "$task" | format_labels)
-  echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$TODO_FILE"
-done
+# --- Function to write tasks ---
+write_tasks() {
+  local tasks_json="$1"
+  local file="$2"
+  if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
+    echo "Debug: No tasks to write for $file"
+    return
+  fi
 
-# --- Write closed tasks at bottom ---
-for task in $(echo "$closed_tasks" | jq -c '.[]'); do
-  number=$(jq -r '.number' <<< "$task")
-  issue_link="[$number]($REPO_URL/$number)"
-  created=$(format_date "$(jq -r '.created_at' <<< "$task")")
-  closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
-  title=$(jq -r '.title' <<< "$task")
-  state=$(jq -r '.state' <<< "$task")
-  status=$(status_icon "$state")
-  labels=$(jq -c '.labels' <<< "$task" | format_labels)
-  echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$TODO_FILE"
-done
+  for task in $(jq -c '.[]' <<< "$tasks_json"); do
+    number=$(jq -r '.number' <<< "$task")
+    issue_link="[$number]($REPO_URL/$number)"
+    created=$(format_date "$(jq -r '.created_at' <<< "$task")")
+    closed=$(format_date "$(jq -r '.closed_at // "-"' <<< "$task")")
+    title=$(jq -r '.title' <<< "$task")
+    state=$(jq -r '.state' <<< "$task")
+    status=$(status_icon "$state")
+    labels=$(jq -c '.labels' <<< "$task" | format_labels)
+    echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
+  done
+}
+
+# --- Write todos ---
+write_tasks "$open_tasks" "$TODO_FILE"
+write_tasks "$closed_tasks" "$TODO_FILE"
 
 # --- Changelog: tasks closed today ---
 today=$(date +%Y-%m-%d)
@@ -154,3 +154,5 @@ if [[ $(jq length new_closed.json) -gt 0 ]]; then
 fi
 
 rm -f new_closed.json
+
+echo "Debug: Script completed. Check $TODO_FILE and $CHANGELOG_FILE"
