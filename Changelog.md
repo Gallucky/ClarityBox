@@ -2,16 +2,19 @@
 
 All notable changes to this project are documented here. Commit-level tracking is used.
 
-The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br> `💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `📚 Documentation`<br> `🔨 Fix` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
+The following tags are used throughout the changelog to categorize changes based on frontend and backend sides:<br>
+`💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `📚 Documentation`<br>
+`🔨 Fix` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
 
 > To see the todo list check the [Todo](./Todo.md) file.
 
 ---
 
 ### 🏁 Tasks completed in this update
-
 | Issue # | Completed At | Title | Labels |
-| :-: | :-: | :-- | :-- |
+|:------:|:------------:|:-----|:-----|
+| [41](https://github.com/Gallucky/ClarityBox/pull/41) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
+| [40](https://github.com/Gallucky/ClarityBox/pull/40) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [39](https://github.com/Gallucky/ClarityBox/pull/39) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [38](https://github.com/Gallucky/ClarityBox/pull/38) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
 | [37](https://github.com/Gallucky/ClarityBox/pull/37) | 03/10/2025 | Update Tracking Documentation | `📌 Other` |
