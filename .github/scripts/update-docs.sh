@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# set -euo pipefail
+set -euo pipefail
 
 CHANGELOG_FILE="Changelog.md"
 TODO_FILE="Todo.md"
@@ -92,12 +92,13 @@ closed_tasks=$(jq '[.[] | select(.state == "closed")] | sort_by(.closed_at)' "$I
 write_tasks() {
   local tasks_json="$1"
   local file="$2"
+
   if [[ $(jq length <<< "$tasks_json") -eq 0 ]]; then
     echo "Debug: No tasks to write for $file"
     return
   fi
 
-  for task in $(jq -c '.[]' <<< "$tasks_json"); do
+  jq -c '.[]' <<< "$tasks_json" | while read -r task; do
     number=$(jq -r '.number' <<< "$task")
     issue_link="[$number]($REPO_URL/$number)"
     created=$(format_date "$(jq -r '.created_at' <<< "$task")")
@@ -105,10 +106,11 @@ write_tasks() {
     title=$(jq -r '.title' <<< "$task")
     state=$(jq -r '.state' <<< "$task")
     status=$(status_icon "$state")
-    labels=$(jq -c '.labels' <<< "$task" | format_labels)
+    labels=$(jq -c '.labels // []' <<< "$task" | format_labels)
     echo "| $issue_link | $created | $closed | $title | $status | $labels |" >> "$file"
   done
 }
+
 
 # --- Write tasks ---
 write_tasks "$open_tasks" "$TODO_FILE"
