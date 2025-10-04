@@ -29,5 +29,8 @@ client/config
 *.git-status
 eslint-report.log
 
+# === Scripts === #
+scripts/
+
 # === Co-Pilot Instructions === #
 .github/copilot-instructions.md
