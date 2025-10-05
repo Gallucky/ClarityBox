@@ -47,29 +47,35 @@ jobs:
             - name: Make script executable
               run: chmod +x .github/scripts/update-docs.sh
 
-              # --- Backup existing docs ---
-            - name: Backup existing docs
-              run: |
-                  # Get short commit hash of current HEAD
-                  HASH=$(git rev-parse --short HEAD)
-                  # Create backup folder with DD-MM-YYYY_HH-MM-SS_hash
-                  BACKUP_DIR=".github/scripts/generated/backups/$(date +'%d-%m-%Y_%H-%M-%S')_$HASH"
-                  mkdir -p "$BACKUP_DIR"
-                  # Copy files
-                  cp Changelog.md Todo.md "$BACKUP_DIR"
-                  echo "Backup created at $BACKUP_DIR"
-
-            # Optional: prune old backups, keep only the 30 most recent
-            - name: Prune old backups
+            # --- Prune old local backups and upload artifact ---
+            - name: Prune old backups and upload artifact
               run: |
                   BACKUP_ROOT=".github/scripts/generated/backups"
-                  COUNT=$(ls -1 "$BACKUP_ROOT" | wc -l)
                   MAX_KEEP=30
+
+                  # Ensure folder exists
+                  mkdir -p "$BACKUP_ROOT"
+
+                  # Count current backups
+                  COUNT=$(ls -1 "$BACKUP_ROOT" | wc -l)
+
+                  # Remove oldest if exceeding MAX_KEEP
                   if [ "$COUNT" -gt "$MAX_KEEP" ]; then
                       REMOVE_COUNT=$((COUNT - MAX_KEEP))
+                      echo "Pruning $REMOVE_COUNT old local backups..."
                       ls -1t "$BACKUP_ROOT" | tail -n "$REMOVE_COUNT" | xargs -I {} rm -rf "$BACKUP_ROOT/{}"
-                      echo "Pruned $REMOVE_COUNT old backups"
+                  else
+                      echo "No pruning needed, $COUNT backups present."
                   fi
+
+                  echo "Backup folder ready at $BACKUP_ROOT"
+
+            # --- Upload backups as artifact ---
+            - name: Upload backup artifact
+              uses: actions/upload-artifact@v3
+              with:
+                  name: tracking-docs-backups
+                  path: .github/scripts/generated/backups
 
             # --- Generate docs ---
             - name: Generate docs
