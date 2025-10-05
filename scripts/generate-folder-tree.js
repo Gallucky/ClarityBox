@@ -9,6 +9,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const ensureDirs = require("./utils/ensure-generated-dirs");
 
 const rootDir = process.argv[2] || ".";
 const outputPath = process.argv[3] || "folder-tree.html";
@@ -16,6 +17,9 @@ const depthArgIndex = process.argv.indexOf("--depth");
 const maxDepth = depthArgIndex !== -1 ? parseInt(process.argv[depthArgIndex + 1]) : Infinity;
 
 const indentUnit = "│   ";
+
+// --- Ensure output folder exists ---
+ensureDirs(path.dirname(outputPath));
 
 // 🎨 Customize font styles here (applied to <pre>)
 const preStyle = `

@@ -47,6 +47,30 @@ jobs:
             - name: Make script executable
               run: chmod +x .github/scripts/update-docs.sh
 
+              # --- Backup existing docs ---
+            - name: Backup existing docs
+              run: |
+                  # Get short commit hash of current HEAD
+                  HASH=$(git rev-parse --short HEAD)
+                  # Create backup folder with DD-MM-YYYY_HH-MM-SS_hash
+                  BACKUP_DIR=".github/scripts/generated/backups/$(date +'%d-%m-%Y_%H-%M-%S')_$HASH"
+                  mkdir -p "$BACKUP_DIR"
+                  # Copy files
+                  cp Changelog.md Todo.md "$BACKUP_DIR"
+                  echo "Backup created at $BACKUP_DIR"
+
+            # Optional: prune old backups, keep only the 30 most recent
+            - name: Prune old backups
+              run: |
+                  BACKUP_ROOT=".github/scripts/generated/backups"
+                  COUNT=$(ls -1 "$BACKUP_ROOT" | wc -l)
+                  MAX_KEEP=30
+                  if [ "$COUNT" -gt "$MAX_KEEP" ]; then
+                      REMOVE_COUNT=$((COUNT - MAX_KEEP))
+                      ls -1t "$BACKUP_ROOT" | tail -n "$REMOVE_COUNT" | xargs -I {} rm -rf "$BACKUP_ROOT/{}"
+                      echo "Pruned $REMOVE_COUNT old backups"
+                  fi
+
             # --- Generate docs ---
             - name: Generate docs
               run: ./.github/scripts/update-docs.sh
