@@ -5,6 +5,15 @@ set -e
 BACKUP_ROOT=".tracking"
 MAX_BACKUPS=30
 FILES_TO_BACKUP=("Changelog.md" "Todo.md")
+GITKEEP=".gitkeep"
+
+# --- Ensure backup root exists ---
+mkdir -p "$BACKUP_ROOT"
+
+# --- Add .gitkeep if missing ---
+if [ ! -f "$BACKUP_ROOT/$GITKEEP" ]; then
+    touch "$BACKUP_ROOT/$GITKEEP"
+fi
 
 # --- Get current commit hash ---
 HASH=$(git rev-parse --short HEAD)
@@ -23,12 +32,14 @@ done
 
 echo "Backup created at $BACKUP_DIR"
 
-# --- Prune old backups ---
-if [ -d "$BACKUP_ROOT" ]; then
-    COUNT=$(ls -1 "$BACKUP_ROOT" | wc -l)
-    if [ "$COUNT" -gt "$MAX_BACKUPS" ]; then
-        REMOVE_COUNT=$((COUNT - MAX_BACKUPS))
-        echo "Pruning $REMOVE_COUNT old backups..."
-        ls -1t "$BACKUP_ROOT" | tail -n "$REMOVE_COUNT" | xargs -I {} rm -rf "$BACKUP_ROOT/{}"
-    fi
+# --- Prune old backups (ignoring .gitkeep) ---
+BACKUPS=($(ls -1t "$BACKUP_ROOT" | grep -v "$GITKEEP"))
+COUNT=${#BACKUPS[@]}
+
+if [ "$COUNT" -gt "$MAX_BACKUPS" ]; then
+    REMOVE_COUNT=$((COUNT - MAX_BACKUPS))
+    echo "Pruning $REMOVE_COUNT old backups..."
+    for OLD in "${BACKUPS[@]:$MAX_BACKUPS}"; do
+        rm -rf "$BACKUP_ROOT/$OLD"
+    done
 fi

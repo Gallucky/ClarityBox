@@ -47,9 +47,26 @@ jobs:
             - name: Make scripts executable
               run: chmod +x .github/scripts/*.sh
 
-            # --- Backup and prune docs ---
-            - name: Backup and prune docs
-              run: ./.github/scripts/backup-docs.sh
+            # --- Backup and commit docs ---
+            - name: Backup and commit docs
+              run: |
+                  # Run the backup script (creates backup folder, ignores .gitkeep, prunes old)
+                  ./.github/scripts/backup-docs.sh
+
+                  # Ensure .tracking is tracked in Git
+                  git add .tracking/.gitkeep
+
+                  # Add all new backups (ignores .gitkeep)
+                  git add .tracking/*
+
+                  # Commit only if there are changes
+                  if ! git diff --cached --quiet; then
+                      HASH=$(git rev-parse --short HEAD)
+                      git commit -m "Docs: backup Changelog and Todo for $HASH"
+                      git push origin main
+                  else
+                      echo "No new backups to commit"
+                  fi
 
             # --- Generate docs ---
             - name: Generate docs
