@@ -8,7 +8,8 @@
         "tree-server": "node ./scripts/generate-folder-tree.js ./server ./scripts/generated/generate-folder-tree/server-tree.md --depth 3",
         "tree-root": "node ./scripts/generate-folder-tree.js ./ ./scripts/generated/generate-folder-tree/root-tree.md --depth 3",
         "diff": "git diff | clip && echo Copied git diff to clipboard.",
-        "status": "git status && git status | clip && echo Copied git status to clipboard."
+        "status": "git status && git status | clip && echo Copied git status to clipboard.",
+        "generate-issues": "powershell -ExecutionPolicy ByPass -File ./scripts/generate-issues-via-csv.ps1"
     },
     "devDependencies": {
         "eslint": "^9.36.0"
