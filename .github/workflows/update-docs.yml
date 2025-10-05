@@ -53,6 +53,10 @@ jobs:
                   # Run the backup script (creates backup folder, ignores .gitkeep, prunes old)
                   ./.github/scripts/backup-docs.sh
 
+                  # Configure Git identity for this workflow run
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "actions@github.com"
+
                   # Ensure .tracking is tracked in Git
                   git add .tracking/.gitkeep
 
