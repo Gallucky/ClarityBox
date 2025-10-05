@@ -30,7 +30,7 @@ client/config
 eslint-report.log
 
 # === Scripts === #
-scripts/
+scripts/generated
 
 # === Co-Pilot Instructions === #
 .github/copilot-instructions.md
