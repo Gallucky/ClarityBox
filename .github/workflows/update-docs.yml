@@ -43,39 +43,13 @@ jobs:
                   # Validate JSON
                   jq empty issues.json || { echo "issues.json is not valid JSON"; exit 1; }
 
-            # --- Make script executable ---
-            - name: Make script executable
-              run: chmod +x .github/scripts/update-docs.sh
+            # --- Make scripts executable ---
+            - name: Make scripts executable
+              run: chmod +x .github/scripts/*.sh
 
-            # --- Prune old local backups and upload artifact ---
-            - name: Prune old backups and upload artifact
-              run: |
-                  BACKUP_ROOT=".github/scripts/generated/backups"
-                  MAX_KEEP=30
-
-                  # Ensure folder exists
-                  mkdir -p "$BACKUP_ROOT"
-
-                  # Count current backups
-                  COUNT=$(ls -1 "$BACKUP_ROOT" | wc -l)
-
-                  # Remove oldest if exceeding MAX_KEEP
-                  if [ "$COUNT" -gt "$MAX_KEEP" ]; then
-                      REMOVE_COUNT=$((COUNT - MAX_KEEP))
-                      echo "Pruning $REMOVE_COUNT old local backups..."
-                      ls -1t "$BACKUP_ROOT" | tail -n "$REMOVE_COUNT" | xargs -I {} rm -rf "$BACKUP_ROOT/{}"
-                  else
-                      echo "No pruning needed, $COUNT backups present."
-                  fi
-
-                  echo "Backup folder ready at $BACKUP_ROOT"
-
-            # --- Upload backups as artifact ---
-            - name: Upload backup artifact
-              uses: actions/upload-artifact@v3
-              with:
-                  name: tracking-docs-backups
-                  path: .github/scripts/generated/backups
+            # --- Backup and prune docs ---
+            - name: Backup and prune docs
+              run: ./.github/scripts/backup-docs.sh
 
             # --- Generate docs ---
             - name: Generate docs
