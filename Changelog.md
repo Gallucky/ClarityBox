@@ -18,6 +18,8 @@ The following tags are used throughout the changelog to categorize changes based
 
 | Issue # | Completed At | Title | Labels |
 |:------:|:------------:|:-----|:-----|
+| [72](https://github.com/Gallucky/ClarityBox/issues/72) | 05/10/2025 | [Helper] Created script 'create-edit-issue-labels.ps1' | `🚀 Deployment`<br>`✨ Enhancement`<br>`📚 Documentation`<br>`📌 Test` |
+| [71](https://github.com/Gallucky/ClarityBox/issues/71) | 05/10/2025 | [Helper] Created script 'generate-issues-via-csv.ps1' | `🚀 Deployment`<br>`✨ Enhancement`<br>`📚 Documentation`<br>`📌 Test` |
 | [18](https://github.com/Gallucky/ClarityBox/issues/18) | 02/10/2025 | Documentation Enhancement | `🚀 Deployment`<br>`✨ Enhancement`<br>`📚 Documentation` |
 | [17](https://github.com/Gallucky/ClarityBox/issues/17) | 02/10/2025 | Create tracking directories for snapshots | `🚀 Deployment`<br>`✨ Enhancement` |
 | [16](https://github.com/Gallucky/ClarityBox/issues/16) | 02/10/2025 | Set up backend project structure | `🔧 Backend`<br>`✨ Enhancement` |
