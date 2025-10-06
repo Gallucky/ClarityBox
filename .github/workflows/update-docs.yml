@@ -2,9 +2,8 @@ name: Update Tracking Docs
 
 on:
     workflow_dispatch:
-    # --- Run once a week --- #
     schedule:
-        - cron: "0 0 * * 0"
+        - cron: "0 0 * * 0" # weekly
 
 permissions:
     contents: write
@@ -14,19 +13,17 @@ permissions:
 jobs:
     update-docs:
         runs-on: ubuntu-latest
+
         steps:
-            # --- Checkout main branch ---
             - uses: actions/checkout@v4
               with:
-                  ref: main
+                  fetch-depth: 0
 
-            # --- Install GH CLI and jq ---
             - name: Install GH CLI and jq
               run: |
                   sudo apt-get update -y
                   sudo apt-get install -y gh jq
 
-            # --- Collect Issues ---
             - name: Collect Issues
               env:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
@@ -37,40 +34,57 @@ jobs:
                     --jq '[.[] | select(.pull_request == null) | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at, pull_request}]' \
                     > issues.json
 
-            # --- Stop if no open issues ---
-            - name: Check for open issues
+            - name: Stop if no open issues
               id: check-issues
               run: |
                   OPEN_COUNT=$(jq '[.[] | select(.state != "closed")] | length' issues.json)
                   echo "open_issues=$OPEN_COUNT" >> $GITHUB_OUTPUT
-            - name: Stop if no open issues
+            - name: Exit if none
               if: steps.check-issues.outputs.open_issues == '0'
-              run: |
-                  echo "No open issues. Exiting."
-                  exit 0
+              run: exit 0
 
-            # --- Make scripts executable ---
             - name: Make scripts executable
               run: chmod +x .github/scripts/*.sh
 
-            # --- Backup and generate docs ---
-            - name: Backup and generate docs
-              run: |
-                  ./.github/scripts/backup-docs.sh
-                  ./.github/scripts/update-docs.sh
+            # --- Backup current docs locally ---
+            - name: Backup current docs
+              run: ./.github/scripts/backup-docs.sh
 
-            # --- Commit only updated files ---
-            - name: Commit docs
+            # --- Generate new docs ---
+            - name: Generate docs
+              run: ./.github/scripts/update-docs.sh
+
+            # --- Commit updates to dev branch ---
+            - name: Commit updates to dev
+              run: |
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "actions@github.com"
+                  git checkout dev
+                  git add Changelog.md Todo.md
+                  if ! git diff --cached --quiet; then
+                    git commit -m "docs: update tracking documentation"
+                    git push origin dev
+                  else
+                    echo "No changes to commit"
+                  fi
+
+            # --- Commit backups to tracking branch ---
+            - name: Commit backups to tracking branch
               run: |
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
 
-                  # Only stage the files the workflow updates
-                  git add Changelog.md Todo.md .tracking/
+                  # Ensure tracking branch exists
+                  git fetch origin tracking:tracking || git checkout -b tracking
 
+                  # Copy .tracking folder from dev into tracking branch
+                  git checkout tracking
+                  cp -r .tracking/* .tracking/
+
+                  git add .tracking
                   if ! git diff --cached --quiet; then
-                      git commit -m "docs: update tracking documentation"
-                      git push origin main
+                    TIMESTAMP=$(date +'%d-%m-%Y_%H-%M-%S')
+                    git commit -m "backup: docs backup $TIMESTAMP - $GITHUB_SHA"
+                    git push origin tracking
                   else
-                      echo "No changes to commit"
-                  fi
+                    echo "No backups to commit"
