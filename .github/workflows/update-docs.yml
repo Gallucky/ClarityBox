@@ -68,19 +68,19 @@ jobs:
                     echo "No changes to commit"
                   fi
 
-            # --- Commit backups to tracking branch ---
+            # --- Commit backups to tracking branch separately ---
             - name: Commit backups to tracking branch
+              uses: actions/checkout@v4
+              with:
+                  ref: tracking # checkout the tracking branch
+                  path: tracking-branch # separate folder
+
+            - name: Copy backups to tracking branch
               run: |
+                  cp -r .tracking/* tracking-branch/.tracking/
+                  cd tracking-branch
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
-
-                  # Ensure tracking branch exists
-                  git fetch origin tracking:tracking || git checkout -b tracking
-
-                  # Copy .tracking folder from dev into tracking branch
-                  git checkout tracking
-                  cp -r .tracking/* .tracking/
-
                   git add .tracking
                   if ! git diff --cached --quiet; then
                     TIMESTAMP=$(date +'%d-%m-%Y_%H-%M-%S')
