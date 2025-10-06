@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 "use strict";
 
-import fs from "fs";
-import { execSync } from "child_process";
-import path from "path";
-import process from "process";
-import fetch from "node-fetch"; // optional if using GH API directly
+const fs = require("fs");
+const { execSync } = require("child_process");
 
+// --- Files ---
 const CHANGELOG_FILE = "Changelog.md";
 const TODO_FILE = "Todo.md";
 const ISSUES_JSON = "issues.json";
 
 // --- Helper functions ---
-const labelWithIcon = (label) => {
+function labelWithIcon(label) {
     switch (label) {
         case "Frontend":
             return "💻 Frontend";
@@ -42,24 +40,26 @@ const labelWithIcon = (label) => {
         default:
             return `📌 ${label}`;
     }
-};
+}
 
-const formatLabels = (labels) =>
-    labels
+function formatLabels(labels) {
+    return labels
         .map(labelWithIcon)
         .map((l) => `<br>\`${l}\``)
         .join("")
         .replace(/^<br>/, "");
+}
 
-const formatDate = (iso) => {
+function formatDate(iso) {
     if (!iso || iso === "-") return "-";
     const d = new Date(iso);
-    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}/${d.getFullYear()}`;
-};
+    return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(
+        2,
+        "0"
+    )}/${d.getFullYear()}`;
+}
 
-const statusIcon = (state) => {
+function statusIcon(state) {
     switch (state) {
         case "open":
             return "`💬 Open`";
@@ -71,28 +71,30 @@ const statusIcon = (state) => {
         default:
             return `\`${state}\``;
     }
-};
+}
 
 // --- Validate JSON ---
 if (!fs.existsSync(ISSUES_JSON)) {
-    console.error(`Error: ${ISSUES_JSON} not found.`);
+    console.error(`${ISSUES_JSON} not found`);
     process.exit(1);
 }
 
-let issuesRaw;
+let issues;
 try {
-    issuesRaw = JSON.parse(fs.readFileSync(ISSUES_JSON, "utf-8"));
-} catch (e) {
-    console.error(`Error: ${ISSUES_JSON} is not valid JSON.`);
+    issues = JSON.parse(fs.readFileSync(ISSUES_JSON, "utf-8"));
+} catch {
+    console.error(`${ISSUES_JSON} is not valid JSON`);
     process.exit(1);
 }
 
 // --- Clear files ---
-fs.writeFileSync(CHANGELOG_FILE, "");
 fs.writeFileSync(TODO_FILE, "");
+fs.writeFileSync(CHANGELOG_FILE, "");
 
-// --- Write headers ---
-const todoHeader = `# TODO title
+// --- Write Todo header ---
+fs.appendFileSync(
+    TODO_FILE,
+    `# TODO title
 
 Tracks tasks per commit.
 
@@ -103,11 +105,13 @@ The following tags are used throughout the todo list to categorize tasks based o
 > To see the changelogs / changes, check the [Changelog](./Changelog.md) file.
 
 ---
-`;
+`
+);
 
-fs.writeFileSync(TODO_FILE, todoHeader);
-
-const changelogHeader = `# Changelog title
+// --- Write Changelog header ---
+fs.appendFileSync(
+    CHANGELOG_FILE,
+    `# Changelog title
 
 All notable changes to this project are documented here. Commit-level tracking is used.
 
@@ -118,22 +122,18 @@ The following tags are used throughout the changelog to categorize changes based
 > To see the todo list check the [Todo](./Todo.md) file.
 
 ---
-`;
+`
+);
 
-fs.writeFileSync(CHANGELOG_FILE, changelogHeader);
-
-// --- Filter issues ---
-const openTasks = issuesRaw.filter((i) => i.state !== "closed" && !i.pull_request);
-const closedToday = issuesRaw.filter((i) => {
-    if (i.state !== "closed" || i.pull_request) return false;
-    const today = new Date().toISOString().slice(0, 10);
-    return i.closed_at && i.closed_at.startsWith(today);
-});
-const allClosed = issuesRaw
-    .filter((i) => i.state === "closed" && !i.pull_request)
+// --- Filter tasks ---
+const openTasks = issues.filter((i) => i.state !== "closed");
+const closedToday = issues.filter(
+    (i) => i.state === "closed" && i.closed_at?.startsWith(new Date().toISOString().slice(0, 10))
+);
+const allClosed = issues
+    .filter((i) => i.state === "closed")
     .sort((a, b) => new Date(b.closed_at) - new Date(a.closed_at));
 
-// --- Write tasks ---
 function writeTasks(tasks, file, showStatus = true) {
     if (!tasks.length) {
         fs.appendFileSync(file, "_No tasks available._\n");
@@ -150,26 +150,26 @@ function writeTasks(tasks, file, showStatus = true) {
 
     tasks.forEach((task) => {
         const number = task.number;
-        const issueLink = `[${number}](${task.url})`;
+        const link = `[${number}](${task.url})`;
         const created = formatDate(task.created_at);
-        const closed = formatDate(task.closed_at || "-");
+        const closed = formatDate(task.closed_at ?? "-");
         const title = task.title;
-        const labels = formatLabels(task.labels || []);
+        const labels = formatLabels(task.labels);
         const state = task.state;
         const status = statusIcon(state);
 
         if (showStatus) {
             fs.appendFileSync(
                 file,
-                `| ${issueLink} | ${created} | ${closed} | ${title} | ${status} | ${labels} |\n`
+                `| ${link} | ${created} | ${closed} | ${title} | ${status} | ${labels} |\n`
             );
         } else {
-            fs.appendFileSync(file, `| ${issueLink} | ${closed} | ${title} | ${labels} |\n`);
+            fs.appendFileSync(file, `| ${link} | ${closed} | ${title} | ${labels} |\n`);
         }
     });
 }
 
-// --- Write files ---
+// --- Write tasks ---
 writeTasks(openTasks, TODO_FILE);
 
 fs.appendFileSync(CHANGELOG_FILE, "\n### 🏁 Tasks Completed Today\n\n");
@@ -180,4 +180,4 @@ fs.appendFileSync(CHANGELOG_FILE, "\n### 📋 All Completed Tasks\n\n");
 if (allClosed.length) writeTasks(allClosed, CHANGELOG_FILE, false);
 else fs.appendFileSync(CHANGELOG_FILE, "> No completed tasks available.\n");
 
-console.log("Update docs script completed.");
+console.log(`Docs updated: ${TODO_FILE}, ${CHANGELOG_FILE}`);

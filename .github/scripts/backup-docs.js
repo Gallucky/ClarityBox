@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 "use strict";
 
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
 
 // --- Config ---
 const BACKUP_ROOT = ".tracking";
 const FILES_TO_BACKUP = ["Changelog.md", "Todo.md"];
 const GITKEEP = ".gitkeep";
-const BRANCH_NAME = process.env.GITHUB_REF_NAME || "dev"; // fallback
+const BRANCH_NAME = process.env.GITHUB_REF_NAME || "dev";
 
 // --- Ensure backup root exists ---
 if (!fs.existsSync(BACKUP_ROOT)) fs.mkdirSync(BACKUP_ROOT, { recursive: true });
@@ -17,17 +18,23 @@ if (!fs.existsSync(BACKUP_ROOT)) fs.mkdirSync(BACKUP_ROOT, { recursive: true });
 const gitkeepPath = path.join(BACKUP_ROOT, GITKEEP);
 if (!fs.existsSync(gitkeepPath)) fs.writeFileSync(gitkeepPath, "");
 
-// --- Unique folder per workflow run ---
-const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-const backupDir = path.join(BACKUP_ROOT, `${BRANCH_NAME}_${timestamp}`);
-fs.mkdirSync(backupDir, { recursive: true });
+// --- Get current commit hash ---
+let HASH = "nohash";
+try {
+    HASH = execSync("git rev-parse --short HEAD", { encoding: "utf-8" }).trim();
+} catch {}
+
+// --- Create unique backup folder ---
+const TIMESTAMP = new Date().toISOString().replace(/[:.]/g, "-");
+const BACKUP_DIR = path.join(BACKUP_ROOT, `${BRANCH_NAME}_${TIMESTAMP}_${HASH}`);
+fs.mkdirSync(BACKUP_DIR, { recursive: true });
 
 // --- Copy files ---
 FILES_TO_BACKUP.forEach((file) => {
     if (fs.existsSync(file)) {
-        const dest = path.join(backupDir, file);
-        fs.copyFileSync(file, dest);
+        fs.copyFileSync(file, path.join(BACKUP_DIR, file));
     }
 });
 
-console.log(`Backup created at ${backupDir}`);
+console.log(`Backup created at ${BACKUP_DIR}`);
+console.log("All backups are preserved in the tracking branch.");
