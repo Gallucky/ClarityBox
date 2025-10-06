@@ -1,13 +1,10 @@
 name: Update Tracking Docs
 
 on:
-    push:
-        branches: [main]
-        paths-ignore:
-            - "Changelog.md"
-            - "Todo.md"
-    issues:
-        types: [opened, closed, reopened, labeled, unlabeled, edited]
+    workflow_dispatch:
+    # --- Run once a week --- #
+    schedule:
+        - cron: "0 0 * * 0"
 
 permissions:
     contents: write
@@ -17,6 +14,7 @@ permissions:
 jobs:
     update-docs:
         runs-on: ubuntu-latest
+
         steps:
             # --- Checkout repo ---
             - uses: actions/checkout@v4
@@ -24,8 +22,33 @@ jobs:
             # --- Install GH CLI and jq ---
             - name: Install GH CLI and jq
               run: |
-                  sudo apt-get update
+                  sudo apt-get update -y
                   sudo apt-get install -y gh jq
+
+            # --- Check for open issues before doing anything ---
+            - name: Check for open issues
+              id: check-issues
+              env:
+                  GH_TOKEN: ${{ secrets.GH_PAT }}
+              run: |
+                  OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+                  REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+
+                  OPEN_COUNT=$(gh api repos/$OWNER/$REPO/issues?state=open --paginate --jq 'map(select(.pull_request == null)) | length')
+                  echo "Open issues: $OPEN_COUNT"
+
+                  if [ "$OPEN_COUNT" -eq 0 ]; then
+                      echo "no_open_issues=true" >> $GITHUB_OUTPUT
+                  else
+                      echo "no_open_issues=false" >> $GITHUB_OUTPUT
+                  fi
+
+            # --- Stop workflow early if there are no open issues ---
+            - name: Stop if no open issues
+              if: steps.check-issues.outputs.no_open_issues == 'true'
+              run: |
+                  echo "No open issues detected. Skipping documentation update."
+                  exit 0
 
             # --- Collect Issues ---
             - name: Collect Issues
@@ -50,20 +73,14 @@ jobs:
             # --- Backup and commit docs ---
             - name: Backup and commit docs
               run: |
-                  # Run the backup script (creates backup folder, ignores .gitkeep, prunes old)
                   ./.github/scripts/backup-docs.sh
 
-                  # Configure Git identity for this workflow run
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
 
-                  # Ensure .tracking is tracked in Git
                   git add .tracking/.gitkeep
-
-                  # Add all new backups (ignores .gitkeep)
                   git add .tracking/*
 
-                  # Commit only if there are changes
                   if ! git diff --cached --quiet; then
                       HASH=$(git rev-parse --short HEAD)
                       git commit -m "Docs: backup Changelog and Todo for $HASH"

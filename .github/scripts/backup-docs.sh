@@ -3,7 +3,7 @@ set -e
 
 # --- Config ---
 BACKUP_ROOT=".tracking"
-MAX_BACKUPS=30
+MAX_BACKUPS=10
 FILES_TO_BACKUP=("Changelog.md" "Todo.md")
 GITKEEP=".gitkeep"
 
