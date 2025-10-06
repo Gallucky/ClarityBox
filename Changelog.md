@@ -14,6 +14,7 @@ The following tags are used throughout the changelog to categorize changes based
 
 | Issue # | Completed At | Title | Labels |
 |:------:|:------------:|:-----|:-----|
+| [86](https://github.com/Gallucky/ClarityBox/issues/86) | 06/10/2025 | Automate backup of Changelog & Todo docs per workflow run | `✨ Enhancement`<br>`📚 Documentation`<br>`📌 Priority: High` |
 | [85](https://github.com/Gallucky/ClarityBox/issues/85) | 06/10/2025 | Stop workflow if no open issues | `🔨 Fix`<br>`📚 Documentation`<br>`📌 Priority: Low` |
 | [84](https://github.com/Gallucky/ClarityBox/issues/84) | 06/10/2025 | Add icons to issue labels | `✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 UI` |
 | [83](https://github.com/Gallucky/ClarityBox/issues/83) | 06/10/2025 | Correct backup folder naming | `🔨 Fix`<br>`📚 Documentation`<br>`📌 Priority: Medium` |
@@ -30,6 +31,7 @@ The following tags are used throughout the changelog to categorize changes based
 
 | Issue # | Completed At | Title | Labels |
 |:------:|:------------:|:-----|:-----|
+| [86](https://github.com/Gallucky/ClarityBox/issues/86) | 06/10/2025 | Automate backup of Changelog & Todo docs per workflow run | `✨ Enhancement`<br>`📚 Documentation`<br>`📌 Priority: High` |
 | [85](https://github.com/Gallucky/ClarityBox/issues/85) | 06/10/2025 | Stop workflow if no open issues | `🔨 Fix`<br>`📚 Documentation`<br>`📌 Priority: Low` |
 | [84](https://github.com/Gallucky/ClarityBox/issues/84) | 06/10/2025 | Add icons to issue labels | `✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 UI` |
 | [83](https://github.com/Gallucky/ClarityBox/issues/83) | 06/10/2025 | Correct backup folder naming | `🔨 Fix`<br>`📚 Documentation`<br>`📌 Priority: Medium` |
