@@ -68,16 +68,15 @@ jobs:
                     echo "No changes to commit"
                   fi
 
-            # --- Commit backups to tracking branch separately ---
-            - name: Commit backups to tracking branch
+            # --- Commit backups to tracking branch ---
+            - name: Checkout tracking branch
               uses: actions/checkout@v4
               with:
-                  ref: tracking # checkout the tracking branch
+                  ref: tracking
                   path: tracking-branch # separate folder
 
             - name: Copy backups to tracking branch
               run: |
-                  mkdir -p tracking-branch/.tracking
                   cp -r .tracking/* tracking-branch/.tracking/
                   cd tracking-branch
                   git config user.name "GitHub Actions Bot"

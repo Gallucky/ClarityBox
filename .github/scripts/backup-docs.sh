@@ -17,10 +17,11 @@ if [ ! -f "$BACKUP_ROOT/$GITKEEP" ]; then
 fi
 
 # --- Get current commit hash ---
-HASH=$(git rev-parse --short HEAD)
+HASH=$(git rev-parse --short HEAD || echo "nohash")
 
-# --- Create backup folder with branch + timestamp + hash ---
-TIMESTAMP=$(date +'%d-%m-%Y_%H-%M-%S')
+# --- Create unique backup folder ---
+# Include branch name, full timestamp, and commit hash
+TIMESTAMP=$(date +'%d-%m-%Y_%H-%M-%S-%3N')  # milliseconds for uniqueness
 BACKUP_DIR="$BACKUP_ROOT/${BRANCH_NAME}_${TIMESTAMP}_$HASH"
 mkdir -p "$BACKUP_DIR"
 
@@ -33,5 +34,5 @@ done
 
 echo "Backup created at $BACKUP_DIR"
 
-# --- No pruning needed ---
-echo "No pruning required: all backups are preserved in tracking branch."
+# --- No pruning required ---
+echo "All backups are preserved in the tracking branch."
