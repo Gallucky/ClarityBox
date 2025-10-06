@@ -37,7 +37,7 @@ Read-Host
 foreach ($issue in $issues) {
     $title = $issue.Title
     $body = $bodyPrefix + ($issue.Body -replace '\\n', "`n")  # Prepend prefix and convert literal \n
-    $labels = $issue.Labels -replace '\s+', ''  # Clean up spaces
+    $labels = $issue.Labels
 
     Write-Host "Creating issue: $title" -ForegroundColor Magenta
 
