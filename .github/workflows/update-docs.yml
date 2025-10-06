@@ -77,6 +77,7 @@ jobs:
 
             - name: Copy backups to tracking branch
               run: |
+                  mkdir -p tracking-branch/.tracking
                   cp -r .tracking/* tracking-branch/.tracking/
                   cd tracking-branch
                   git config user.name "GitHub Actions Bot"
@@ -88,3 +89,4 @@ jobs:
                     git push origin tracking
                   else
                     echo "No backups to commit"
+                  fi
