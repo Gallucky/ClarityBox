@@ -42,6 +42,10 @@ jobs:
             - name: Backup current docs
               run: node .github/scripts/backup-docs.js
 
+            # --- Verify backup folder was created ---
+            - name: List .tracking contents
+              run: ls -l .tracking
+
             # --- Generate updated docs ---
             - name: Generate docs
               run: node .github/scripts/update-docs.js
@@ -60,15 +64,21 @@ jobs:
                     echo "No changes to commit"
                   fi
 
-            # --- Commit backups to tracking branch ---
+            # --- Checkout tracking branch in separate folder ---
             - name: Checkout tracking branch
               uses: actions/checkout@v4
               with:
                   ref: tracking
-                  path: tracking-branch # separate folder
+                  path: tracking-branch
 
+            # --- Ensure .tracking exists in tracking branch ---
+            - name: Ensure .tracking folder exists
+              run: mkdir -p tracking-branch/.tracking
+
+            # --- Copy backup folder into tracking branch ---
             - name: Copy backups to tracking branch
               run: |
+                  # Copy all newly created backup folders
                   cp -r .tracking/* tracking-branch/.tracking/
                   cd tracking-branch
                   git config user.name "GitHub Actions Bot"
@@ -76,7 +86,7 @@ jobs:
                   git add .tracking
                   if ! git diff --cached --quiet; then
                     TIMESTAMP=$(date +'%d-%m-%Y_%H-%M-%S')
-                    git commit -m "backup: docs backup $TIMESTAMP - $GITHUB_SHA"
+                    git commit -m "Backup: Docs backup $TIMESTAMP - $GITHUB_SHA"
                     git push origin tracking
                   else
                     echo "No backups to commit"
