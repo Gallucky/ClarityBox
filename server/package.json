@@ -8,7 +8,6 @@
         "dev": "cross-env ENV=development nodemon .",
         "start": "cross-env ENV=production node .",
         "lint": "npx eslint . > eslint-report.log",
-        "track-commit": "node ./scripts/track-commit.js",
         "diff": "git diff > .git-diff",
         "status": "git status && git status > .git-status"
     },
