@@ -2,8 +2,9 @@ name: Update Tracking Docs
 
 on:
     workflow_dispatch:
+    # --- The script runs weekly --- #
     schedule:
-        - cron: "0 0 * * 0" # weekly
+        - cron: "0 0 * * 0"
 
 permissions:
     contents: write
@@ -13,46 +14,37 @@ permissions:
 jobs:
     update-docs:
         runs-on: ubuntu-latest
-
         steps:
+            # --- Checkout repository ---
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
-            - name: Install GH CLI and jq
+            # --- Install GH CLI ---
+            - name: Install GH CLI
               run: |
                   sudo apt-get update -y
-                  sudo apt-get install -y gh jq
+                  sudo apt-get install -y gh
 
-            - name: Collect Issues
+            # --- Setup Node ---
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            # --- Collect issues using Node.js ---
+            - name: Collect Issues (JS)
               env:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
-              run: |
-                  OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
-                  REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
-                  gh api repos/$OWNER/$REPO/issues?state=all --paginate \
-                    --jq '[.[] | select(.pull_request == null) | {number, title, state, url: .html_url, labels: [.labels[].name], closed_at, created_at, pull_request}]' \
-                    > issues.json
+              run: node .github/scripts/collect-issues.js
 
-            - name: Stop if no open issues
-              id: check-issues
-              run: |
-                  OPEN_COUNT=$(jq '[.[] | select(.state != "closed")] | length' issues.json)
-                  echo "open_issues=$OPEN_COUNT" >> $GITHUB_OUTPUT
-            - name: Exit if none
-              if: steps.check-issues.outputs.open_issues == '0'
-              run: exit 0
-
-            - name: Make scripts executable
-              run: chmod +x .github/scripts/*.sh
-
-            # --- Backup current docs locally ---
+            # --- Backup current docs ---
             - name: Backup current docs
-              run: ./.github/scripts/backup-docs.sh
+              run: node .github/scripts/backup-docs.js
 
-            # --- Generate new docs ---
+            # --- Generate updated docs ---
             - name: Generate docs
-              run: ./.github/scripts/update-docs.sh
+              run: node .github/scripts/update-docs.js
 
             # --- Commit updates to dev branch ---
             - name: Commit updates to dev
@@ -62,11 +54,10 @@ jobs:
                   git checkout dev
                   git add Changelog.md Todo.md
                   if ! git diff --cached --quiet; then
-                    git commit -m "docs: update tracking documentation"
+                    git commit -m "Docs: Update tracking documentation"
                     git push origin dev
                   else
                     echo "No changes to commit"
-                  fi
 
             # --- Commit backups to tracking branch ---
             - name: Checkout tracking branch
