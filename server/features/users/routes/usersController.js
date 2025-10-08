@@ -204,6 +204,7 @@ router.put("/:id", auth, async (req, res) => {
 //region | ------ Patch ------ |
 
 // Todo: To think about patch related requests and if it is necessary / can be included in the MVP.
+// 1) Allow admin users to block/ban a user.
 
 //endregion | ------ Patch ------ |
 
