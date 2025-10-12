@@ -1,13 +1,5 @@
+require("module-alias/register");
 const dotenv = require("dotenv");
-const express = require("express");
-const app = express();
-const chalk = require("chalk");
-const cors = require("./middlewares/cors");
-const logger = require("./logger/loggerService");
-const router = require("./router/router");
-const { handleWebError } = require("./utils/handleErrors");
-const Log = require("./logger/loggers/customLogger");
-const currentDate = require("./utils/timeStamp");
 
 const getEnv = () => {
     return process.env.ENV === "production" ? ".env.production" : ".env.development";
@@ -18,6 +10,16 @@ dotenv.config({ path: ".env" });
 
 // Environment-specific configuration (overrides global).
 dotenv.config({ path: getEnv() });
+
+const express = require("express");
+const app = express();
+const chalk = require("chalk");
+const cors = require("./middlewares/cors");
+const logger = require("./logger/loggerService");
+const router = require("./router/router");
+const { handleWebError } = require("./utils/handleErrors");
+const Log = require("./logger/loggers/customLogger");
+const currentDate = require("./utils/timeStamp");
 
 // Middleware - App Level.
 app.use(cors);

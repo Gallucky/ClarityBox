@@ -38,7 +38,8 @@ ClarityBox is a full-stack web application combining:
 
 | Version | Status | Summary |
 | :-- | :-: | :-- |
-| Next | 🏗️ | Fixing CI/CD workflows, changing the backup scripts logic,<br>Migrating from ShellScript to JavaScript and changes to the README files... |
+| Next | 🏗️ | Working on MVP CRUD routes |
+| [`v0.1.2-alpha`](https://github.com/Gallucky/ClarityBox/releases/tag/v0.1.2-alpha) | ✅ | Fixing CI/CD workflows, changing the backup scripts logic,<br>Migrating from ShellScript to JavaScript and changes to the README files... |
 | [`v0.1.1-alpha`](https://github.com/Gallucky/ClarityBox/releases/tag/v0.1.1-alpha) | ✅ | Stabilizing CI/CD pipelines |
 | [`v0.1.0-alpha`](https://github.com/Gallucky/ClarityBox/releases/tag/v0.1.0-alpha) | ✅ | Backend foundation — Auth system, user module, and architecture |
 

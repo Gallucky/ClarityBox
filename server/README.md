@@ -88,7 +88,6 @@ Moving it elsewhere will break the relative links to files and folders.
 #### Default Environment Variables
 
 ```bash
-ENV=<this will contain the environment - development or production>
 TOKEN_GENERATOR=<enter the token generator>
 TOKEN_SECRET_KEY=<enter the secret key for encoding/decoding a token (token signing)>
 ```
@@ -96,6 +95,7 @@ TOKEN_SECRET_KEY=<enter the secret key for encoding/decoding a token (token sign
 #### Development Environment Variables
 
 ```bash
+ENV=Development
 PORT=<enter the development port>
 TOKEN_VALID_DURATION=<enter the token validity duration in development>
 ```
@@ -103,6 +103,7 @@ TOKEN_VALID_DURATION=<enter the token validity duration in development>
 #### Production Environment Variables
 
 ```bash
+ENV=Production
 PORT=<enter the production port>
 TOKEN_VALID_DURATION=<enter the token validity duration in production>
 ALLOWED_ORIGINS=<enter the list of allowed origins - multiple origins separated by commas with no spaces>
@@ -141,10 +142,10 @@ npm run start
 
 | Endpoint | Method | Description | Permission Level | MVP |
 | :-- | :-: | :-- | :-- | --- |
-| `/users/` | POST | Register new user | Everyone | ✅ |
-| `/users/login` | POST | Login-in and authenticate a user | Everyone | ✅ |
 | `/users/:id` | GET | Get User | The referenced user or admin | ✅ |
 | `/users/` | GET | Get All Users | Admin | ❌ |
+| `/users/` | POST | Register new user | Everyone | ✅ |
+| `/users/login` | POST | Login-in and authenticate a user | Everyone | ✅ |
 | `/users/:id` | PUT | Update User | The referenced user | ✅ |
 | `/users/:id` | PATCH | Block a user | Admin | ❌ |
 | `/users/ban/:id` | PATCH | Ban a user | Admin | ❌ |
