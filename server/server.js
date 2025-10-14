@@ -22,6 +22,7 @@ const cors = require("@middlewares/cors");
 const logger = require("@logger/loggerService");
 const router = require("@router/router");
 const { handleWebError } = require("@utils/handleErrors");
+const connectToDb = require("@DB/dbService");
 
 // Middleware - App Level.
 app.use(cors);
@@ -40,5 +41,6 @@ app.use((err, req, res) => {
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     Log.info(`[Server]: Listening...`, { override: true });
+    connectToDb();
     // Todo: connect to DB here and add generate methods for initial data.
 });

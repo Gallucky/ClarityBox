@@ -21,7 +21,18 @@ const handleWebError = (res, status, err) => {
 };
 
 const handleBadRequest = async (validator, error) => {
-    const errorMessage = validator + " Error: " + error;
+    let errorMessage = error.message;
+    if (errorMessage.includes("[") && errorMessage.includes("]:")) {
+        errorMessage = errorMessage.substring(1);
+        errorMessage = "[" + validator + " - " + errorMessage;
+    } else if (errorMessage.includes(": ")) {
+        errorMessagePrefix = errorMessage.substring(0, errorMessage.indexOf(": ")) + "]: ";
+        errorMessage = errorMessage.substring(errorMessage.indexOf(": ") + 2);
+        errorMessage = "[" + validator + " - " + errorMessagePrefix + errorMessage;
+    } else {
+        errorMessage = "[" + validator + " Error]: " + error.message;
+    }
+
     error.message = errorMessage;
     error.status = error.status || 400;
 

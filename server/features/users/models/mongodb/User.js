@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { DEFAULT_VALIDATION, EMAIL } = require("@utils/globalValidations");
+const { DEFAULT_VALIDATION, EMAIL, CREATED_AT, PASSWORD } = require("@utils/globalValidations");
 const NameSchema = require("./Name");
 const ProfileImageSchema = require("./ProfileImage");
 
@@ -8,11 +8,7 @@ const UserSchema = new mongoose.Schema({
     name: NameSchema,
     nickname: { ...DEFAULT_VALIDATION, unique: true },
     email: EMAIL,
-    password: {
-        type: String,
-        required: true,
-        match: RegExp(/^(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{9,}$/),
-    },
+    password: PASSWORD,
     profileImage: ProfileImageSchema,
     isAdmin: {
         type: Boolean,

@@ -6,6 +6,8 @@
 // These validations are not dynamic and do not require
 // any external data or context to function.
 
+const mongoose = require("mongoose");
+
 const URL = {
     type: String,
     match: RegExp(
@@ -33,6 +35,12 @@ const EMAIL = {
     unique: true,
 };
 
+const PASSWORD = {
+    type: String,
+    required: true,
+    match: RegExp(/^(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{9,}$/),
+};
+
 const PHONE = {
     type: String,
     required: true,
@@ -58,6 +66,7 @@ module.exports = {
     URL,
     DEFAULT_VALIDATION,
     EMAIL,
+    PASSWORD,
     PHONE,
     CREATED_AT,
     CREATED_BY,

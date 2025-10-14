@@ -1,3 +1,42 @@
+const {
+    find,
+    findOne,
+    register,
+    login,
+    update,
+    remove,
+} = require("@features/users/models/usersDataAccessService");
+const {
+    validateRegistration,
+    validateLogin,
+} = require("@features/users/validations/userValidationService");
+const normalizeUser = require("@features/users/helpers/normalizeUser");
+const { generateUserPassword } = require("@features/users/helpers/bcrypt");
+
+//region | ====== Get ====== |
+
+exports.getUsers = async () => {
+    try {
+        const users = await find();
+        return Promise.resolve(users);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+exports.getUser = async (userId) => {
+    try {
+        const user = await findOne(userId);
+        return Promise.resolve(user);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+//endregion | ====== Get ====== |
+
+//region | ====== Post ====== |
+
 exports.registerUser = async (rawUser) => {
     try {
         const { error } = validateRegistration(rawUser);
@@ -16,12 +55,50 @@ exports.registerUser = async (rawUser) => {
     }
 };
 
-exports.loginUser = async (user) => {};
+exports.loginUser = async (user) => {
+    try {
+        const { error } = validateLogin(user);
 
-exports.getUsers = async () => {};
+        if (error) {
+            return Promise.reject(error);
+        }
 
-exports.getUser = async (userId) => {};
+        user = await login(user);
+        return Promise.resolve(user);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
 
-exports.updateUser = async (userId, rawUser) => {};
+//endregion | ====== Post ====== |
 
-exports.deleteUser = async (userId) => {};
+//region | ====== Put ====== |
+
+exports.updateUser = async (userId, rawUser) => {
+    try {
+        let user = normalizeUser(rawUser);
+        user = await update(userId, user);
+        return Promise.resolve(user);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+//endregion | ====== Put ====== |
+
+//region | ====== Patch ====== |
+
+//endregion | ====== Patch ====== |
+
+//region | ====== Delete ====== |
+
+exports.deleteUser = async (userId) => {
+    try {
+        const user = await remove(userId);
+        return Promise.resolve(user);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+//endregion | ====== Delete ====== |

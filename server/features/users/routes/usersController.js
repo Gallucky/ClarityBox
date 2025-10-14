@@ -2,7 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 // Requiring the usersService methods.
-
+const {
+    getUser,
+    getUsers,
+    registerUser,
+    loginUser,
+    updateUser,
+    deleteUser,
+} = require("@features/users/services/usersService");
 const { auth } = require("@auth/authService");
 const RouterLogger = require("@logger/loggers/customLogger");
 const { handleWebError } = require("@utils/handleErrors");
@@ -149,7 +156,7 @@ router.post("/login", async (req, res) => {
         const user = await loginUser(req.body);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, 500, error);
+        return handleWebError(res, error.status || 500, error);
     }
 });
 
