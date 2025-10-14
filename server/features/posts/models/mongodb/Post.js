@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
-const {
-    CREATED_AT,
-    CREATED_BY,
-    DEFAULT_VALIDATION,
-    USER_ID,
-} = require("../../../../utils/globalValidations");
+const { CREATED_AT, CREATED_BY, DEFAULT_VALIDATION, USER_ID } = require("@utils/globalValidations");
 
 // Defining the Post schema.
 const PostSchema = new mongoose.Schema({

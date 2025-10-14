@@ -3,9 +3,9 @@ const router = express.Router();
 
 // Requiring the usersService methods.
 
-const { auth } = require("../../../auth/authService");
-const RouterLogger = require("../../../logger/loggers/customLogger");
-const { handleWebError } = require("../../../utils/handleErrors");
+const { auth } = require("@auth/authService");
+const RouterLogger = require("@logger/loggers/customLogger");
+const { handleWebError } = require("@utils/handleErrors");
 
 //region | ------ Get ------ |
 

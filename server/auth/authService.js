@@ -1,5 +1,5 @@
 const { verifyToken } = require("./Providers/jwt");
-const { handleWebError } = require("../utils/handleErrors");
+const { handleWebError } = require("@utils/handleErrors");
 
 const tokenGenerator = process.env.TOKEN_GENERATOR;
 

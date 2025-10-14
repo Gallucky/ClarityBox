@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
-const {
-    DEFAULT_VALIDATION,
-    CREATED_BY,
-    CREATED_AT,
-} = require("../../../../utils/globalValidations");
+const { DEFAULT_VALIDATION, CREATED_BY, CREATED_AT } = require("@utils/globalValidations");
 
 // Defining the Task schema.
 const TaskSchema = new mongoose.Schema({

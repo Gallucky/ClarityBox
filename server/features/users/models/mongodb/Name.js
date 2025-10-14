@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { DEFAULT_VALIDATION } = require("../../../../utils/globalValidations");
+const { DEFAULT_VALIDATION } = require("@utils/globalValidations");
 
 // Defining the Name schema.
 const NameSchema = new mongoose.Schema({

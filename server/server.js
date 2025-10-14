@@ -1,3 +1,6 @@
+// Module alias configuration.
+// This line allows the use of the @ prefixes and aliases in the project.
+// Using the module alias package.
 require("module-alias/register");
 const dotenv = require("dotenv");
 
@@ -13,13 +16,12 @@ dotenv.config({ path: getEnv() });
 
 const express = require("express");
 const app = express();
-const chalk = require("chalk");
-const cors = require("./middlewares/cors");
-const logger = require("./logger/loggerService");
-const router = require("./router/router");
-const { handleWebError } = require("./utils/handleErrors");
-const Log = require("./logger/loggers/customLogger");
-const currentDate = require("./utils/timeStamp");
+const Log = require("@logger/loggers/customLogger");
+
+const cors = require("@middlewares/cors");
+const logger = require("@logger/loggerService");
+const router = require("@router/router");
+const { handleWebError } = require("@utils/handleErrors");
 
 // Middleware - App Level.
 app.use(cors);
@@ -37,6 +39,6 @@ app.use((err, req, res) => {
 // Server configurations.
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-    Log.info(chalk.cyanBright(`\n${currentDate()} [server] Listening...`));
+    Log.info(`[Server]: Listening...`, { override: true });
     // Todo: connect to DB here and add generate methods for initial data.
 });

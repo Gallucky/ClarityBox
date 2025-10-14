@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 const morgan = require("morgan");
-const currentDate = require("../../utils/timeStamp");
+const currentDate = require("@utils/timeStamp");
 const fs = require("fs");
 const { appendFile } = fs.promises;
 

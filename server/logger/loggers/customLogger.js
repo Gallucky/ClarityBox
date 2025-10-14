@@ -1,7 +1,8 @@
 const winston = require("winston");
 const { combine, timestamp, printf } = winston.format;
 const chalk = require("chalk");
-const getLocationFromErrorStack = require("../../utils/getLocationFormatted");
+const getLocationFromErrorStack = require("@utils/getLocationFormatted");
+const { override } = require("joi");
 
 // Defining custom log levels for the logger.
 const customLevels = { get: 0, post: 1, put: 2, patch: 3, delete: 4, info: 5 };
@@ -36,6 +37,9 @@ const RouteLoggerBase = winston.createLogger({
                 case "delete":
                     color = chalk.hex("#FF5719");
                     break;
+                case "info":
+                    color = chalk.cyan;
+                    break;
                 default:
                     color = chalk.white;
             }
@@ -55,7 +59,11 @@ const RouteLoggerBase = winston.createLogger({
  * @param routeName The name of the route or section from where the log message was called from. [Optional]
  * @param errLoc An error object created in the method call that it can get the location information/data from. [Optional - Without it the location will be unknown]
  */
-const log = (level, msg, routeName, errLoc) => {
+const log = (level, msg, options = { routeName, errLoc, override }) => {
+    const { routeName, errLoc, override } = options;
+
+    if (override) return RouteLoggerBase.log(level, msg);
+
     let stack;
     if (errLoc) stack = errLoc.stack;
     const location = getLocationFromErrorStack(stack);
@@ -73,12 +81,12 @@ const log = (level, msg, routeName, errLoc) => {
 // where the method was called and also
 // avoiding logger levels inconsistencies.
 const RouteLogger = {
-    get: (msg, routeName, errLoc) => log("get", msg, routeName, errLoc),
-    post: (msg, routeName, errLoc) => log("post", msg, routeName, errLoc),
-    put: (msg, routeName, errLoc) => log("put", msg, routeName, errLoc),
-    patch: (msg, routeName, errLoc) => log("patch", msg, routeName, errLoc),
-    delete: (msg, routeName, errLoc) => log("delete", msg, routeName, errLoc),
-    info: (msg, routeName, errLoc) => log("info", msg, routeName, errLoc),
+    get: (msg, routeName, errLoc) => log("get", msg, { routeName, errLoc }),
+    post: (msg, routeName, errLoc) => log("post", msg, { routeName, errLoc }),
+    put: (msg, routeName, errLoc) => log("put", msg, { routeName, errLoc }),
+    patch: (msg, routeName, errLoc) => log("patch", msg, { routeName, errLoc }),
+    delete: (msg, routeName, errLoc) => log("delete", msg, { routeName, errLoc }),
+    info: (msg, options = { routeName, errLoc: {}, override: false }) => log("info", msg, options),
 };
 
 module.exports = RouteLogger;
