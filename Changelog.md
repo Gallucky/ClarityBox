@@ -12,12 +12,16 @@ The following tags are used throughout the changelog to categorize changes based
 
 ### 🏁 Tasks Completed Today
 
-> No tasks were completed today.
+| Issue # | Completed At | Title | Labels |
+|:------:|:------------:|:-----|:-----|
+| [91](https://github.com/Gallucky/ClarityBox/issues/91) | 15/10/2025 | Users CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
 
 ### 📋 All Completed Tasks
 
 | Issue # | Completed At | Title | Labels |
 |:------:|:------------:|:-----|:-----|
+| [91](https://github.com/Gallucky/ClarityBox/issues/91) | 15/10/2025 | Users CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
+| [5](https://github.com/Gallucky/ClarityBox/issues/5) | 14/10/2025 | Add password hashing with bcrypt in User model hooks | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP` |
 | [86](https://github.com/Gallucky/ClarityBox/issues/86) | 06/10/2025 | Automate backup of Changelog & Todo docs per workflow run | `✨ Enhancement`<br>`📚 Documentation`<br>`📌 Priority: High` |
 | [85](https://github.com/Gallucky/ClarityBox/issues/85) | 06/10/2025 | Stop workflow if no open issues | `🔨 Fix`<br>`📚 Documentation`<br>`📌 Priority: Low` |
 | [84](https://github.com/Gallucky/ClarityBox/issues/84) | 06/10/2025 | Add icons to issue labels | `✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 UI` |
