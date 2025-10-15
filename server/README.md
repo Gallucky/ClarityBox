@@ -146,49 +146,49 @@ npm run start
 | `/users/` | GET | Get All Users | Admin | ❌ | ✅ |
 | `/users/` | POST | Register new user | Everyone | ✅ | ✅ |
 | `/users/login` | POST | Login-in and authenticate a user | Everyone | ✅ | ✅ |
-| `/users/:id` | PUT | Update User | The referenced user | ✅ | 🧪 |
+| `/users/:id` | PUT | Update User | The referenced user | ✅ | ✅ |
 | `/users/:id` | PATCH | Block a user | Admin | ❌ | ❌ |
 | `/users/ban/:id` | PATCH | Ban a user | Admin | ❌ | ❌ |
-| `/users/:id` | DELETE | Delete User | The referenced user or admin | ✅ | 🧪 |
+| `/users/:id` | DELETE | Delete User | The referenced user or admin | ✅ | ✅ |
 
 ### Posts Endpoints
 
-| Endpoint | Method | Description | Permission Level | MVP |
-| :-- | :-: | :-- | :-- | --- |
-| `/posts?visibility=public/:id` | GET | Get Public Post | Everyone | ✅ |
-| `/posts?visibility=public` | GET | Get All Public Posts | Everyone | ✅ |
-| `/posts/:id` | GET | Get Post | The creator of the post or an admin user | ✅ |
-| `/posts/` | GET | Get All Posts | Admin | ✅ |
-| `/posts/my-posts` | GET | Get All of my Posts | Authenticated User | ✅ |
-| `/posts/` | POST | Create a Post | Authenticated User | ✅ |
-| `/posts/` | PUT | Update / edit a Post | The creator of the post | ✅ |
-| `/posts/:id/like` | PATCH | Like a Post | Authenticated User | ❌ |
-| `/posts/:id/comment` | PATCH | Comment on a Post | Authenticated User | ❌ |
-| `/posts/:id/favorite` | PATCH | Favorite a Post | Authenticated User | ❌ |
-| `/posts/:id/share` | PATCH | Share a Post | Authenticated User | ❌ |
-| `/posts/:id` | DELETE | Delete a Post | The creator of the post or an admin user | ✅ |
+| Endpoint | Method | Description | Permission Level | MVP | Status |
+| :-- | :-: | :-- | :-- | --- | :-: |
+| `/posts?visibility=public/:id` | GET | Get Public Post | Everyone | ✅ | 🏗️ |
+| `/posts?visibility=public` | GET | Get All Public Posts | Everyone | ✅ | 🏗️ |
+| `/posts/:id` | GET | Get Post | The creator of the post or an admin user | ✅ | 🏗️ |
+| `/posts/` | GET | Get All Posts | Admin | ✅ | 🏗️ |
+| `/posts/my-posts` | GET | Get All of my Posts | Authenticated User | ✅ | 🏗️ |
+| `/posts/` | POST | Create a Post | Authenticated User | ✅ | 🏗️ |
+| `/posts/` | PUT | Update / edit a Post | The creator of the post | ✅ | 🏗️ |
+| `/posts/:id/like` | PATCH | Like a Post | Authenticated User | ❌ | ❌ |
+| `/posts/:id/comment` | PATCH | Comment on a Post | Authenticated User | ❌ | ❌ |
+| `/posts/:id/favorite` | PATCH | Favorite a Post | Authenticated User | ❌ | ❌ |
+| `/posts/:id/share` | PATCH | Share a Post | Authenticated User | ❌ | ❌ |
+| `/posts/:id` | DELETE | Delete a Post | The creator of the post or an admin user | ✅ | 🏗️ |
 
 ### Projects Endpoints
 
-| Endpoint | Method | Description | Permission Level | MVP |
-| :-- | :-: | :-- | :-- | --- |
-| `/projects` | POST | Create a Project | Authenticated User | ✅ |
-| `/projects/:id` | GET | Get Public Project | Everyone | ✅ |
-| `/projects?visibility=public` | GET | Get All Public Projects | Everyone | ✅ |
-| `/projects/` | GET | Get All Projects | Admin | ✅ |
-| `/projects/` | PUT | Update / edit a Project | The creator of the project | ✅ |
-| `/projects/:id` | DELETE | Delete a Project | The creator of the project or an admin user | ✅ |
+| Endpoint | Method | Description | Permission Level | MVP | Status |
+| :-- | :-: | :-- | :-- | --- | :-: |
+| `/projects` | POST | Create a Project | Authenticated User | ✅ | ⏳ |
+| `/projects/:id` | GET | Get Public Project | Everyone | ✅ | ⏳ |
+| `/projects?visibility=public` | GET | Get All Public Projects | Everyone | ✅ | ⏳ |
+| `/projects/` | GET | Get All Projects | Admin | ✅ | ⏳ |
+| `/projects/` | PUT | Update / edit a Project | The creator of the project | ✅ | ⏳ |
+| `/projects/:id` | DELETE | Delete a Project | The creator of the project or an admin user | ✅ | ❌ |
 
 ### Tasks Endpoints
 
-| Endpoint | Method | Description | Permission Level | MVP |
-| :-- | :-: | :-- | :-- | --- |
-| `/tasks/:id` | GET | Get Task | Creator of the task or an admin user | ✅ |
-| `/tasks/` | GET | Get All Tasks | Admin | ❌ |
-| `/tasks` | POST | Create a Task | Authenticated User | ✅ |
-| `/tasks/` | PUT | Update / edit a Task | The creator of the task | ✅ |
-| `/tasks/mark-completed/:id` | PATCH | Complete a Task | The creator of the task or an admin user | ❌ |
-| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ |
+| Endpoint | Method | Description | Permission Level | MVP | Status |
+| :-- | :-: | :-- | :-- | --- | :-: |
+| `/tasks/:id` | GET | Get Task | Creator of the task or an admin user | ✅ | ⏳ |
+| `/tasks/` | GET | Get All Tasks | Admin | ❌ | ❌ |
+| `/tasks` | POST | Create a Task | Authenticated User | ✅ | ⏳ |
+| `/tasks/` | PUT | Update / edit a Task | The creator of the task | ✅ | ⏳ |
+| `/tasks/mark-completed/:id` | PATCH | Complete a Task | The creator of the task or an admin user | ❌ | ❌ |
+| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | ⏳ |
 
 ## 📝 Notes
 
