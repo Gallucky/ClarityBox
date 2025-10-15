@@ -17,10 +17,16 @@ const handleWebError = (res, status, err) => {
     }
 
     console.error(chalk.redBright(shownErrorMessage));
-    res.status(status).send(message);
+    res.status(status || 500).send(message);
 };
 
 const handleBadRequest = async (validator, error) => {
+    if (validator === "Joi") {
+        let errorMessage = "[Joi Validation Error]: " + error.details[0].message;
+        error.message = errorMessage;
+        return Promise.reject(error);
+    }
+
     let errorMessage = error.message;
     if (errorMessage.includes("[") && errorMessage.includes("]:")) {
         errorMessage = errorMessage.substring(1);
@@ -40,9 +46,8 @@ const handleBadRequest = async (validator, error) => {
 };
 
 const handleJoiError = async (error) => {
-    const joiError = new Error(error.details[0].message);
-
-    return handleBadRequest("Joi", joiError);
+    error.status = 400;
+    return handleBadRequest("Joi", error);
 };
 
 module.exports = {

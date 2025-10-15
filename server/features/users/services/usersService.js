@@ -12,6 +12,7 @@ const {
 } = require("@features/users/validations/userValidationService");
 const normalizeUser = require("@features/users/helpers/normalizeUser");
 const { generateUserPassword } = require("@features/users/helpers/bcrypt");
+const { handleJoiError } = require("@/utils/handleErrors");
 
 //region | ====== Get ====== |
 
@@ -42,12 +43,12 @@ exports.registerUser = async (rawUser) => {
         const { error } = validateRegistration(rawUser);
 
         if (error) {
-            return Promise.reject(error);
+            return handleJoiError(error);
         }
 
         let user = normalizeUser(rawUser);
         user.password = generateUserPassword(user.password);
-        user = register(user);
+        user = await register(user);
 
         return Promise.resolve(user);
     } catch (error) {
@@ -60,7 +61,7 @@ exports.loginUser = async (user) => {
         const { error } = validateLogin(user);
 
         if (error) {
-            return Promise.reject(error);
+            return handleJoiError(error);
         }
 
         user = await login(user);

@@ -140,16 +140,16 @@ npm run start
 
 ### Users Endpoints
 
-| Endpoint | Method | Description | Permission Level | MVP |
-| :-- | :-: | :-- | :-- | --- |
-| `/users/:id` | GET | Get User | The referenced user or admin | ✅ |
-| `/users/` | GET | Get All Users | Admin | ❌ |
-| `/users/` | POST | Register new user | Everyone | ✅ |
-| `/users/login` | POST | Login-in and authenticate a user | Everyone | ✅ |
-| `/users/:id` | PUT | Update User | The referenced user | ✅ |
-| `/users/:id` | PATCH | Block a user | Admin | ❌ |
-| `/users/ban/:id` | PATCH | Ban a user | Admin | ❌ |
-| `/users/:id` | DELETE | Delete User | The referenced user or admin | ✅ |
+| Endpoint | Method | Description | Permission Level | MVP | Status |
+| :-- | :-: | :-- | :-- | --- | :-: |
+| `/users/:id` | GET | Get User | The referenced user or admin | ✅ | ✅ |
+| `/users/` | GET | Get All Users | Admin | ❌ | ✅ |
+| `/users/` | POST | Register new user | Everyone | ✅ | ✅ |
+| `/users/login` | POST | Login-in and authenticate a user | Everyone | ✅ | ✅ |
+| `/users/:id` | PUT | Update User | The referenced user | ✅ | 🧪 |
+| `/users/:id` | PATCH | Block a user | Admin | ❌ | ❌ |
+| `/users/ban/:id` | PATCH | Ban a user | Admin | ❌ | ❌ |
+| `/users/:id` | DELETE | Delete User | The referenced user or admin | ✅ | 🧪 |
 
 ### Posts Endpoints
 

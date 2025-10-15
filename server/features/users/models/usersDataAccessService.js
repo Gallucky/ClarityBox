@@ -59,7 +59,9 @@ exports.register = async (normalizedUser) => {
             let user = await User.findOne({ email });
 
             if (user) {
-                throw new Error("User is already registered");
+                const error = new Error("User is already registered");
+                error.status = 409;
+                return handleBadRequest("Mongoose", error);
             }
 
             user = await User(normalizedUser);
@@ -103,7 +105,7 @@ exports.login = async (normalizedUser) => {
                 } else {
                     const error = new Error("The user is blocked. Try again later.");
                     error.status = 403;
-                    throw error;
+                    return handleBadRequest("Mongoose", error);
                 }
             }
 
@@ -122,7 +124,9 @@ exports.login = async (normalizedUser) => {
 
                 await user.save();
 
-                throw new Error("Authentication Error: Invalid Password");
+                const invalidPasswordError = new Error("Authentication Error: Invalid Password");
+                invalidPasswordError.status = 401;
+                return handleBadRequest("Mongoose", invalidPasswordError);
             } else {
                 // Resetting strikes on successful login!
                 user.strikes = 0;

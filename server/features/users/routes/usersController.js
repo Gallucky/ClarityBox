@@ -51,7 +51,7 @@ router.get("/", auth, async (req, res) => {
         const users = await getUsers();
         return res.send(users);
     } catch (error) {
-        return handleWebError(res, 500, error);
+        return handleWebError(res, error.status, error);
     }
 });
 
@@ -95,7 +95,7 @@ router.get("/:id", auth, async (req, res) => {
         const user = await getUser(id);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, 500, error);
+        return handleWebError(res, error.status, error);
     }
 });
 
@@ -127,7 +127,7 @@ router.post("/", async (req, res) => {
         const user = await registerUser(req.body);
         return res.status(201).send(user);
     } catch (error) {
-        return handleWebError(res, 500, error);
+        return handleWebError(res, error.status, error);
     }
 });
 
@@ -156,7 +156,7 @@ router.post("/login", async (req, res) => {
         const user = await loginUser(req.body);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, error.status || 500, error);
+        return handleWebError(res, error.status, error);
     }
 });
 
@@ -202,7 +202,7 @@ router.put("/:id", auth, async (req, res) => {
         const user = await updateUser(id, req.body);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, 500, error);
+        return handleWebError(res, error.status, error);
     }
 });
 
@@ -253,7 +253,7 @@ router.delete("/:id", auth, async (req, res) => {
         const user = await deleteUser(id);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, 500, error);
+        return handleWebError(res, error.status, error);
     }
 });
 
