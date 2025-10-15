@@ -7,7 +7,7 @@ const projectsController = require("@features/projects/routes/projectsController
 const tasksController = require("@features/tasks/routes/tasksController");
 
 router.use("/users", usersController);
-// router.use("/posts", postsController);
+router.use("/posts", postsController);
 // router.use("/projects", projectsController);
 // router.use("/tasks", tasksController);
 
