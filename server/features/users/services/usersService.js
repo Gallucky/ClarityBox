@@ -9,6 +9,7 @@ const {
 const {
     validateRegistration,
     validateLogin,
+    validateUserUpdate,
 } = require("@features/users/validations/userValidationService");
 const normalizeUser = require("@features/users/helpers/normalizeUser");
 const { generateUserPassword } = require("@features/users/helpers/bcrypt");
@@ -77,6 +78,12 @@ exports.loginUser = async (user) => {
 
 exports.updateUser = async (userId, rawUser) => {
     try {
+        const { error } = validateUserUpdate(rawUser);
+
+        if (error) {
+            return handleJoiError(error);
+        }
+
         let user = normalizeUser(rawUser);
         user = await update(userId, user);
         return Promise.resolve(user);

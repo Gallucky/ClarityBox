@@ -199,6 +199,7 @@ router.put("/:id", auth, async (req, res) => {
                 )
             );
         }
+
         const user = await updateUser(id, req.body);
         return res.send(user);
     } catch (error) {

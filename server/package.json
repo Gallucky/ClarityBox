@@ -17,8 +17,8 @@
         "dev": "cross-env ENV=development nodemon .",
         "start": "cross-env ENV=production node .",
         "lint": "npx eslint . > eslint-report.log",
-        "diff": "git diff > .git-diff",
-        "status": "git status && git status > .git-status"
+        "diff": "git diff | clip",
+        "status": "git status && git status | clip"
     },
     "keywords": [],
     "author": "",

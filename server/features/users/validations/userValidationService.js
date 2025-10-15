@@ -1,5 +1,6 @@
 const registerValidation = require("./Joi/registerValidation");
 const loginValidation = require("./Joi/loginValidation");
+const updateValidation = require("./Joi/updateValidation");
 const validator = process.env.VALIDATOR;
 
 const validateRegistration = (user) => {
@@ -14,4 +15,10 @@ const validateLogin = (user) => {
     }
 };
 
-module.exports = { validateRegistration, validateLogin };
+const validateUserUpdate = (user) => {
+    if (validator === "Joi") {
+        return updateValidation(user);
+    }
+};
+
+module.exports = { validateRegistration, validateLogin, validateUserUpdate };

@@ -1,9 +1,8 @@
 /* eslint-disable no-useless-escape */
 const Joi = require("joi");
 
-const registerValidation = (user) => {
+const updateValidation = (user) => {
     const emailRegex = /^([a-zA-Z0-9_.\-]+)@([a-zA-Z0-9_.\-]+)\.([a-zA-Z]{2,5})$/;
-    const passwordRegex = /^(?=.{9,}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\-&\^%$#@!]).+$/;
     const urlRegex =
         /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,})/;
 
@@ -39,11 +38,9 @@ const registerValidation = (user) => {
             "any.required": "Email is required",
         }),
 
-        password: Joi.string().pattern(passwordRegex).required().messages({
-            "string.empty": "Password cannot be empty",
-            "string.pattern.base":
-                "Password must be at least 9 characters, include upper and lower case letters, a number, and one of -&^%$#@!",
-            "any.required": "Password is required",
+        password: Joi.forbidden().messages({
+            "any.unknown": "Password cannot be updated through this route",
+            "any.forbidden": "Password cannot be updated through this route",
         }),
 
         profileImage: Joi.object({
@@ -69,4 +66,4 @@ const registerValidation = (user) => {
     return schema.validate(user);
 };
 
-module.exports = registerValidation;
+module.exports = updateValidation;

@@ -1,9 +1,6 @@
 const normalizeUser = (rawUser) => {
     if (!rawUser) return null;
 
-    // if (!rawUser.profileImage) rawUser.profileImage = {};
-    // if (!rawUser.name) throw new Error("Name is required");
-
     const { url, alt } = rawUser.profileImage;
     const profileImage = {
         url:
