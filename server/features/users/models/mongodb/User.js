@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const { DEFAULT_VALIDATION, EMAIL, CREATED_AT, PASSWORD } = require("@utils/globalValidations");
+const { DEFAULT_VALIDATION, CREATED_AT } = require("@utils/globalValidations");
+const { EMAIL, PASSWORD } = require("@features/users/helpers/localValidations");
 const NameSchema = require("./Name");
 const ProfileImageSchema = require("./ProfileImage");
 

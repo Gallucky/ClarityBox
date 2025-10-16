@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const key = process.env.TOKEN_SECRET_KEY;
 const tokenValidationPeriod = process.env.TOKEN_VALID_DURATION;
+const Log = require("@logger/loggers/customLogger");
 
 /**
  * Validates that all required environment variables for JWT token signing are defined.
@@ -54,7 +55,7 @@ const verifyToken = (token) => {
         const userData = jwt.verify(token, key);
         return userData;
     } catch (error) {
-        console.error(error);
+        Log.error(error.message, new Error());
         return null;
     }
 };

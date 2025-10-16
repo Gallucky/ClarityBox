@@ -6,7 +6,8 @@ const router = express.Router();
 const { auth } = require("@auth/authService");
 const RouterLogger = require("@logger/loggers/customLogger");
 const { handleWebError } = require("@utils/handleErrors");
-const { responseArrayOKContent, responseObjectOKContent } = require("@/utils/accurateStatus");
+const { responseOKContent } = require("@/utils/accurateStatus");
+const { AuthorizationError } = require("@/utils/customErrors");
 
 //region | ------ Get ------ |
 
@@ -21,10 +22,10 @@ router.get("/public", async (req, res) => {
     try {
         // Todo: Implement getPublicPosts method.
         const posts = await getPublicPosts();
-        const status = responseArrayOKContent(posts);
+        const status = responseOKContent(posts);
         return res.status(status).send(posts);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -33,15 +34,23 @@ router.get("/:id", auth, async (req, res) => {
     RouterLogger.get("Get post by id request has been received.", "GetPostById", new Error());
 
     const postId = req.params.id;
-    const { _id } = req.user;
+    const { _id, isAdmin } = req.user;
 
     try {
         // Todo: Implement getPostById method.
-        const post = await getPostById(postId, _id);
-        const status = responseObjectOKContent(post);
+        const post = await getPostById(postId);
+
+        // Todo: Add !post.isPublic check...
+        if (post.createdBy !== _id && !isAdmin) {
+            throw new AuthorizationError(
+                "Access Denied for user none other than the post's creator or admin users!"
+            );
+        }
+
+        const status = responseOKContent(post);
         return res.status(status).send(post);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -53,19 +62,15 @@ router.get("/", auth, async (req, res) => {
         const { isAdmin } = req.user;
 
         if (!isAdmin) {
-            return handleWebError(
-                res,
-                403,
-                new Error("[Authorization Error]: Access Denied for non admin users!")
-            );
+            throw new AuthorizationError("Access Denied for non admin users!");
         }
 
         // Todo: Implement getPosts method.
         const posts = await getPosts();
-        const status = responseArrayOKContent(posts);
+        const status = responseOKContent(posts);
         return res.status(status).send(posts);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -77,10 +82,10 @@ router.get("/my-posts", auth, async (req, res) => {
     try {
         // Todo: Implement getMyPosts method.
         const posts = await getMyPosts(_id);
-        const status = responseArrayOKContent(posts);
+        const status = responseOKContent(posts);
         return res.status(status).send(posts);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -92,22 +97,16 @@ router.get("/user-posts/:id", auth, async (req, res) => {
 
     try {
         if (_id !== userId && !isAdmin) {
-            return handleWebError(
-                res,
-                403,
-                new Error(
-                    "[Authorization Error]: Access Denied - Access is for the user and admin users!"
-                )
-            );
+            throw new AuthorizationError("Access Denied - Access is for the user and admin users!");
         }
 
         // Todo: Implement getUserPosts method.
         const posts = await getUserPosts(userId);
-        const status = responseArrayOKContent(posts);
+        const status = responseOKContent(posts);
 
         return res.status(status).send(posts);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -115,9 +114,44 @@ router.get("/user-posts/:id", auth, async (req, res) => {
 
 //region | ------ Post ------ |
 
+router.post("/", auth, async (req, res) => {
+    RouterLogger.post("Create post request has been received.", "CreatePost", new Error());
+
+    try {
+        const { _id } = req.user;
+        const post = await createPost(req.body, _id);
+        const status = responseOKContent(post);
+        return res.status(status).send(post);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
+
 //endregion | ------ Post ------ |
 
 //region | ------ Put ------ |
+
+router.put("/:id", auth, async (req, res) => {
+    RouterLogger.put("Update post request has been received.", "UpdatePost", new Error());
+
+    try {
+        const { _id } = req.user;
+        const postId = req.params.id;
+        const currentPost = await getPostById(postId);
+
+        if (currentPost.createdBy !== _id) {
+            throw new AuthorizationError(
+                "Access Denied - Only the post's creator can update the post information."
+            );
+        }
+
+        const post = await updatePost(postId, req.body);
+        const status = responseOKContent(post);
+        return res.status(status).send(post);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
 
 //endregion | ------ Put ------ |
 
@@ -127,4 +161,28 @@ router.get("/user-posts/:id", auth, async (req, res) => {
 
 //region | ------ Delete ------ |
 
+router.delete("/:id", auth, async (req, res) => {
+    RouterLogger.delete("Delete post request has been received.", "DeletePost", new Error());
+
+    try {
+        const { _id, isAdmin } = req.user;
+        const postId = req.params.id;
+        const currentPost = await getPostById(postId);
+
+        if (currentPost.createdBy !== _id && !isAdmin) {
+            throw new AuthorizationError(
+                "Access Denied - Only the post's creator or an admin user can delete the post."
+            );
+        }
+
+        const post = await deletePost(postId);
+        const status = responseOKContent(post);
+        return res.status(status).send(post);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
+
 //endregion | ------ Delete ------ |
+
+module.exports = router;

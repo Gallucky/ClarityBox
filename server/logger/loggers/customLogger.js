@@ -2,10 +2,9 @@ const winston = require("winston");
 const { combine, timestamp, printf } = winston.format;
 const chalk = require("chalk");
 const getLocationFromErrorStack = require("@utils/getLocationFormatted");
-const { override } = require("joi");
 
 // Defining custom log levels for the logger.
-const customLevels = { get: 0, post: 1, put: 2, patch: 3, delete: 4, info: 5 };
+const customLevels = { error: -1, get: 0, post: 1, put: 2, patch: 3, delete: 4, info: 5 };
 
 const RouteLoggerBase = winston.createLogger({
     levels: customLevels,
@@ -13,7 +12,7 @@ const RouteLoggerBase = winston.createLogger({
         // Making sure that timestamp can be used
         // and it will be formatted based on
         // the format pattern bellow.
-        timestamp({ format: "YYYY-MM-DD | HH:mm:ss" }),
+        timestamp({ format: "DD-MM-YYYY | HH:mm:ss" }),
         // This will use the different log data and will write
         // To the transports destinations in a structured way.
         printf(({ timestamp, level, message }) => {
@@ -40,12 +39,18 @@ const RouteLoggerBase = winston.createLogger({
                 case "info":
                     color = chalk.cyan;
                     break;
+                case "error":
+                    color = chalk.redBright;
+                    break;
                 default:
                     color = chalk.white;
             }
 
+            if (message.includes("[") && message.includes("]:"))
+                return color(`[${timestamp}] [CustomLogger] [${level.toUpperCase()}] ${message}`);
+
             // The message to send.
-            return color(`[${timestamp}] [${level.toUpperCase()}] ${message}`);
+            return color(`[${timestamp}] [CustomLogger] [${level.toUpperCase()}]: ${message}`);
         })
     ),
 
@@ -60,8 +65,9 @@ const RouteLoggerBase = winston.createLogger({
  * @param errLoc An error object created in the method call that it can get the location information/data from. [Optional - Without it the location will be unknown]
  */
 const log = (level, msg, options = { routeName, errLoc, override }) => {
-    const { routeName, errLoc, override } = options;
+    const { routeName, errLoc, override, prefix } = options;
 
+    if (override && prefix) return RouteLoggerBase.log(level, `[${prefix}]: ${msg}`);
     if (override) return RouteLoggerBase.log(level, msg);
 
     let stack;
@@ -87,6 +93,7 @@ const RouteLogger = {
     patch: (msg, routeName, errLoc) => log("patch", msg, { routeName, errLoc }),
     delete: (msg, routeName, errLoc) => log("delete", msg, { routeName, errLoc }),
     info: (msg, options = { routeName, errLoc: {}, override: false }) => log("info", msg, options),
+    error: (msg, errLoc) => log("error", msg, { errLoc }),
 };
 
 module.exports = RouteLogger;

@@ -28,8 +28,6 @@ const rules = {
     // --- Node Environment ---
     // Require all require() calls at the top.
     "global-require": "error",
-    // Warn about sync methods (e.g., fs.readFileSync) in async context.
-    "no-sync": "warn",
 
     // --- Style Consistency ---
     // Require semicolons.

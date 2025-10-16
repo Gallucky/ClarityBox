@@ -8,7 +8,8 @@ const logger = morgan((tokens, req, res) => {
     const logMessage =
         [
             currentDate(),
-            tokens.method(req, res),
+            "[Morgan]",
+            `[${tokens.method(req, res)}]`,
             "- url:",
             tokens.url(req, res),
             "| status:",

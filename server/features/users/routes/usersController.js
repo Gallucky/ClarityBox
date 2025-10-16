@@ -13,6 +13,8 @@ const {
 const { auth } = require("@auth/authService");
 const RouterLogger = require("@logger/loggers/customLogger");
 const { handleWebError } = require("@utils/handleErrors");
+const { AuthorizationError } = require("@/utils/customErrors");
+const { HTTP_CODES } = require("@/utils/accurateStatus");
 
 //region | ------ Get ------ |
 
@@ -41,17 +43,13 @@ router.get("/", auth, async (req, res) => {
         const { isAdmin } = req.user;
 
         if (!isAdmin) {
-            return handleWebError(
-                res,
-                403,
-                new Error("[Authorization Error]: Access Denied for non admin users!")
-            );
+            throw new AuthorizationError("Access Denied for non admin users!");
         }
 
         const users = await getUsers();
         return res.send(users);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -83,19 +81,13 @@ router.get("/:id", auth, async (req, res) => {
     try {
         const { _id, isAdmin } = req.user;
         if (_id !== id && !isAdmin) {
-            return handleWebError(
-                res,
-                403,
-                new Error(
-                    "[Authorization Error]: Access Denied - Access is for the user and admin users!"
-                )
-            );
+            throw new AuthorizationError("Access Denied - Access is for the user and admin users!");
         }
 
         const user = await getUser(id);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -125,9 +117,9 @@ router.post("/", async (req, res) => {
 
     try {
         const user = await registerUser(req.body);
-        return res.status(201).send(user);
+        return res.status(HTTP_CODES.CREATED).send(user);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -156,7 +148,7 @@ router.post("/login", async (req, res) => {
         const user = await loginUser(req.body);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -191,19 +183,15 @@ router.put("/:id", auth, async (req, res) => {
     try {
         const { _id } = req.user;
         if (_id !== id) {
-            return handleWebError(
-                res,
-                403,
-                new Error(
-                    "[Authorization Error]: Access Denied - Only the user can update his/her information."
-                )
+            throw new AuthorizationError(
+                "Access Denied - Only the user can update his/her information."
             );
         }
 
         const user = await updateUser(id, req.body);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 
@@ -243,18 +231,14 @@ router.delete("/:id", auth, async (req, res) => {
     try {
         const { _id, isAdmin } = req.user;
         if (_id !== id && !isAdmin) {
-            return handleWebError(
-                res,
-                403,
-                new Error(
-                    "[Authorization Error]: Access Denied - Only the given user or an admin user can delete this user's account."
-                )
+            throw new AuthorizationError(
+                "Access Denied - Only the given user or an admin user can delete this user's account."
             );
         }
         const user = await deleteUser(id);
         return res.send(user);
     } catch (error) {
-        return handleWebError(res, error.status, error);
+        handleWebError(res, error);
     }
 });
 

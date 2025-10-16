@@ -4,9 +4,7 @@
 require("module-alias/register");
 const dotenv = require("dotenv");
 
-const getEnv = () => {
-    return process.env.ENV === "production" ? ".env.production" : ".env.development";
-};
+const getEnv = () => (process.env.ENV === "production" ? ".env.production" : ".env.development");
 
 // Global configuration.
 dotenv.config({ path: ".env" });
@@ -34,13 +32,13 @@ app.use(router);
 
 // Error Handler Middleware - Last in the chain.
 app.use((err, req, res) => {
-    handleWebError(res, err.status || 500, err.message);
+    handleWebError(res, err);
 });
 
 // Server configurations.
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-    Log.info(`[Server]: Listening...`, { override: true });
+    Log.info(`Listening...`, { override: true, prefix: "Server" });
     connectToDb();
     // Todo: connect to DB here and add generate methods for initial data.
 });
