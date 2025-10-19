@@ -12,9 +12,7 @@ The following tags are used throughout the changelog to categorize changes based
 
 ### 🏁 Tasks Completed Today
 
-| Issue # | Completed At | Title | Labels |
-|:------:|:------------:|:-----|:-----|
-| [91](https://github.com/Gallucky/ClarityBox/issues/91) | 15/10/2025 | Users CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
+> No tasks were completed today.
 
 ### 📋 All Completed Tasks
 
