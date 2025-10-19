@@ -74,7 +74,7 @@ exports.create = async (normalizedPost) => {
             newPost = await newPost.save();
 
             // Removing the __v property from the object to be returned.
-            newPost = _omit(newPost, ["__v"]);
+            newPost = _.omit(newPost, ["__v"]);
 
             // Returning the created card without the __v property.
             return Promise.resolve(newPost);
@@ -122,7 +122,7 @@ exports.remove = async (postId) => {
     if (DB === "MONGODB") {
         try {
             let post = await Post.findByIdAndDelete(postId);
-            post = _omit(post, ["__v"]);
+            post = _.omit(post, ["__v"]);
             return Promise.resolve(post);
         } catch (error) {
             return handleBadRequest("Mongoose", error);

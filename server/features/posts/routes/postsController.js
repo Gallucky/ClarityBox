@@ -38,51 +38,6 @@ router.get("/public", async (req, res) => {
     }
 });
 
-// Getting a post by id - Everyone if public or creator of the post or admin if private.
-router.get("/:id", auth, async (req, res) => {
-    RouterLogger.get("Get post by id request has been received.", "GetPostById", new Error());
-
-    const postId = req.params.id;
-    const { _id, isAdmin } = req.user;
-
-    try {
-        // Todo: Implement getPostById method.
-        const post = await getPostById(postId);
-
-        // Todo: Add !post.isPublic check...
-        if (post.createdBy !== _id && !isAdmin && !post.isPublic) {
-            throw new AuthorizationError(
-                "Access Denied for user none other than the post's creator or admin users!"
-            );
-        }
-
-        const status = responseOKContent(post);
-        return res.status(status).send(post);
-    } catch (error) {
-        handleWebError(res, error);
-    }
-});
-
-// Getting all posts - admin.
-router.get("/", auth, async (req, res) => {
-    RouterLogger.get("Get all posts request has been received.", "GetPosts", new Error());
-    try {
-        // Todo: Create custom errors for the different scenarios.
-        const { isAdmin } = req.user;
-
-        if (!isAdmin) {
-            throw new AuthorizationError("Access Denied for non admin users!");
-        }
-
-        // Todo: Implement getPosts method.
-        const posts = await getPosts();
-        const status = responseOKContent(posts);
-        return res.status(status).send(posts);
-    } catch (error) {
-        handleWebError(res, error);
-    }
-});
-
 // Getting all of my posts - the user itself (could be admin getting their own posts).
 router.get("/my-posts", auth, async (req, res) => {
     RouterLogger.get("Get my posts request has been received.", "GetMyPosts", new Error());
@@ -119,6 +74,50 @@ router.get("/user-posts/:id", auth, async (req, res) => {
     }
 });
 
+// Getting all posts - admin.
+router.get("/", auth, async (req, res) => {
+    RouterLogger.get("Get all posts request has been received.", "GetPosts", new Error());
+    try {
+        // Todo: Create custom errors for the different scenarios.
+        const { isAdmin } = req.user;
+
+        if (!isAdmin) {
+            throw new AuthorizationError("Access Denied for non admin users!");
+        }
+
+        // Todo: Implement getPosts method.
+        const posts = await getPosts();
+        const status = responseOKContent(posts);
+        return res.status(status).send(posts);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
+
+// Getting a post by id - Everyone if public or creator of the post or admin if private.
+router.get("/:id", auth, async (req, res) => {
+    RouterLogger.get("Get post by id request has been received.", "GetPostById", new Error());
+
+    const postId = req.params.id;
+    const { _id, isAdmin } = req.user;
+
+    try {
+        // Todo: Implement getPostById method.
+        const post = await getPostById(postId);
+
+        // Todo: Add !post.isPublic check...
+        if (post.createdBy !== _id && !isAdmin && !post.isPublic) {
+            throw new AuthorizationError(
+                "Access Denied for user none other than the post's creator or admin users!"
+            );
+        }
+
+        const status = responseOKContent(post);
+        return res.status(status).send(post);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
 //endregion | ------ Get ------ |
 
 //region | ------ Post ------ |
@@ -148,7 +147,7 @@ router.put("/:id", auth, async (req, res) => {
         const postId = req.params.id;
         const currentPost = await getPostById(postId);
 
-        if (currentPost.createdBy !== _id) {
+        if (String(currentPost.createdBy) !== String(_id)) {
             throw new AuthorizationError(
                 "Access Denied - Only the post's creator can update the post information."
             );
@@ -178,7 +177,7 @@ router.delete("/:id", auth, async (req, res) => {
         const postId = req.params.id;
         const currentPost = await getPostById(postId);
 
-        if (currentPost.createdBy !== _id && !isAdmin) {
+        if (String(currentPost.createdBy) !== String(_id) && !isAdmin) {
             throw new AuthorizationError(
                 "Access Denied - Only the post's creator or an admin user can delete the post."
             );

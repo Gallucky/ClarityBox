@@ -56,7 +56,7 @@ exports.getUserPosts = async (userId) => {
 
 //region | ====== Post ====== |
 
-exports.createPost = async (rawPost) => {
+exports.createPost = async (rawPost, userId) => {
     try {
         const { error } = validatePost(rawPost);
 
@@ -64,7 +64,7 @@ exports.createPost = async (rawPost) => {
             return handleJoiError(error);
         }
 
-        let post = normalizePost(rawPost);
+        let post = normalizePost(rawPost, userId);
         post = await create(post);
         return Promise.resolve(post);
     } catch (error) {
