@@ -155,18 +155,18 @@ npm run start
 
 | Endpoint | Method | Description | Permission Level | MVP | Status |
 | :-- | :-: | :-- | :-- | --- | :-: |
-| `/posts?visibility=public/:id` | GET | Get Public Post | Everyone | ✅ | 🏗️ |
-| `/posts?visibility=public` | GET | Get All Public Posts | Everyone | ✅ | 🏗️ |
-| `/posts/:id` | GET | Get Post | The creator of the post or an admin user | ✅ | 🏗️ |
-| `/posts/` | GET | Get All Posts | Admin | ✅ | 🏗️ |
-| `/posts/my-posts` | GET | Get All of my Posts | Authenticated User | ✅ | 🏗️ |
-| `/posts/` | POST | Create a Post | Authenticated User | ✅ | 🏗️ |
-| `/posts/` | PUT | Update / edit a Post | The creator of the post | ✅ | 🏗️ |
+| `/posts/:id` | GET | Get Post by Id | The creator of the post or an admin user /<br>Everyone if the post is public | ✅ | 🏗️ |
+| `/posts/public` | GET | Get All Public Posts | Everyone | ✅ | 🧪 |
+| `/posts/` | GET | Get All Posts | Admin | ✅ | 🧪 |
+| `/posts/my-posts` | GET | Get All of my Posts | Authenticated User | ✅ | 🧪 |
+| `/posts/user-posts/:id` | GET | Get User's Posts | Admin | ✅ | 🧪 |
+| `/posts/` | POST | Create a Post | Authenticated User | ✅ | 🧪 |
+| `/posts/` | PUT | Update / edit a Post | The creator of the post | ✅ | 🧪 |
 | `/posts/:id/like` | PATCH | Like a Post | Authenticated User | ❌ | ❌ |
 | `/posts/:id/comment` | PATCH | Comment on a Post | Authenticated User | ❌ | ❌ |
 | `/posts/:id/favorite` | PATCH | Favorite a Post | Authenticated User | ❌ | ❌ |
 | `/posts/:id/share` | PATCH | Share a Post | Authenticated User | ❌ | ❌ |
-| `/posts/:id` | DELETE | Delete a Post | The creator of the post or an admin user | ✅ | 🏗️ |
+| `/posts/:id` | DELETE | Delete a Post | The creator of the post or an admin user | ✅ | 🧪 |
 
 ### Projects Endpoints
 

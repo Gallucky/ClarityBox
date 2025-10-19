@@ -63,7 +63,7 @@ const HTTP_CODES = Object.freeze({
 /**
  * Returns an appropriate status code based on the contents of the response object or array.
  * @param {Object|Array} obj - The response data.
- * @returns {number} - The appropriate HTTP status code.
+ * @returns {number} The appropriate HTTP status code.
  */
 const responseOKContent = (obj) => {
     if (!obj) return HTTP_CODES.NOT_FOUND;

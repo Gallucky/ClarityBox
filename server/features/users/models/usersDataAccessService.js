@@ -3,6 +3,12 @@ const { handleBadRequest } = require("@utils/handleErrors");
 const { generateAuthToken } = require("@auth/Providers/jwt");
 const User = require("./mongodb/User");
 const _ = require("lodash");
+const {
+    NotFoundError,
+    AuthenticationError,
+    AuthorizationError,
+    AlreadyExistsError,
+} = require("@/utils/customErrors");
 const DB = process.env.DB;
 
 //region | ###### Get ###### |
@@ -20,7 +26,6 @@ exports.find = async () => {
 
             return Promise.resolve(users);
         } catch (error) {
-            error.status = 404;
             return handleBadRequest("Mongoose", error);
         }
     }
@@ -36,12 +41,11 @@ exports.findOne = async (userId) => {
             });
 
             if (!user) {
-                throw new Error("Could not find this user in the database");
+                throw new NotFoundError("Could not find this user in the database");
             }
 
             return Promise.resolve(user);
         } catch (error) {
-            error.status = 404;
             return handleBadRequest("Mongoose", error);
         }
     }
@@ -59,9 +63,12 @@ exports.register = async (normalizedUser) => {
             let user = await User.findOne({ email });
 
             if (user) {
-                const error = new Error("User is already registered");
-                error.status = 409;
-                return handleBadRequest("Mongoose", error);
+                throw new AlreadyExistsError("User is already registered");
+            }
+
+            nicknameTaken = await User.findOne({ nickname: normalizedUser.nickname });
+            if (nicknameTaken) {
+                throw new AlreadyExistsError("Nickname is already taken");
             }
 
             user = await User(normalizedUser);
@@ -69,11 +76,10 @@ exports.register = async (normalizedUser) => {
             user = _.pick(user, ["_id", "name", "email"]);
             return Promise.resolve(user);
         } catch (error) {
-            error.status = 404;
             return handleBadRequest("Mongoose", error);
         }
     }
-    return Promise.resolve("user created not in mongodb!");
+    return Promise.resolve("User created not in mongodb!");
 };
 
 exports.login = async (normalizedUser) => {
@@ -83,11 +89,7 @@ exports.login = async (normalizedUser) => {
             const user = await User.findOne({ email });
 
             if (!user) {
-                const error = new Error(
-                    "[Authentication Error]: There is no user with this email."
-                );
-                error.status = 404;
-                return handleBadRequest("Mongoose", error);
+                throw new AuthenticationError("There is no user with this email.");
             }
 
             // Checking if the user is blocked.
@@ -103,9 +105,7 @@ exports.login = async (normalizedUser) => {
                     user.strikes = 0;
                     await user.save();
                 } else {
-                    const error = new Error("The user is blocked. Try again later.");
-                    error.status = 403;
-                    return handleBadRequest("Mongoose", error);
+                    throw new AuthorizationError("The user is blocked. Try again later.");
                 }
             }
 
@@ -120,13 +120,12 @@ exports.login = async (normalizedUser) => {
                 if (user.strikes >= STRIKES_THRESHOLD) {
                     user.blocked = true;
                     user.lastBlockedAt = new Date();
+
+                    await user.save();
+
+                    throw new AuthenticationError("Invalid Password");
                 }
-
                 await user.save();
-
-                const invalidPasswordError = new Error("Authentication Error: Invalid Password");
-                invalidPasswordError.status = 401;
-                return handleBadRequest("Mongoose", invalidPasswordError);
             } else {
                 // Resetting strikes on successful login!
                 user.strikes = 0;
@@ -136,11 +135,10 @@ exports.login = async (normalizedUser) => {
             const token = generateAuthToken(user);
             return Promise.resolve(token);
         } catch (error) {
-            error.status = error.status || 404;
             return handleBadRequest("Mongoose", error);
         }
     }
-    return Promise.resolve("user created not in mongodb!");
+    return Promise.resolve("User logged-in not using mongodb!");
 };
 
 //endregion | ###### Post ###### |
@@ -150,21 +148,20 @@ exports.login = async (normalizedUser) => {
 exports.update = async (userId, normalizedUser) => {
     if (DB === "MONGODB") {
         try {
-            let user = await User.findByIdAndUpdate(
+            const user = await User.findByIdAndUpdate(
                 userId,
                 { $set: normalizedUser },
                 { new: true }
             ).select("-password -__v");
 
             if (!user) {
-                throw new Error(
+                throw new NotFoundError(
                     "Could not update this user because a user with this ID cannot be found in the database"
                 );
             }
 
             return Promise.resolve(user);
         } catch (error) {
-            error.status = 404;
             return handleBadRequest("mongoose", error);
         }
     }
@@ -185,18 +182,17 @@ exports.remove = async (userId) => {
             const user = await User.findOneAndDelete({ _id: userId }).select("-password -__v");
 
             if (!user) {
-                throw new Error(
+                throw new NotFoundError(
                     "Could not delete this user because a user with this ID cannot be found in the database"
                 );
             }
 
             return Promise.resolve(user);
         } catch (error) {
-            error.status = 404;
             return handleBadRequest("Mongoose", error);
         }
     }
-    return Promise.resolve("user deleted not in mongodb!");
+    return Promise.resolve("User deleted not in mongodb!");
 };
 
 //endregion | ###### Delete ###### |

@@ -7,6 +7,10 @@ const PostSchema = new mongoose.Schema({
     likes: [USER_ID],
     createdAt: CREATED_AT,
     createdBy: CREATED_BY,
+    isPublic: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 // Creating and exporting the Post model.

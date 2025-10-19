@@ -2,6 +2,15 @@ const express = require("express");
 const router = express.Router();
 
 // Requiring the postsService methods.
+const {
+    getPublicPosts,
+    getPostById,
+    getPosts,
+    getUserPosts,
+    createPost,
+    updatePost,
+    deletePost,
+} = require("@features/posts/services/postsService");
 
 const { auth } = require("@auth/authService");
 const RouterLogger = require("@logger/loggers/customLogger");
@@ -41,7 +50,7 @@ router.get("/:id", auth, async (req, res) => {
         const post = await getPostById(postId);
 
         // Todo: Add !post.isPublic check...
-        if (post.createdBy !== _id && !isAdmin) {
+        if (post.createdBy !== _id && !isAdmin && !post.isPublic) {
             throw new AuthorizationError(
                 "Access Denied for user none other than the post's creator or admin users!"
             );
@@ -81,7 +90,7 @@ router.get("/my-posts", auth, async (req, res) => {
 
     try {
         // Todo: Implement getMyPosts method.
-        const posts = await getMyPosts(_id);
+        const posts = await getUserPosts(_id);
         const status = responseOKContent(posts);
         return res.status(status).send(posts);
     } catch (error) {
