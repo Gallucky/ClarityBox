@@ -12,12 +12,25 @@ The following tags are used throughout the changelog to categorize changes based
 
 ### 🏁 Tasks Completed Today
 
-> No tasks were completed today.
+| Issue # | Completed At | Title | Labels |
+|:------:|:------------:|:-----|:-----|
+| [95](https://github.com/Gallucky/ClarityBox/issues/95) | 20/10/2025 | For Posts Routes | `⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
+| [92](https://github.com/Gallucky/ClarityBox/issues/92) | 20/10/2025 | Posts CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
+| [87](https://github.com/Gallucky/ClarityBox/issues/87) | 20/10/2025 | For Users Route | `📌 MVP`<br>`📌 Test` |
+| [68](https://github.com/Gallucky/ClarityBox/issues/68) | 20/10/2025 | [Documentation] Update README with setup instructions | `📚 Documentation`<br>`📌 MVP` |
+| [4](https://github.com/Gallucky/ClarityBox/issues/4) | 20/10/2025 | Implement authentication routes | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP`<br>`📌 Test` |
+| [3](https://github.com/Gallucky/ClarityBox/issues/3) | 20/10/2025 | Complete User service layer functions | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
 
 ### 📋 All Completed Tasks
 
 | Issue # | Completed At | Title | Labels |
 |:------:|:------------:|:-----|:-----|
+| [3](https://github.com/Gallucky/ClarityBox/issues/3) | 20/10/2025 | Complete User service layer functions | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
+| [68](https://github.com/Gallucky/ClarityBox/issues/68) | 20/10/2025 | [Documentation] Update README with setup instructions | `📚 Documentation`<br>`📌 MVP` |
+| [4](https://github.com/Gallucky/ClarityBox/issues/4) | 20/10/2025 | Implement authentication routes | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP`<br>`📌 Test` |
+| [87](https://github.com/Gallucky/ClarityBox/issues/87) | 20/10/2025 | For Users Route | `📌 MVP`<br>`📌 Test` |
+| [95](https://github.com/Gallucky/ClarityBox/issues/95) | 20/10/2025 | For Posts Routes | `⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
+| [92](https://github.com/Gallucky/ClarityBox/issues/92) | 20/10/2025 | Posts CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
 | [91](https://github.com/Gallucky/ClarityBox/issues/91) | 15/10/2025 | Users CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
 | [5](https://github.com/Gallucky/ClarityBox/issues/5) | 14/10/2025 | Add password hashing with bcrypt in User model hooks | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP` |
 | [86](https://github.com/Gallucky/ClarityBox/issues/86) | 06/10/2025 | Automate backup of Changelog & Todo docs per workflow run | `✨ Enhancement`<br>`📚 Documentation`<br>`📌 Priority: High` |

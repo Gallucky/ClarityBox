@@ -13,12 +13,8 @@ The following tags are used throughout the todo list to categorize tasks based o
 |:------:|:------:|:-----:|:-----|:----:|:-----|
 | [94](https://github.com/Gallucky/ClarityBox/issues/94) | 14/10/2025 | - | Tasks CRUD | `💬 Open` | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
 | [93](https://github.com/Gallucky/ClarityBox/issues/93) | 14/10/2025 | - | Projects CRUD | `💬 Open` | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
-| [92](https://github.com/Gallucky/ClarityBox/issues/92) | 14/10/2025 | - | Posts CRUD | `💬 Open` | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
 | [90](https://github.com/Gallucky/ClarityBox/issues/90) | 14/10/2025 | - | For Tasks Routes | `💬 Open` | `⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
 | [89](https://github.com/Gallucky/ClarityBox/issues/89) | 14/10/2025 | - | For Projects Routes | `💬 Open` | `⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
-| [88](https://github.com/Gallucky/ClarityBox/issues/88) | 14/10/2025 | - | For Posts Routes | `💬 Open` | `⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
-| [87](https://github.com/Gallucky/ClarityBox/issues/87) | 14/10/2025 | - | For Users Route | `💬 Open` | `📌 MVP`<br>`📌 Test` |
-| [68](https://github.com/Gallucky/ClarityBox/issues/68) | 05/10/2025 | - | [Documentation] Update README with setup instructions | `💬 Open` | `📚 Documentation`<br>`📌 MVP` |
 | [67](https://github.com/Gallucky/ClarityBox/issues/67) | 05/10/2025 | - | [Feature] Admin can view users | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
 | [66](https://github.com/Gallucky/ClarityBox/issues/66) | 05/10/2025 | - | [Feature] User can reset password | `💬 Open` | `💻 Frontend`<br>`⭐ Feature` |
 | [65](https://github.com/Gallucky/ClarityBox/issues/65) | 05/10/2025 | - | [Feature] User can view and edit profile | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
@@ -32,7 +28,5 @@ The following tags are used throughout the todo list to categorize tasks based o
 | [8](https://github.com/Gallucky/ClarityBox/issues/8) | 02/10/2025 | - | Set up / initialize the project's frontend folders/files structure | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 MVP` |
 | [7](https://github.com/Gallucky/ClarityBox/issues/7) | 02/10/2025 | - | Write routes tests using Postman | `💬 Open` | `🔧 Backend`<br>`📌 MVP` |
 | [6](https://github.com/Gallucky/ClarityBox/issues/6) | 02/10/2025 | - | Follow controller structure pattern for Posts, Projects, and Tasks | `💬 Open` | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP` |
-| [4](https://github.com/Gallucky/ClarityBox/issues/4) | 02/10/2025 | - | Implement authentication routes | `💬 Open` | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP`<br>`📌 Test` |
-| [3](https://github.com/Gallucky/ClarityBox/issues/3) | 02/10/2025 | - | Complete User service layer functions | `💬 Open` | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: High`<br>`📌 MVP`<br>`📌 Test` |
 | [2](https://github.com/Gallucky/ClarityBox/issues/2) | 02/10/2025 | - | Write basic validation for incoming requests | `💬 Open` | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: Medium`<br>`📌 MVP` |
 | [1](https://github.com/Gallucky/ClarityBox/issues/1) | 02/10/2025 | - | Add routes for the created models (User, Post, Task, Project) | `💬 Open` | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: High`<br>`📌 MVP` |
