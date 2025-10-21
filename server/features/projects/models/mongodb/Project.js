@@ -15,6 +15,10 @@ const ProjectSchema = new mongoose.Schema({
             ref: "Task",
         },
     ],
+    isPublic: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 // Creating and exporting the Project model.

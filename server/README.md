@@ -172,28 +172,28 @@ npm run start
 
 | Endpoint | Method | Description | Permission Level | MVP | Status |
 | :-- | :-: | :-- | :-- | --- | :-: |
-| `/projects/` | GET | Get All Projects | Admin | ✅ | 🏗️ - 1/3 |
-| `/projects/public` | GET | Get All Public Projects | Everyone | ✅ | 🏗️ - 1/3 |
-| `/projects/my-projects` | GET | Get All of my Projects | Authenticated User | ✅ | 🏗️ - 1/3 |
-| `/projects/user-projects/:id` | GET | Get User's Projects | Admin or authenticated user | ✅ | 🏗️ - 1/3 |
-| `/projects/:id` | GET | Get Public Project | Everyone - If the project is public / <br>Creator/Participant or admin | ✅ | 🏗️ - 1/3 |
-| `/projects` | POST | Create a Project | Authenticated User | ✅ | 🏗️ - 1/3 |
-| `/projects/` | PUT | Update / edit a Project | The creator of the project | ✅ | 🏗️ - 1/3 |
-| `/projects/:projectId/attach-task/:taskId` | PATCH | Adding / attaching a task to a project | The creator of the project | ✅ | 🏗️ - 1/3 |
-| `/projects/:projectId/detach-task/:taskId` | PATCH | Removing / detaching a task to a project | The creator of the project | ✅ | 🏗️ - 1/3 |
-| `/projects/:id` | DELETE | Delete a Project | The creator of the project or an admin user | ✅ | 🏗️ - 1/3 |
+| `/projects/` | GET | Get All Projects | Admin | ✅ | 🧪 |
+| `/projects/public` | GET | Get All Public Projects | Everyone | ✅ | 🧪 |
+| `/projects/my-projects` | GET | Get All of my Projects | Authenticated User | ✅ | 🧪 |
+| `/projects/user-projects/:id` | GET | Get User's Projects | Admin or authenticated user | ✅ | 🧪 |
+| `/projects/:id` | GET | Get Public Project | Everyone - If the project is public / <br>Creator/Participant or admin | ✅ | 🧪 |
+| `/projects` | POST | Create a Project | Authenticated User | ✅ | 🧪 |
+| `/projects/` | PUT | Update / edit a Project | The creator of the project | ✅ | 🧪 |
+| `/projects/:projectId/attach-task/:taskId` | PATCH | Adding / attaching a task to a project | The creator of the project | ✅ | 🧪 |
+| `/projects/:projectId/detach-task/:taskId` | PATCH | Removing / detaching a task to a project | The creator of the project | ✅ | 🧪 |
+| `/projects/:id` | DELETE | Delete a Project | The creator of the project or an admin user | ✅ | 🧪 |
 
 ### Tasks Endpoints
 
 | Endpoint | Method | Description | Permission Level | MVP | Status |
 | :-- | :-: | :-- | :-- | --- | :-: |
 | `/tasks/` | GET | Get All Tasks | Admin | ✅ | ❌ |
-| `/tasks/:id` | GET | Get Task | Creator of the task or an admin user | ✅ | ⏳ |
-| `/tasks` | POST | Create a Task | Authenticated User | ✅ | ⏳ |
-| `/tasks/:id` | PUT | Update / edit a Task | The creator of the task | ✅ | ⏳ |
+| `/tasks/:id` | GET | Get Task | Creator of the task or an admin user | ✅ | 🏗️ |
+| `/tasks` | POST | Create a Task | Authenticated User | ✅ | 🏗️ |
+| `/tasks/:id` | PUT | Update / edit a Task | The creator of the task | ✅ | 🏗️ |
 | `/tasks/mark-completed/:id` | PATCH | Complete a Task | The creator of the task or an admin user | ❌ | ❌ |
 | `/tasks/restore-task/:id` | PATCH | Restore a detached Task | The creator of the task | ❌ | ❌ |
-| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | ⏳ |
+| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | 🏗️ |
 
 ## 📝 Notes
 

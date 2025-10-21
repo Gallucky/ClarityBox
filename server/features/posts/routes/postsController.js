@@ -17,6 +17,7 @@ const RouterLogger = require("@logger/loggers/customLogger");
 const { handleWebError } = require("@utils/handleErrors");
 const { responseOKContent } = require("@/utils/accurateStatus");
 const { AuthorizationError } = require("@/utils/customErrors");
+const { areObjectIdsEqual } = require("@/utils/mongoUtils");
 
 //region | ------ Get ------ |
 
@@ -147,7 +148,7 @@ router.put("/:id", auth, async (req, res) => {
         const postId = req.params.id;
         const currentPost = await getPostById(postId);
 
-        if (String(currentPost.createdBy) !== String(_id)) {
+        if (!areObjectIdsEqual(currentPost.createdBy, _id)) {
             throw new AuthorizationError(
                 "Access Denied - Only the post's creator can update the post information."
             );
@@ -177,7 +178,7 @@ router.delete("/:id", auth, async (req, res) => {
         const postId = req.params.id;
         const currentPost = await getPostById(postId);
 
-        if (String(currentPost.createdBy) !== String(_id) && !isAdmin) {
+        if (!areObjectIdsEqual(currentPost.createdBy, _id) && !isAdmin) {
             throw new AuthorizationError(
                 "Access Denied - Only the post's creator or an admin user can delete the post."
             );

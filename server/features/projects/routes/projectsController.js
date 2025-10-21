@@ -2,12 +2,24 @@ const express = require("express");
 const router = express.Router();
 
 // Requiring the projectsService methods.
+const {
+    getPublicProjects,
+    getProjectById,
+    getUserProjects,
+    getAllProjects,
+    createProject,
+    updateProject,
+    addTaskToProject,
+    removeTaskFromProject,
+    deleteProject,
+} = require("@features/projects/services/projectsService");
 
 const { auth } = require("@auth/authService");
 const RouterLogger = require("@logger/loggers/customLogger");
 const { handleWebError } = require("@utils/handleErrors");
 const { responseOKContent, HTTP_CODES } = require("@/utils/accurateStatus");
 const { AuthorizationError } = require("@/utils/customErrors");
+const { areObjectIdsEqual } = require("@/utils/mongoUtils");
 
 //region | ------ Get ------ |
 
@@ -72,7 +84,7 @@ router.get("/user-projects/:id", auth, async (req, res) => {
     const { _id, isAdmin } = req.user;
 
     try {
-        if (String(_id) !== String(userId) && !isAdmin) {
+        if (!areObjectIdsEqual(_id, userId) && !isAdmin) {
             throw new AuthorizationError("Access Denied - Access is for the user and admin users!");
         }
 
@@ -94,11 +106,11 @@ router.get("/:id", auth, async (req, res) => {
         const { _id, isAdmin } = req.user;
 
         const project = await getProjectById(projectId, _id);
-        const isUserProjectCreator = String(_id) === String(project.createdBy);
+        const isUserProjectCreator = areObjectIdsEqual(project.createdBy, _id);
 
         // Non-MVP Edition/Feature:
         // const isUserProjectParticipant = project.participants.some(participantId =>
-        //     String(participantId) === String(_id)
+        //     String(participantId) === String(_id) / !areObjectIdsEqual(participantId, _id)
         // );
         if (!project.isPublic && !isUserProjectCreator && !isAdmin) {
             throw new AuthorizationError(
@@ -143,7 +155,7 @@ router.put("/:id", auth, async (req, res) => {
         const projectId = req.params.id;
 
         let project = await getProjectById(projectId);
-        if (String(project.createdBy) !== String(_id)) {
+        if (!areObjectIdsEqual(project.createdBy, _id)) {
             throw new AuthorizationError(
                 "Access Denied - Only the project creator can update the project information."
             );
@@ -171,10 +183,10 @@ router.patch("/:projectId/attach-task/:taskId", auth, async (req, res) => {
 
     try {
         const { _id } = req.user;
-        const { projectId, taskId } = req.params.id;
+        const { projectId, taskId } = req.params;
 
         let project = await getProjectById(projectId);
-        if (String(project.createdBy) !== String(_id)) {
+        if (!areObjectIdsEqual(project.createdBy, _id)) {
             throw new AuthorizationError(
                 "Access Denied - Only the project creator can update the project information."
             );
@@ -197,12 +209,12 @@ router.patch("/:projectId/detach-task/:taskId", auth, async (req, res) => {
 
     try {
         const { _id } = req.user;
-        const { projectId, taskId } = req.params.id;
+        const { projectId, taskId } = req.params;
 
         let project = await getProjectById(projectId);
         // Todo: Create a separate permission for project participants to remove tasks?
         // Todo: Create a helper function to check if the user has permission to continue...
-        if (String(project.createdBy) !== String(_id)) {
+        if (!areObjectIdsEqual(project.createdBy, _id)) {
             throw new AuthorizationError(
                 "Access Denied - Only the project creator can update the project information."
             );
@@ -237,7 +249,7 @@ router.delete("/:id", auth, async (req, res) => {
         const projectId = req.params.id;
         const project = await getProjectById(projectId);
 
-        if (String(project.createdBy) !== String(_id) && !isAdmin) {
+        if (!areObjectIdsEqual(project.createdBy, _id) && !isAdmin) {
             throw new AuthorizationError(
                 "Access Denied - Only the project's creator or an admin user can delete the project."
             );
@@ -252,3 +264,5 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 //endregion | ------ Delete ------ |
+
+module.exports = router;
