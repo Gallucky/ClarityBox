@@ -12,7 +12,7 @@ const {
 const {
     validateProject,
     validateProjectUpdate,
-} = require("@features/projects/validations/projectValidations");
+} = require("@features/projects/validations/projectValidationService");
 const normalizeProject = require("@features/projects/helpers/normalizeProject");
 const { handleJoiError } = require("@utils/handleErrors");
 

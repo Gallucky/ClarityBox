@@ -69,7 +69,7 @@ exports.findByUserId = async (userId) => {
 exports.create = async (normalizedPost) => {
     if (DB === "MONGODB") {
         try {
-            // Receiving the created card back with additional properties from the database.
+            // Receiving the created post back with additional properties from the database.
             let newPost = await Post(normalizedPost);
             newPost = await newPost.save();
 

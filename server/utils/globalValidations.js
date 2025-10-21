@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 // Global Shared Validations
 // This file contains static global validations that are
 // used in different parts of the application,
@@ -14,7 +13,6 @@ const DEFAULT_VALIDATION = {
     minLength: 2,
     maxLength: 256,
     trim: true,
-    lowercase: true,
 };
 
 const CREATED_AT = {

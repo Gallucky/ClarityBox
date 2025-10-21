@@ -187,13 +187,13 @@ npm run start
 
 | Endpoint | Method | Description | Permission Level | MVP | Status |
 | :-- | :-: | :-- | :-- | --- | :-: |
-| `/tasks/` | GET | Get All Tasks | Admin | ✅ | ❌ |
-| `/tasks/:id` | GET | Get Task | Creator of the task or an admin user | ✅ | 🏗️ |
-| `/tasks` | POST | Create a Task | Authenticated User | ✅ | 🏗️ |
-| `/tasks/:id` | PUT | Update / edit a Task | The creator of the task | ✅ | 🏗️ |
+| `/tasks/` | GET | Get All Tasks | Admin | ✅ | 🏗️ - 3/3 |
+| `/tasks/:id` | GET | Get Task | [MVP] Creator of the task or an admin user | ✅ | 🏗️ - 3/3 |
+| `/tasks` | POST | Create a Task | Authenticated User | ✅ | 🏗️ - 3/3 |
+| `/tasks/:id` | PUT | Update / edit a Task | The creator of the task | ✅ | 🏗️ - 3/3 |
 | `/tasks/mark-completed/:id` | PATCH | Complete a Task | The creator of the task or an admin user | ❌ | ❌ |
 | `/tasks/restore-task/:id` | PATCH | Restore a detached Task | The creator of the task | ❌ | ❌ |
-| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | 🏗️ |
+| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | 🏗️ - 3/3 |
 
 ## 📝 Notes
 
