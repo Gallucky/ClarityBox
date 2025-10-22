@@ -1,6 +1,6 @@
 const registerValidation = require("./Joi/registerValidation");
 const loginValidation = require("./Joi/loginValidation");
-const updateValidation = require("./Joi/updateValidation");
+const updateValidation = require("./Joi/userUpdateValidation");
 const validator = process.env.VALIDATOR;
 
 const validateRegistration = (user) => {
