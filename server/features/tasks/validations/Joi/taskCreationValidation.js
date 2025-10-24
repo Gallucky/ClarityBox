@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const taskCreationValidation = (task) => {
     const schema = Joi.object({
-        title: Joi.string().min(3).max(50).required().messages({
+        title: Joi.string().min(3).max(50).allow("").messages({
             "string.base": "Task title must be a string",
             "string.empty": "Task title cannot be empty",
             "any.required": "Task title is required",

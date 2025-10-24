@@ -3,6 +3,8 @@ const _ = require("lodash");
 const Task = require("./mongodb/Task");
 const { handleBadRequest } = require("@utils/handleErrors");
 const { NotFoundError } = require("@/utils/customErrors");
+const normalizeTask = require("../helpers/normalizeTask");
+const checkIfEmptyObject = require("@/utils/generalUtils");
 
 //region | ###### Get ###### |
 
@@ -64,11 +66,19 @@ exports.create = async (task) => {
 
 //region | ###### Put ###### |
 
-exports.update = async (taskId, task) => {
+exports.update = async (taskId, normalizedTask) => {
     if (DB === "MONGODB") {
         try {
-            const updatedTask = await Task.findByIdAndUpdate(taskId, task, {
+            // If there is an empty object sent to update - no fields to update,
+            // so we just return the current project object from the database.
+            if (checkIfEmptyObject(normalizedTask, "tasks")) {
+                return this.findOne(taskId);
+            }
+
+            const updatedTask = await Task.findByIdAndUpdate(taskId, normalizedTask, {
                 new: true,
+                omitUndefined: true, // prevents unsetting fields
+                runValidators: true, // re-run schema validation
             }).select("-__v"); // same as _.omit(["__v"]);
 
             if (!updatedTask) {
@@ -91,7 +101,7 @@ exports.update = async (taskId, task) => {
 
 //region | ###### Delete ###### |
 
-exports.delete = async (taskId) => {
+exports.remove = async (taskId) => {
     if (DB === "MONGODB") {
         try {
             let deletedTask = await Task.findByIdAndDelete(taskId);

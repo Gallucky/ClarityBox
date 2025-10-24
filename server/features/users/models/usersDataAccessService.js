@@ -148,6 +148,12 @@ exports.login = async (normalizedUser) => {
 exports.update = async (userId, normalizedUser) => {
     if (DB === "MONGODB") {
         try {
+            // If there is an empty object sent to update - no fields to update,
+            // so we just return the current project object from the database.
+            if (checkIfEmptyObject(normalizedUser, "users")) {
+                return this.findOne(userId);
+            }
+
             const user = await User.findByIdAndUpdate(
                 userId,
                 { $set: normalizedUser },

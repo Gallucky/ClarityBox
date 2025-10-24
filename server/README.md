@@ -179,21 +179,21 @@ npm run start
 | `/projects/:id` | GET | Get Project by Id | Authenticated User - If the project is public / <br>Creator/Participant or admin | ✅ | ✅ |
 | `/projects` | POST | Create a Project | Authenticated User | ✅ | ✅ |
 | `/projects/` | PUT | Update / edit a Project | The creator of the project | ✅ | ✅ |
-| `/projects/:projectId/attach-task/:taskId` | PATCH | Adding / attaching a task to a project | The creator of the project | ✅ | 🧪 |
-| `/projects/:projectId/detach-task/:taskId` | PATCH | Removing / detaching a task to a project | The creator of the project | ✅ | 🧪 |
+| `/projects/:projectId/attach-task/:taskId` | PATCH | Adding / attaching a task to a project | The creator of the project | ✅ | ✅ |
+| `/projects/:projectId/detach-task/:taskId` | PATCH | Removing / detaching a task to a project | The creator of the project | ✅ | ✅ |
 | `/projects/:id` | DELETE | Delete a Project | The creator of the project or an admin user | ✅ | ✅ |
 
 ### Tasks Endpoints
 
 | Endpoint | Method | Description | Permission Level | MVP | Status |
 | :-- | :-: | :-- | :-- | --- | :-: |
-| `/tasks/` | GET | Get All Tasks | Admin | ✅ | 🧪 |
-| `/tasks/:id` | GET | Get Task | [MVP] Creator of the task or an admin user | ✅ | 🧪 |
-| `/tasks` | POST | Create a Task | Authenticated User | ✅ | 🧪 |
-| `/tasks/:id` | PUT | Update / edit a Task | The creator of the task | ✅ | 🧪 |
+| `/tasks/` | GET | Get All Tasks | Admin | ✅ | ✅ |
+| `/tasks/:id` | GET | Get Task | [MVP] Creator of the task or an admin user | ✅ | ✅ |
+| `/tasks` | POST | Create a Task | Authenticated User | ✅ | ✅ |
+| `/tasks/:id` | PUT | Update / edit a Task | The creator of the task | ✅ | ✅ |
 | `/tasks/mark-completed/:id` | PATCH | Complete a Task | The creator of the task or an admin user | ❌ | ❌ |
 | `/tasks/restore-task/:id` | PATCH | Restore a detached Task | The creator of the task | ❌ | ❌ |
-| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | 🧪 |
+| `/tasks/:id` | DELETE | Delete a Task | The creator of the task or an admin user | ✅ | ✅ |
 
 ## 📝 Notes
 

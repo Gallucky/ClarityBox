@@ -5,6 +5,7 @@ const { handleBadRequest } = require("@utils/handleErrors");
 const { NotFoundError } = require("@/utils/customErrors");
 const { areObjectIdsEqual } = require("@/utils/mongoUtils");
 const normalizeProject = require("../helpers/normalizeProject");
+const checkIfEmptyObject = require("@/utils/generalUtils");
 
 //region | ###### Get ###### |
 
@@ -92,11 +93,8 @@ exports.update = async (projectId, normalizedProject) => {
         try {
             // If there is an empty object sent to update - no fields to update,
             // so we just return the current project object from the database.
-            if (
-                !normalizedProject ||
-                _.isEqual(normalizedProject, normalizeProject({}, normalizedProject.createdBy))
-            ) {
-                return Project.findById(projectId).select("-__v");
+            if (checkIfEmptyObject(normalizedProject, "projects")) {
+                return this.findOne(projectId);
             }
 
             // .select("-__v") to remove the __v property - another way like the _.omit method.
@@ -167,6 +165,7 @@ exports.removeTask = async (projectId, taskId) => {
 
             // Removing the __v property from the object to be returned.
             project = _.omit(project, ["__v"]);
+            return Promise.resolve(project);
         } catch (error) {
             return handleBadRequest("Mongoose", error);
         }

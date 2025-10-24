@@ -92,6 +92,11 @@ exports.create = async (normalizedPost) => {
 exports.update = async (postId, normalizedPost) => {
     if (DB === "MONGODB") {
         try {
+            // If there is an empty object sent to update - no fields to update,
+            // so we just return the current project object from the database.
+            if (checkIfEmptyObject(normalizedPost, "posts")) {
+                return this.findOne(postId);
+            }
             const post = await Post.findByIdAndUpdate(postId, normalizedPost, {
                 new: true,
             }).select("-__v");

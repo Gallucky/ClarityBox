@@ -15,11 +15,6 @@ const DEFAULT_VALIDATION = {
     trim: true,
 };
 
-const CREATED_AT = {
-    type: Date,
-    default: Date.now,
-};
-
 const USER_ID = {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -27,6 +22,5 @@ const USER_ID = {
 
 module.exports = {
     DEFAULT_VALIDATION,
-    CREATED_AT,
     USER_ID,
 };

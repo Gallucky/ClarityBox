@@ -1,28 +1,30 @@
 const mongoose = require("mongoose");
-const { DEFAULT_VALIDATION, CREATED_AT } = require("@utils/globalValidations");
+const { DEFAULT_VALIDATION } = require("@utils/globalValidations");
 const { EMAIL, PASSWORD } = require("@features/users/helpers/localValidations");
 const NameSchema = require("./Name");
 const ProfileImageSchema = require("./ProfileImage");
 
 // Defining the User schema.
-const UserSchema = new mongoose.Schema({
-    name: NameSchema,
-    nickname: { ...DEFAULT_VALIDATION, unique: true },
-    email: EMAIL,
-    password: PASSWORD,
-    profileImage: ProfileImageSchema,
-    isAdmin: {
-        type: Boolean,
-        default: false,
-    },
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Post",
+const UserSchema = new mongoose.Schema(
+    {
+        name: NameSchema,
+        nickname: { ...DEFAULT_VALIDATION, unique: true },
+        email: EMAIL,
+        password: PASSWORD,
+        profileImage: ProfileImageSchema,
+        isAdmin: {
+            type: Boolean,
+            default: false,
         },
-    ],
-    createdAt: CREATED_AT,
-});
+        posts: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Post",
+            },
+        ],
+    },
+    { timestamps: true }
+);
 
 // Creating and exporting the User model.
 const User = mongoose.model("Users", UserSchema);
