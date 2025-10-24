@@ -8,11 +8,9 @@ const mongoose = require("mongoose");
  */
 exports.areObjectIdsEqual = (id1, id2) => {
     if (!id1 || !id2) return false;
-    try {
-        return mongoose.Types.ObjectId(id1).equals(id2);
-    } catch {
+    if (!mongoose.Types.ObjectId.isValid(id1) || !mongoose.Types.ObjectId.isValid(id2))
         return false;
-    }
+    return String(id1) === String(id2);
 };
 
 /**

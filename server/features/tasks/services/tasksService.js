@@ -4,7 +4,7 @@ const {
     findOne,
     update,
     remove,
-} = require("@/features/tasks/repositories/tasksRepository");
+} = require("@/features/tasks/models/tasksDataAccessService");
 const {
     validateTask,
     validateTaskUpdate,

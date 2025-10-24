@@ -9,8 +9,8 @@ const { NotFoundError } = require("@/utils/customErrors");
 
 router.use("/users", usersController);
 router.use("/posts", postsController);
-// router.use("/projects", projectsController);
-// router.use("/tasks", tasksController);
+router.use("/projects", projectsController);
+router.use("/tasks", tasksController);
 
 // Not supported routes / non-existing routes - Error 404.
 router.use((req, res) => handleWebError(res, new NotFoundError("Route not found")));

@@ -3,7 +3,8 @@ const normalizeProject = (rawProject, userId) => {
 
     return {
         ...rawProject,
-        description: rawProject.description?.trim(),
+        name: rawProject.name?.trim() || "New Project",
+        description: rawProject.description?.trim() || "",
         isPublic: rawProject.isPublic || false,
         createdBy: userId,
         likes: [],

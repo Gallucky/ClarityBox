@@ -4,6 +4,7 @@ const Project = require("./mongodb/Project");
 const { handleBadRequest } = require("@utils/handleErrors");
 const { NotFoundError } = require("@/utils/customErrors");
 const { areObjectIdsEqual } = require("@/utils/mongoUtils");
+const normalizeProject = require("../helpers/normalizeProject");
 
 //region | ###### Get ###### |
 
@@ -89,9 +90,20 @@ exports.create = async (project) => {
 exports.update = async (projectId, normalizedProject) => {
     if (DB === "MONGODB") {
         try {
+            // If there is an empty object sent to update - no fields to update,
+            // so we just return the current project object from the database.
+            if (
+                !normalizedProject ||
+                _.isEqual(normalizedProject, normalizeProject({}, normalizedProject.createdBy))
+            ) {
+                return Project.findById(projectId).select("-__v");
+            }
+
             // .select("-__v") to remove the __v property - another way like the _.omit method.
             const project = await Project.findByIdAndUpdate(projectId, normalizedProject, {
                 new: true,
+                omitUndefined: true, // prevents unsetting fields
+                runValidators: true, // re-run schema validation
             }).select("-__v");
 
             if (!project) {
@@ -166,7 +178,7 @@ exports.removeTask = async (projectId, taskId) => {
 
 //region | ###### Delete ###### |
 
-exports.removeTask = async (projectId) => {
+exports.remove = async (projectId) => {
     if (DB === "MONGODB") {
         try {
             let project = await Project.findByIdAndDelete(projectId);
