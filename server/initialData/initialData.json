@@ -1,1 +1,77 @@
-{}
+{
+    "users": [
+        {
+            "name": { "first": "Administrator", "last": "Admin" },
+            "nickname": "admin",
+            "email": "admin@gmail.com",
+            "password": "admin-password-is-protected",
+            "isAdmin": true
+        },
+        {
+            "name": { "first": "User", "last": "Example" },
+            "nickname": "example_user",
+            "email": "user@gmail.com",
+            "password": "User123!",
+            "isAdmin": false
+        }
+    ],
+
+    "posts": [
+        {
+            "content": "Welcome to ClarityBox - your all-in-one productivity and gratitude platform.",
+            "likes": [],
+            "createdBy": "admin",
+            "isPublic": true
+        },
+        {
+            "content": "Excited to start using this app to track my goals!",
+            "likes": ["admin"],
+            "createdBy": "example_user",
+            "isPublic": true
+        }
+    ],
+
+    "projects": [
+        {
+            "createdBy": "admin",
+            "name": "ClarityBox MVP",
+            "description": "Core backend implementation including authentication, validations, and CRUD routes.",
+            "tasks": [],
+            "isPublic": true
+        },
+        {
+            "createdBy": "example_user",
+            "name": "Personal Goals Tracker",
+            "description": "A personal space to manage habits, track gratitude, and log progress.",
+            "tasks": [],
+            "isPublic": false
+        }
+    ],
+
+    "tasks": [
+        {
+            "title": "Setup server architecture",
+            "description": "Initialize Express server, connect MongoDB, and define base models.",
+            "status": "completed",
+            "projectId": "ClarityBox MVP",
+            "completedAt": "2025-10-01T12:00:00.000Z",
+            "createdBy": "admin"
+        },
+        {
+            "title": "Implement authentication",
+            "description": "Add JWT-based login/register and bcrypt password hashing.",
+            "status": "in-progress",
+            "projectId": "ClarityBox MVP",
+            "completedAt": null,
+            "createdBy": "admin"
+        },
+        {
+            "title": "Add gratitude log feature",
+            "description": "Create an interactive gratitude entry form linked to the user dashboard.",
+            "status": "pending",
+            "projectId": "Personal Goals Tracker",
+            "completedAt": null,
+            "createdBy": "example_user"
+        }
+    ]
+}
