@@ -21,6 +21,7 @@ const logger = require("@logger/loggerService");
 const router = require("@router/router");
 const { handleWebError } = require("@utils/handleErrors");
 const connectToDb = require("@DB/dbService");
+const generateInitialData = require("./initialData/initialDataService");
 
 // Middleware - App Level.
 app.use(cors);
@@ -40,5 +41,5 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
     Log.info(`Listening...`, { override: true, prefix: "Server" });
     connectToDb();
-    // Todo: connect to DB here and add generate methods for initial data.
+    generateInitialData();
 });
