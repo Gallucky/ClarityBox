@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const { URL, DEFAULT_VALIDATION } = require("../../../../utils/globalValidations");
+const { DEFAULT_VALIDATION } = require("@utils/globalValidations");
+const { URL } = require("@features/users/helpers/localValidations");
 
 // Defining the Name schema.
 const ProfileImageSchema = new mongoose.Schema({

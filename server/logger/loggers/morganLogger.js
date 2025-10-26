@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 const morgan = require("morgan");
-const currentDate = require("../../utils/timeStamp");
+const currentDate = require("@utils/timeStamp");
 const fs = require("fs");
 const { appendFile } = fs.promises;
 
@@ -8,7 +8,8 @@ const logger = morgan((tokens, req, res) => {
     const logMessage =
         [
             currentDate(),
-            tokens.method(req, res),
+            "[Morgan]",
+            `[${tokens.method(req, res)}]`,
             "- url:",
             tokens.url(req, res),
             "| status:",

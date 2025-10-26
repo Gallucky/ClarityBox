@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(",");
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS;
 
 // Todo: Add frontend hosted URL to the allowed origins.
 

@@ -1,52 +1,24 @@
-# TODO
+# TODO title
 
-Tracks tasks per commit. Snapshot copies are stored in [`.tracking/todos/`](./.tracking/todos/).
+Tracks tasks per commit.
 
-To check the current changelog see the [Project's Changelog](./Changelog.md) file, with snapshots stored in [`.tracking/changelogs/`](./.tracking/changelogs/).
+The following tags are used throughout the todo list to categorize tasks based on frontend and backend sides:<br>
+`💻 Frontend` `🔧 Backend` `🐛 Bug` `✨ Enhancement` `⭐ Feature` `📚 Documentation`<br>
+`🔨 Fix` `🚀 Deployment` `⚠️ Deprecated` `🗑️ Removed` `🌍 Environment` `📌 Other`
 
----
-
-## Current Commit: #5 - 26/09/2025
-
-### 🔙 Backend
-
--   [ ] Add routes for the created models (User, Post, Task, Project).
-    -   [ ] Implement CRUD routes for User model (in progress - controller structure created, missing service layer functions).
-    -   [ ] Implement CRUD routes for Post model.
-    -   [ ] Implement CRUD routes for Task model.
-    -   [ ] Implement CRUD routes for Project model.
--   [ ] Write basic validation for incoming requests.
--   [ ] Complete User service layer functions (`getUsers`, `getUser`, `registerUser`, `loginUser`, `updateUser`, `deleteUser`).
--   [ ] Implement authentication routes (completed as `/users/login`, `/users` for register) - consider separate `/auth` endpoints if needed.
--   [ ] Add password hashing with **bcrypt** in User model hooks.
--   [ ] Implement data validation on the server side using **joi** or similar.
--   [ ] Follow the same controller structure pattern for Posts, Projects, and Tasks (create routes in `/routes/` subdirectories with proper authentication, logging, and error handling).
--   [ ] Write routes tests using **Postman**.
-
-### 🖼️ Frontend
-
--   [ ] Set up / initialize the project's frontend folders/files structure.
-
-### 🔧 Deployment / Environment
-
-> There are no new tasks for this section currently.
-
-### 🧩 Extras / UI
-
--   [ ] Add basic UI components for MVP (buttons, forms, layout).
-
-### ✔️ Completed
+> To see the changelogs / changes, check the [Changelog](./Changelog.md) file.
 
 ---
-
-| Commit # | Date Completed | Type | Description |
-| --- | --- | --- | --- |
-| [`4`](./.tracking/todos/Todo#4.md) | 26/09/2025 | `🔙 Backend` | Add authentication middleware for protected routes. |
-| [`3`](./.tracking/todos/Todo#3.md) | 25/09/2025 | `🔙 Backend` | Create the mongoose schemas/models for the MVP edition of the project. |
-| [`2`](./.tracking/changelogs/Changelog#2.md) | 24/09/2025 | `🔧 Deployment / Environment` | Set up deployment and environment configurations using dotenv. |
-| [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔙 Backend` | Set up centralized error handling middleware. |
-| [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔙 Backend` | Added custom logger using [`winston`](https://github.com/winstonjs/winston) library. |
-| [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔙 Backend` | Integrate logging middleware (e.g., `morgan`) for request monitoring. |
-| [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔙 Backend` | Set up / initialize the project's backend folders/files structure. |
-| [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🔧 Deployment / Environment` | Create `.tracking/todos/` and `.tracking/changelogs/` directories for snapshots. |
-| [`1`](./.tracking/changelogs/Changelog#1.md) | 23/09/2025 | `🧩 Extras / UI` | Add `Changelog.md` and `Todo.md` for tracking. |
+| Issue # | Created | Closed | Title | Status | Labels |
+|:------:|:------:|:-----:|:-----|:----:|:-----|
+| [67](https://github.com/Gallucky/ClarityBox/issues/67) | 05/10/2025 | - | [Feature] Admin can view users | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [66](https://github.com/Gallucky/ClarityBox/issues/66) | 05/10/2025 | - | [Feature] User can reset password | `💬 Open` | `💻 Frontend`<br>`⭐ Feature` |
+| [65](https://github.com/Gallucky/ClarityBox/issues/65) | 05/10/2025 | - | [Feature] User can view and edit profile | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [64](https://github.com/Gallucky/ClarityBox/issues/64) | 05/10/2025 | - | [Feature] User can view gratitude box details | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [63](https://github.com/Gallucky/ClarityBox/issues/63) | 05/10/2025 | - | [Feature] User can create a gratitude box | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [62](https://github.com/Gallucky/ClarityBox/issues/62) | 05/10/2025 | - | [Feature] User dashboard shows gratitude boxes | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [61](https://github.com/Gallucky/ClarityBox/issues/61) | 05/10/2025 | - | [Feature] User can view project details | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [60](https://github.com/Gallucky/ClarityBox/issues/60) | 05/10/2025 | - | [Feature] User can create a new project | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [59](https://github.com/Gallucky/ClarityBox/issues/59) | 05/10/2025 | - | [Feature] User dashboard overview displays projects | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
+| [9](https://github.com/Gallucky/ClarityBox/issues/9) | 02/10/2025 | - | Add basic UI components for MVP | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 MVP` |
+| [8](https://github.com/Gallucky/ClarityBox/issues/8) | 02/10/2025 | - | Set up / initialize the project's frontend folders/files structure | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 MVP` |

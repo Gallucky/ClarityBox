@@ -1,5 +1,7 @@
+const { AuthenticationError, ConfigurationError } = require("@/utils/customErrors");
 const { verifyToken } = require("./Providers/jwt");
-const { handleWebError } = require("../utils/handleErrors");
+const { handleWebError } = require("@utils/handleErrors");
+const { HTTP_CODES } = require("@utils/accurateStatus");
 
 const tokenGenerator = process.env.TOKEN_GENERATOR;
 
@@ -10,32 +12,31 @@ const tokenGenerator = process.env.TOKEN_GENERATOR;
  * If the token is missing or invalid, it responds with a 401 Unauthorized error.
  */
 const auth = async (req, res, next) => {
-    // If the token generator is not set, return an error.
-    if (!tokenGenerator) {
-        const err = new Error(
-            "TOKEN_GENERATOR environment variable is required for JWT authentication."
-        );
-        return handleWebError(res, 500, err);
-    }
-
     try {
+        // If the token generator is not set, return an error.
+        if (!tokenGenerator) {
+            throw new ConfigurationError(
+                "TOKEN_GENERATOR environment variable is required for JWT authentication."
+            );
+        }
+
         const tokenFromClient = req.header("x-auth-token");
 
         // If no token is provided, return an authentication error.
         if (!tokenFromClient) {
-            throw new Error("[Authentication Error]: Please Login/Authenticate");
+            throw new AuthenticationError("Please Login/Authenticate");
         }
 
         // Verifying the token.
         const userData = verifyToken(tokenFromClient);
         if (!userData) {
-            throw new Error("[Authentication Error]: Invalid/Expired Token or Unauthorized User");
+            throw new AuthenticationError("Invalid/Expired Token or Unauthorized User");
         }
 
         req.user = userData;
         return next();
     } catch (error) {
-        return handleWebError(res, 401, error);
+        handleWebError(res, error, HTTP_CODES.UNAUTHORIZED);
     }
 };
 

@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const key = process.env.TOKEN_SECRET_KEY;
 const tokenValidationPeriod = process.env.TOKEN_VALID_DURATION;
+const Log = require("@logger/loggers/customLogger");
+const { ConfigurationError } = require("@/utils/customErrors");
 
 /**
  * Validates that all required environment variables for JWT token signing are defined.
@@ -11,12 +13,14 @@ const tokenValidationPeriod = process.env.TOKEN_VALID_DURATION;
 const validateRequiredEnvVars = () => {
     // A secret key is required to sign the token and must be defined in the .env file.
     if (!key) {
-        throw new Error("TOKEN_SECRET_KEY environment variable is required to sign tokens.");
+        throw new ConfigurationError(
+            "TOKEN_SECRET_KEY environment variable is required to sign tokens."
+        );
     }
 
     // A duration for token to stay valid is also required.
     if (!tokenValidationPeriod) {
-        throw new Error(
+        throw new ConfigurationError(
             "TOKEN_VALID_DURATION environment variable is required to set token expiration and to sign tokens."
         );
     }
@@ -54,7 +58,7 @@ const verifyToken = (token) => {
         const userData = jwt.verify(token, key);
         return userData;
     } catch (error) {
-        console.error(error);
+        Log.error(error.message, new Error());
         return null;
     }
 };

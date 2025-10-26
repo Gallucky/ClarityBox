@@ -1,0 +1,93 @@
+name: Update Tracking Docs
+
+on:
+    workflow_dispatch:
+    # --- The script runs weekly --- #
+    schedule:
+        - cron: "0 0 * * 0"
+
+permissions:
+    contents: write
+    pull-requests: write
+    issues: read
+
+jobs:
+    update-docs:
+        runs-on: ubuntu-latest
+        steps:
+            # --- Checkout repository ---
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            # --- Install GH CLI ---
+            - name: Install GH CLI
+              run: |
+                  sudo apt-get update -y
+                  sudo apt-get install -y gh
+
+            # --- Setup Node ---
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            # --- Collect issues using Node.js ---
+            - name: Collect Issues (JS)
+              env:
+                  GH_TOKEN: ${{ secrets.GH_PAT }}
+              run: node .github/scripts/collect-issues.js
+
+            # --- Backup current docs ---
+            - name: Backup current docs
+              run: node .github/scripts/backup-docs.js
+
+            # --- Verify backup folder was created ---
+            - name: List .tracking contents
+              run: ls -l .tracking
+
+            # --- Generate updated docs ---
+            - name: Generate docs
+              run: node .github/scripts/update-docs.js
+
+            # --- Commit updates to dev branch ---
+            - name: Commit updates to dev
+              run: |
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "actions@github.com"
+                  git checkout dev
+                  git add Changelog.md Todo.md
+                  if ! git diff --cached --quiet; then
+                    git commit -m "Docs: Update tracking documentation"
+                    git push origin dev
+                  else
+                    echo "No changes to commit"
+                  fi
+
+            # --- Checkout tracking branch in separate folder ---
+            - name: Checkout tracking branch
+              uses: actions/checkout@v4
+              with:
+                  ref: tracking
+                  path: tracking-branch
+
+            # --- Ensure .tracking exists in tracking branch ---
+            - name: Ensure .tracking folder exists
+              run: mkdir -p tracking-branch/.tracking
+
+            # --- Copy backup folder into tracking branch ---
+            - name: Copy backups to tracking branch
+              run: |
+                  # Copy all newly created backup folders
+                  cp -r .tracking/* tracking-branch/.tracking/
+                  cd tracking-branch
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "actions@github.com"
+                  git add .tracking
+                  if ! git diff --cached --quiet; then
+                    TIMESTAMP=$(date +'%d-%m-%Y_%H-%M-%S')
+                    git commit -m "Backup: Docs backup $TIMESTAMP - $GITHUB_SHA"
+                    git push origin tracking
+                  else
+                    echo "No backups to commit"
+                  fi

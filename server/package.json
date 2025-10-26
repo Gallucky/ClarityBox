@@ -1,16 +1,24 @@
 {
     "name": "server",
-    "version": "1.0.0",
+    "version": "0.1.2-alpha",
     "description": "",
     "main": "server.js",
+    "_moduleAliases": {
+        "@": ".",
+        "@auth": "./auth",
+        "@DB": "./DB",
+        "@features": "./features",
+        "@logger": "./logger",
+        "@middlewares": "./middlewares",
+        "@router": "./router",
+        "@utils": "./utils"
+    },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "cross-env ENV=development nodemon .",
         "start": "cross-env ENV=production node .",
         "lint": "npx eslint . > eslint-report.log",
-        "track-commit": "node ./scripts/track-commit.js",
-        "diff": "git diff > .git-diff",
-        "status": "git status && git status > .git-status"
+        "diff": "git diff | clip",
+        "status": "git status && git status | clip"
     },
     "keywords": [],
     "author": "",
@@ -20,12 +28,15 @@
         "bcryptjs": "^3.0.2",
         "chalk": "^4.1.1",
         "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
         "express": "^5.1.0",
         "joi": "^18.0.1",
         "jsonwebtoken": "^9.0.2",
         "lodash": "^4.17.21",
+        "module-alias": "^2.2.3",
         "mongoose": "^8.18.1",
-        "morgan": "^1.10.1"
+        "morgan": "^1.10.1",
+        "winston": "^3.18.3"
     },
     "devDependencies": {
         "@eslint/js": "^9.36.0",

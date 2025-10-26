@@ -1,0 +1,21 @@
+// Makes so the IDE and linters can understand and see/recognize the files
+// that were required with the @ prefix.
+// 1. jsconfig.json (this file) - IDE and lint recognition and linking before runtime.
+// 2. in package.json - using the module-alias package is for interpreting the files at
+// runtime after the requiring of the module-alias/register at the start of the server.js file.
+{
+    "compilerOptions": {
+        "ignoreDeprecations": "6.0",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"],
+            "@auth/*": ["./auth/*"],
+            "@DB/*": ["./DB/*"],
+            "@features/*": ["./features/*"],
+            "@logger/*": ["./logger/*"],
+            "@middlewares/*": ["./middlewares/*"],
+            "@router/*": ["./router/*"],
+            "@utils/*": ["./utils/*"]
+        }
+    }
+}
