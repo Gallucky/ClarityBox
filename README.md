@@ -83,7 +83,7 @@ Moving it elsewhere will break the relative links to files and folders.
 │   ├── 📄 <a href="./docs/requirements.md">requirements.md</a>
 │   └── 📄 <a href="./docs/ui.md">ui.md</a>
 ├── 📁 <a href="./scripts/">scripts/</a>
-│   ├── 📁 <a href="./scripts/generated/">generated/</a>
+│   ├── 📁 <a>generated/</a>
 │   └── 📁 <a href="./scripts/utils/">utils/</a>
 │   ├── 📄 <a href="./scripts/create-edit-issue-labels.ps1">create-edit-issue-labels.ps1</a>
 │   ├── 📄 <a href="./scripts/generate-folder-tree.js">generate-folder-tree.js</a>
