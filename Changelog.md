@@ -12,16 +12,7 @@ The following tags are used throughout the changelog to categorize changes based
 
 ### 🏁 Tasks Completed Today
 
-| Issue # | Completed At | Title | Labels |
-|:------:|:------------:|:-----|:-----|
-| [94](https://github.com/Gallucky/ClarityBox/issues/94) | 24/10/2025 | Tasks CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
-| [93](https://github.com/Gallucky/ClarityBox/issues/93) | 24/10/2025 | Projects CRUD | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: High`<br>`📌 MVP` |
-| [90](https://github.com/Gallucky/ClarityBox/issues/90) | 24/10/2025 | For Tasks Routes | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
-| [89](https://github.com/Gallucky/ClarityBox/issues/89) | 24/10/2025 | For Projects Routes | `🔧 Backend`<br>`⭐ Feature`<br>`📌 Priority: Medium`<br>`📌 MVP` |
-| [7](https://github.com/Gallucky/ClarityBox/issues/7) | 24/10/2025 | Write routes tests using Postman | `🔧 Backend`<br>`📌 MVP` |
-| [6](https://github.com/Gallucky/ClarityBox/issues/6) | 24/10/2025 | Follow controller structure pattern for Posts, Projects, and Tasks | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP` |
-| [2](https://github.com/Gallucky/ClarityBox/issues/2) | 24/10/2025 | Write basic validation for incoming requests | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: Medium`<br>`📌 MVP` |
-| [1](https://github.com/Gallucky/ClarityBox/issues/1) | 24/10/2025 | Add routes for the created models (User, Post, Task, Project) | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: High`<br>`📌 MVP` |
+> No tasks were completed today.
 
 ### 📋 All Completed Tasks
 
