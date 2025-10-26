@@ -2,6 +2,25 @@
 
 > Backend web service for the ClarityBox full-stack project.<br> The server provides REST APIs endpoints for the frontend,<br> authentication, and database handling and access.
 
+<p align="center" style="display: flex; flex-direction: column; align-items: center;">
+  <a href="../README.md">
+    <img src="../docs/assets/icons/claritybox-logo-server.svg" alt="ClarityBox Logo" width="750"/>
+  </a>
+  <div style="display: flex; align-items: center; justify-content: center; margin-top: -3rem; gap: 1rem;">
+  <a href="../README.md">
+    <img src="https://img.shields.io/badge/App-Full Stack-3B5BFF?style=for-the-badge&logo=node.js&logoColor=white" alt="Server Badge"/>
+  </a>
+  <a href="../client/README.md">
+    <img src="https://img.shields.io/badge/Client-React%20%2B%20Vite-47E0F3?style=for-the-badge&logo=react&logoColor=white" alt="Client Badge"/>
+  </a>
+  <a href="../docs/README.md">
+    <img src="https://img.shields.io/badge/Docs-Planning%20%26%20Architecture-6B5BFF?style=for-the-badge&logo=markdown&logoColor=white" alt="Docs Badge"/>
+  </a>
+  </div>
+</p>
+
+---
+
 ## ⚙️ Overview
 
 -   Express.js server built with modular architecture

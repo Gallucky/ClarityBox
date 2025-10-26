@@ -1,0 +1,73 @@
+<svg width="1024" height="512" viewBox="0 0 950 384" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cb-grad-a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#47E0F3"/>
+      <stop offset="100%" stop-color="#3B5BFF"/>
+    </linearGradient>
+    <linearGradient id="cb-grad-b" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3ECBF0"/>
+      <stop offset="100%" stop-color="#3A37F5"/>
+    </linearGradient>
+    <linearGradient id="cb-grad-c" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#42D7F2"/>
+      <stop offset="100%" stop-color="#4B46FF"/>
+    </linearGradient>
+    <linearGradient id="cb-text" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3FD7F2"/>
+      <stop offset="100%" stop-color="#4A48FF"/>
+    </linearGradient>
+    <!-- indigo - light-blue badge gradient -->
+    <linearGradient id="badge-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4A56E2"/>
+      <stop offset="100%" stop-color="#5AC8FA"/>
+    </linearGradient>
+
+
+  </defs>
+
+  <!-- cube -->
+  <g transform="translate(0,-50)">
+    <g stroke="#5BE6FF" stroke-width="14" stroke-linecap="round" opacity="0.95">
+      <path d="M160 100 v-24"/>
+      <path d="M212 108 l20 -22"/>
+      <path d="M108 108 l-20 -22"/>
+    </g>
+    <polygon points="160,132 284,184 160,236 36,184" fill="#1A1F3C" opacity="0.25"/>
+    <polygon points="160,150 256,190 160,230 64,190" fill="url(#cb-grad-c)"/>
+    <polygon points="36,184 160,236 160,388 36,336" fill="url(#cb-grad-a)"/>
+    <polygon points="160,236 284,184 284,336 160,388" fill="url(#cb-grad-b)"/>
+    <g fill="none" stroke="#79F2FF" stroke-opacity="0.65" stroke-width="3">
+      <polygon points="160,132 284,184 284,336 160,388 36,336 36,184"/>
+      <polygon points="160,150 256,190 160,230 64,190"/>
+    </g>
+  </g>
+
+  <!-- main text -->
+  <g transform="translate(340,215)">
+    <text x="0" y="0"
+      font-family="Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+      font-size="96" font-weight="700"
+      fill="url(#cb-text)"
+      letter-spacing="0.5"
+      dominant-baseline="middle">
+      ClarityBox
+    </text>
+  </g>
+
+  <!-- badge centered on 'C' curve and slightly left -->
+  <!-- translate(790,135) rotate(35) -->
+  <!-- translate(295,195) rotate(-30) -->
+  <!-- translate(350,255) - bottom horizontal -->
+  <!-- translate(350,135) - top horizontal -->
+  <g transform="translate(350,135)" opacity="0.75">
+    <rect x="0" y="0" width="140" height="26" rx="4" ry="4" fill="url(#badge-grad)"/>
+    <text x="70" y="18"
+      text-anchor="middle"
+      font-family="Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+      font-size="17" font-weight="700"
+      fill="#ffffff"
+      letter-spacing="0.5">
+      Docs
+    </text>
+  </g>
+</svg>
