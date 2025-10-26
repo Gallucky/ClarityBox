@@ -62,11 +62,16 @@ Moving it elsewhere will break the relative links to files and folders.
 ├── 📁 <a href="./router/">router/</a>
 │   └── 📄 <a href="./router/router.js">router.js</a>
 ├── 📁 <a href="./utils/">utils/</a>
+│   ├── 📄 <a href="./utils/accurateStatus.js">accurateStatus.js</a>
+│   ├── 📄 <a href="./utils/customErrors.js">customErrors.js</a>
+│   ├── 📄 <a href="./utils/generalUtils.js">generalUtils.js</a>
 │   ├── 📄 <a href="./utils/getLocationFormatted.js">getLocationFormatted.js</a>
 │   ├── 📄 <a href="./utils/globalValidations.js">globalValidations.js</a>
 │   ├── 📄 <a href="./utils/handleErrors.js">handleErrors.js</a>
+│   ├── 📄 <a href="./utils/mongoUtils.js">mongoUtils.js</a>
 │   └── 📄 <a href="./utils/timeStamp.js">timeStamp.js</a>
 ├── 📄 <a href="./eslint.config.mjs">eslint.config.mjs</a>
+├── 📄 <a href="./jsconfig.json">jsconfig.json</a>
 ├── 📄 <a href="./package-lock.json">package-lock.json</a>
 ├── 📄 <a href="./package.json">package.json</a>
 ├── 📄 <a href="./README.md">README.md</a>
