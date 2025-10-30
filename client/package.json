@@ -3,9 +3,6 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
-    "_moduleAliases": {
-        "@": "./src"
-    },
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
@@ -25,7 +22,6 @@
         "axios": "^1.13.1",
         "joi": "^18.0.1",
         "jwt-decode": "^4.0.0",
-        "module-alias": "^2.2.3",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
         "react-hook-form": "^7.65.0",

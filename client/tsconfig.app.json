@@ -31,12 +31,15 @@
         "baseUrl": "./src",
         "paths": {
             "@/*": ["*"],
+            "@app/*": ["app/*"],
+            "@assets/*": ["assets/*"],
             "@components/*": ["components/*"],
-            "@pages/*": ["pages/*"],
             "@hooks/*": ["hooks/*"],
-            "@utils/*": ["utils/*"],
             "@lib/*": ["lib/*"],
-            "@types/*": ["types/*"]
+            "@pages/*": ["pages/*"],
+            "@styles/*": ["styles/*"],
+            "@types/*": ["types/*"],
+            "@utils/*": ["utils/*"]
         }
     },
     "include": ["src"]
