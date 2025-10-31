@@ -33,12 +33,12 @@
             "@/*": ["*"],
             "@app/*": ["app/*"],
             "@assets/*": ["assets/*"],
+            "@errors/*": ["errors/*"],
             "@components/*": ["components/*"],
             "@hooks/*": ["hooks/*"],
             "@lib/*": ["lib/*"],
             "@pages/*": ["pages/*"],
             "@styles/*": ["styles/*"],
-            "@types/*": ["types/*"],
             "@utils/*": ["utils/*"]
         }
     },

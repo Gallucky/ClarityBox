@@ -1,7 +1,8 @@
 // router.tsx is like a traffic controller.
 
-import App from "@/App.tsx";
 import { createBrowserRouter } from "react-router-dom";
+
+import App from "@/App.tsx";
 
 // Todo: Import the app layout.
 // # containing all the static elements/components that will always be rendered.

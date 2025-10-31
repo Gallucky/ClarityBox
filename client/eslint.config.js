@@ -1,14 +1,16 @@
 // eslint.config.js
 import { defineConfig } from "eslint/config";
-
-import js from "@eslint/js"; // Core ESLint rules
-import globals from "globals"; // Browser globals
-import tseslint from "typescript-eslint"; // TypeScript rules + parser
-import importPlugin from "eslint-plugin-import"; // Import validation and order
-import boundaries from "eslint-plugin-boundaries"; // Architectural isolation
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import importPlugin from "eslint-plugin-import";
+import boundaries from "eslint-plugin-boundaries";
+import unusedImports from "eslint-plugin-unused-imports";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
 
 export default defineConfig([
-    // Ignore generated / build artifacts
+    // Ignore non-source files
     {
         ignores: [
             "dist",
@@ -16,7 +18,6 @@ export default defineConfig([
             "coverage",
             "node_modules",
             "src/__generated__",
-            // Ignore this file and other config files like this one.
             "eslint.config.js",
             "vite.config.{js,ts}",
             "tailwind.config.{js,ts}",
@@ -24,72 +25,82 @@ export default defineConfig([
     },
 
     {
-        // Rules here applies only to JS/TS files in src folder and subfolders.
-        files: ["./src/**/*.{js,jsx,ts,tsx}"],
+        files: ["src/**/*.{js,jsx,ts,tsx}"],
 
         languageOptions: {
             ecmaVersion: 2022,
             sourceType: "module",
-            // Predefines all standard browser global variables so ESLint doesn’t flag them as undefined.
-            // Such as window, document, navigator, localStorage, setTimeout, etc.
-            globals: { ...globals.browser },
+            globals: globals.browser,
             parserOptions: {
-                projectService: true, // auto type-aware linting
+                projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
         },
 
         settings: {
-            // Auto-detecting the react version.
             react: { version: "detect" },
-            // Helps eslint-plugin-import understand how modules are resolved.
-            // - 'typescript' uses tsconfig paths and baseUrl for alias imports (e.g. "@/components").
-            // - 'node' ensures Node's default resolution logic works for plain JS/TS files.
             "import/resolver": {
                 node: { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+                typescript: {
+                    alwaysTryTypes: true, // optional, resolves @types packages
+                    project: "./tsconfig.json", // ensure this points to your TS config
+                },
             },
-            // Defines logical project layers for eslint-plugin-boundaries.
-            // Each "type" maps to a directory pattern and represents a distinct architectural area.
-            // These are used by the "boundaries/element-types" rule to control what can import what.
             "boundaries/elements": [
-                // Global app structure, routing, providers etc...
                 { type: "app", pattern: "src/app/**" },
-                // Route level pages / entry points.
                 { type: "pages", pattern: "src/pages/*/**" },
-                // Shared UI components
                 { type: "components", pattern: "src/components/**" },
-                // Shared reusable hooks
                 { type: "hooks", pattern: "src/hooks/**" },
-                // Utility helper functions.
                 { type: "utils", pattern: "src/utils/**" },
-                // Third party wrappers, API clients.
                 { type: "lib", pattern: "src/lib/**" },
-                // Shared global type definitions.
                 { type: "types", pattern: "src/types/**" },
             ],
         },
 
         plugins: {
             import: importPlugin,
-            "unused-imports": unusedImports,
             boundaries,
+            "unused-imports": unusedImports,
             "react-hooks": reactHooks,
             "react-refresh": reactRefresh,
         },
 
-        extends: [
-            js.configs.recommended, // Base ESLint
-            ...tseslint.configs.recommendedTypeChecked, // TypeScript + type-aware rules
-        ],
+        extends: [js.configs.recommended, ...tseslint.configs.recommendedTypeChecked],
 
         rules: {
             // --- General ---
-            "no-console": ["warn", { allow: ["warn", "error"] }], // still useful with Prettier
+            "no-console": ["warn", { allow: ["warn", "error"] }],
+            "func-style": ["error", "expression"], // enforce arrow functions only
+            "no-useless-rename": [
+                "warn",
+                {
+                    ignoreDestructuring: false,
+                    ignoreImport: false,
+                    ignoreExport: false,
+                },
+            ],
+            "max-lines": [
+                "warn",
+                {
+                    max: 200,
+                    skipBlankLines: true,
+                    skipComments: true,
+                },
+            ],
 
-            // --- TypeScript correctness ---
+            // --- TypeScript ---
             "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
+            "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/class-methods-use-this": "off", // prevents conflict
+            "@typescript-eslint/unbound-method": "off", // disables `this` warnings
+            "@typescript-eslint/no-invalid-this": "off", // disables `this` enforcement
+            "@typescript-eslint/no-unsafe-assignment": "off",
+            "@typescript-eslint/no-unsafe-argument": "off",
+            "@typescript-eslint/no-unsafe-member-access": "off",
+            "@typescript-eslint/no-unsafe-return": "off",
+            "@typescript-eslint/prefer-promise-reject-errors": "off",
 
-            // --- React Hooks + Fast Refresh ---
+            // --- React Hooks ---
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",
             "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
@@ -99,52 +110,38 @@ export default defineConfig([
             "@typescript-eslint/no-unused-vars": "off",
 
             // --- Import hygiene ---
-            // Disallowing imports from the same module in one file.
             "import/no-duplicates": "error",
-            // Preventing circular imports e.g x imports from y that imports from x.
             "import/no-cycle": ["error", { ignoreExternal: true }],
             "import/order": [
-                "error",
+                "warn",
                 {
-                    // Defines how import groups should be ordered and separated by newlines.
                     groups: [
-                        "external", // Packages from node_modules
-                        "internal", // Aliased project imports (e.g. "@/utils")
-                        ["parent", "sibling", "index"], // Relative imports from nearby files
-                        "type", // Type-only imports (import type {...})
+                        "builtin",
+                        "external",
+                        "internal",
+                        ["parent", "sibling", "index"],
+                        "type",
                     ],
-                    // Requires a blank line between groups so it's easier to differentiate between them.
-                    "newlines-between": "always",
-                    // Sort imports alphabetically (A→Z)
                     alphabetize: { order: "asc", caseInsensitive: true },
-                    // Group aliased paths as "internal" so they appear after external packages
-                    pathGroups: [
-                        { pattern: "@/**", group: "internal", position: "after" },
-                        { pattern: "@app/**", group: "internal", position: "after" },
-                        { pattern: "@pages/**", group: "internal", position: "after" },
-                        { pattern: "@components/**", group: "internal", position: "after" },
-                        { pattern: "@utils/**", group: "internal", position: "after" },
-                        { pattern: "@lib/**", group: "internal", position: "after" },
-                    ],
-                    // Keep built-ins at the very top
+                    pathGroups: [{ pattern: "@/**", group: "internal", position: "after" }],
                     pathGroupsExcludedImportTypes: ["builtin"],
                 },
             ],
-            // Forbid deep relative imports across major folders.
-            // Enforces using configured path aliases (e.g. "@/utils" instead of "../../../utils").
+
+            // --- Enforce path alias usage ---
             "no-restricted-imports": [
                 "error",
                 {
                     patterns: [
                         {
-                            group: ["../*", "../../*", "../../../*"],
-                            message: "Use path aliases for cross-folder imports.",
+                            group: ["**/../*", "**/../../*", "**/../../../*"],
+                            message: "Use path aliases (e.g. '@/utils') instead of relative paths.",
                         },
                     ],
                 },
             ],
 
-            // --- Boundaries (page isolation) ---
+            // --- Architectural boundaries ---
             "boundaries/element-types": [
                 "error",
                 {
