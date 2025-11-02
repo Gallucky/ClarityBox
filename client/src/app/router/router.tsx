@@ -4,65 +4,65 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App.tsx";
 
-// Todo: Import the app layout.
-// # containing all the static elements/components that will always be rendered.
-// # e.g. navigation bar, footer, etc.
+import { lazyImportPage, lazyLoad } from "@/utils/lazyLoad";
+import RouteGuard from "./RouteGuard";
 
-// Todo: Import the RouteGuard.
-// # to protect routes from unauthorized access.
-
-// Todo: Lazy Import the pages.
-// # e.g. Home, About, Login, Registration, etc.
-const Home = null;
-const About = null;
-const Login = null;
-const Registration = null;
-const Dashboard = null;
-const Projects = null;
-const Gratitude = null;
-const Stats = null;
-const Admin = null;
-const Profile = null;
-const ErrorPage = null;
+const Home = lazyImportPage("Home");
+const About = lazyImportPage("About");
+const Login = lazyImportPage("Login");
+const Registration = lazyImportPage("Registration");
+const Dashboard = lazyImportPage("Dashboard");
+const Projects = lazyImportPage("Projects");
+const Gratitude = lazyImportPage("Gratitude");
+const Admin = lazyImportPage("Admin");
+const Profile = lazyImportPage("Profile");
+const ErrorPage = lazyImportPage("Error");
 
 const router = createBrowserRouter([
     {
         // The static elements/components that will always be rendered.
         element: <App />,
         children: [
-            { path: "/", element: Home },
-            { path: "/about", element: About },
+            { path: "/", element: lazyLoad(Home) },
+            { path: "/about", element: lazyLoad(About) },
             {
                 // GuestOnly
                 path: "/login",
-                element: Login,
+                element: <RouteGuard role="guest">{lazyLoad(Login)}</RouteGuard>,
             },
             {
                 // GuestOnly
                 path: "/register",
-                element: Registration,
+                element: <RouteGuard role="guest">{lazyLoad(Registration)}</RouteGuard>,
             },
             {
                 // Allowed for logged in users
                 path: "/dashboard",
-                element: Dashboard,
+                element: <RouteGuard role="authenticated">{lazyLoad(Dashboard)}</RouteGuard>,
                 children: [
-                    { path: "projects", element: Projects },
-                    { path: "gratitude", element: Gratitude },
-                    { path: "stats", element: Stats },
+                    {
+                        path: "projects",
+                        element: <RouteGuard role="authenticated">{lazyLoad(Projects)}</RouteGuard>,
+                    },
+                    {
+                        path: "gratitude",
+                        element: (
+                            <RouteGuard role="authenticated">{lazyLoad(Gratitude)}</RouteGuard>
+                        ),
+                    },
                 ],
             },
             {
                 // Allowed for admin
                 path: "/admin",
-                element: Admin,
+                element: <RouteGuard role="admin">{lazyLoad(Admin)}</RouteGuard>,
             },
             {
                 // Allowed for logged in users
                 path: "/profile",
-                element: Profile,
+                element: <RouteGuard role="authenticated">{lazyLoad(Profile)}</RouteGuard>,
             },
-            { path: "*", element: ErrorPage },
+            { path: "*", element: lazyLoad(ErrorPage) },
         ],
     },
 ]);
