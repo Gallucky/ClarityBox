@@ -15,7 +15,7 @@
     },
     "scripts": {
         "dev": "cross-env ENV=development nodemon .",
-        "start": "NODE_ENV=production node .",
+        "start": "cross-env ENV=production node .",
         "lint": "npx eslint . > eslint-report.log",
         "diff": "git diff | clip",
         "status": "git status && git status | clip"
@@ -29,6 +29,7 @@
         "chalk": "^4.1.1",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
+        "cross-env": "^10.0.0",
         "express": "^5.1.0",
         "joi": "^18.0.1",
         "jsonwebtoken": "^9.0.2",
@@ -40,7 +41,6 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.36.0",
-        "cross-env": "^10.0.0",
         "eslint": "^9.36.0",
         "globals": "^16.4.0",
         "nodemon": "^3.1.10"
