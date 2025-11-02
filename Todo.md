@@ -21,4 +21,3 @@ The following tags are used throughout the todo list to categorize tasks based o
 | [60](https://github.com/Gallucky/ClarityBox/issues/60) | 05/10/2025 | - | [Feature] User can create a new project | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
 | [59](https://github.com/Gallucky/ClarityBox/issues/59) | 05/10/2025 | - | [Feature] User dashboard overview displays projects | `💬 Open` | `💻 Frontend`<br>`⭐ Feature`<br>`📌 MVP` |
 | [9](https://github.com/Gallucky/ClarityBox/issues/9) | 02/10/2025 | - | Add basic UI components for MVP | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 MVP` |
-| [8](https://github.com/Gallucky/ClarityBox/issues/8) | 02/10/2025 | - | Set up / initialize the project's frontend folders/files structure | `💬 Open` | `💻 Frontend`<br>`✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 MVP` |

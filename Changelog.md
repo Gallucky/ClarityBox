@@ -18,6 +18,7 @@ The following tags are used throughout the changelog to categorize changes based
 
 | Issue # | Completed At | Title | Labels |
 |:------:|:------------:|:-----|:-----|
+| [8](https://github.com/Gallucky/ClarityBox/issues/8) | 29/10/2025 | Set up / initialize the project's frontend folders/files structure | `💻 Frontend`<br>`✨ Enhancement`<br>`📌 Priority: Low`<br>`📌 MVP` |
 | [2](https://github.com/Gallucky/ClarityBox/issues/2) | 24/10/2025 | Write basic validation for incoming requests | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: Medium`<br>`📌 MVP` |
 | [6](https://github.com/Gallucky/ClarityBox/issues/6) | 24/10/2025 | Follow controller structure pattern for Posts, Projects, and Tasks | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 MVP` |
 | [1](https://github.com/Gallucky/ClarityBox/issues/1) | 24/10/2025 | Add routes for the created models (User, Post, Task, Project) | `🔧 Backend`<br>`✨ Enhancement`<br>`📌 Priority: High`<br>`📌 MVP` |
