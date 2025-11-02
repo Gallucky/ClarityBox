@@ -25,6 +25,9 @@ const generateInitialData = require("./initialData/initialDataService");
 
 // Middleware - App Level.
 app.use(cors);
+app.get("/health", (req, res) => {
+    res.status(200).json({ ok: true, uptime: process.uptime(), timestamp: Date.now() });
+});
 app.use(logger);
 app.use(express.json());
 app.use(express.text());
