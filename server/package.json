@@ -15,7 +15,7 @@
     },
     "scripts": {
         "dev": "cross-env ENV=development nodemon .",
-        "start": "cross-env ENV=production node .",
+        "start": "NODE_ENV=production node .",
         "lint": "npx eslint . > eslint-report.log",
         "diff": "git diff | clip",
         "status": "git status && git status | clip"
