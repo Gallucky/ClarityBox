@@ -1,0 +1,125 @@
+.app-bg {
+    background-color: var(--background);
+}
+.app-fg {
+    color: var(--foreground);
+}
+
+.app-card-bg {
+    background-color: var(--card);
+}
+.app-card-fg {
+    color: var(--card-foreground);
+}
+
+.app-popover-bg {
+    background-color: var(--popover);
+}
+.app-popover-fg {
+    color: var(--popover-foreground);
+}
+
+.app-primary-bg {
+    background-color: var(--primary);
+}
+.app-primary-fg {
+    color: var(--primary-foreground);
+}
+
+.app-accent-bg {
+    background-color: var(--accent);
+}
+.app-accent-fg {
+    color: var(--accent-foreground);
+}
+
+.app-secondary-bg {
+    background-color: var(--secondary);
+}
+.app-secondary-fg {
+    color: var(--secondary-foreground);
+}
+
+.app-muted-bg {
+    background-color: var(--muted);
+}
+.app-muted-fg {
+    color: var(--muted-foreground);
+}
+
+.app-border {
+    border-color: var(--border);
+}
+
+.app-input {
+    background-color: var(--input);
+    border-color: var(--border);
+}
+
+.app-ring {
+    outline-color: var(--ring);
+}
+
+.app-success-bg {
+    background-color: var(--success);
+}
+.app-success-fg {
+    color: var(--foreground);
+}
+
+.app-warning-bg {
+    background-color: var(--warning);
+}
+.app-warning-fg {
+    color: var(--foreground);
+}
+
+.app-destructive-bg {
+    background-color: var(--destructive);
+}
+.app-destructive-fg {
+    color: var(--foreground);
+}
+
+/* Sidebar */
+.app-sidebar-bg {
+    background-color: var(--sidebar);
+}
+.app-sidebar-fg {
+    color: var(--sidebar-foreground);
+}
+.app-sidebar-primary-bg {
+    background-color: var(--sidebar-primary);
+}
+.app-sidebar-primary-fg {
+    color: var(--sidebar-primary-foreground);
+}
+.app-sidebar-accent-bg {
+    background-color: var(--sidebar-accent);
+}
+.app-sidebar-accent-fg {
+    color: var(--sidebar-accent-foreground);
+}
+.app-sidebar-border {
+    border-color: var(--sidebar-border);
+}
+.app-sidebar-ring {
+    outline-color: var(--sidebar-ring);
+}
+
+/* Charts */
+.app-chart-1 {
+    background-color: var(--chart-1);
+}
+.app-chart-2 {
+    background-color: var(--chart-2);
+}
+.app-chart-3 {
+    background-color: var(--chart-3);
+}
+.app-chart-4 {
+    background-color: var(--chart-4);
+}
+.app-chart-5 {
+    background-color: var(--chart-5);
+}

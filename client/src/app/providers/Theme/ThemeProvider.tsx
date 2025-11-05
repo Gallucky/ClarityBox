@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { ThemeValues } from "@/types/ThemeValues";
 import ThemeContext from "./ThemeContext";
 
@@ -33,7 +33,22 @@ type ThemeProviderProps = {
  */
 export const ThemeProvider = (props: ThemeProviderProps) => {
     const { children, initial = "light" } = props;
-    const [themeValue, setThemeValue] = useState<ThemeValues>(initial);
+    // Getting the theme value from local storage.
+    let localStorageTheme = localStorage.getItem("theme");
+    localStorageTheme =
+        localStorageTheme === "dark" || localStorageTheme === "light" ? localStorageTheme : null;
+    const [themeValue, setThemeValue] = useState<ThemeValues>(
+        (localStorageTheme as ThemeValues) ?? initial
+    );
+
+    // Sync <html> class + persistence
+    useEffect(() => {
+        const root = document.documentElement;
+        root.classList.remove("light", "dark");
+        root.classList.add(themeValue);
+        localStorage.setItem("theme", themeValue);
+    }, [themeValue]);
+
     return (
         <ThemeContext.Provider value={{ themeValue, setThemeValue }}>
             {children}

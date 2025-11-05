@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+.glass-card {
+    /* Card Size */
+    @apply w-2/3 h-3/4 max-w-[500px];
+
+    /* Card Coloring + Border */
+    @apply bg-white/20 border border-white/30;
+
+    /* Card Shape & Position */
+    @apply rounded-2xl p-6;
+
+    /* Card Effect */
+    @apply backdrop-blur-md shadow-lg;
+
+    /* Content Alignment */
+    @apply flex flex-col items-center justify-around;
+}
+
+/* The card's light source */
+.light-source {
+    /* Size & Location */
+    @apply size-1/2 z-[-1] absolute inset-1/4;
+
+    /* Effects */
+    @apply opacity-30 blur-3xl shadow-2xl;
+
+    /* Coloring */
+    @apply bg-white;
+}
+
+.light-source-top-left {
+    inset: unset;
+    @apply top-0 left-0;
+}
+.light-source-top-right {
+    inset: unset;
+    @apply top-0 right-0;
+}
+.light-source-bottom-left {
+    inset: unset;
+    @apply bottom-0 left-0;
+}
+.light-source-bottom-right {
+    inset: unset;
+    @apply bottom-0 right-0;
+}

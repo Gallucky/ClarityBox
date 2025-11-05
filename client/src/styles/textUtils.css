@@ -1,0 +1,10 @@
+.text-outline {
+    --outline-width: 1px;
+    --outline-color: var(--outline-var-color);
+
+    text-shadow:
+        calc(-1 * var(--outline-width)) calc(-1 * var(--outline-width)) 0px var(--outline-color),
+        var(--outline-width) calc(-1 * var(--outline-width)) 0px var(--outline-color),
+        calc(-1 * var(--outline-width)) var(--outline-width) 0px var(--outline-color),
+        var(--outline-width) var(--outline-width) 0px var(--outline-color);
+}

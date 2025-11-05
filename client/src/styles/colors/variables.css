@@ -1,0 +1,151 @@
+/*
+  The color palette (for project + gratitude boxes app):
+  | Token                | Dark Mode | Light Mode | Usage                          |
+  | -------------------- | --------- | ---------- | ------------------------------ |
+  | background           | #0A0E12   | #FAFCFD    | App background                 |
+  | foreground           | #E8EBED   | #1A1D1F    | Main text                      |
+  | muted                | #1A1E23   | #F0F4F6    | Cards, dividers, neutral areas |
+  | muted-foreground     | #9BA3AB   | #5B6570    | Secondary text                 |
+  | primary              | #3B82F6   | #2563EB    | Action buttons, key labels     |
+  | primary-foreground   | #FFFFFF   | #FFFFFF    | Text on primary                |
+  | secondary            | #14B8A6   | #0D9488    | Alternative actions, badges    |
+  | secondary-foreground | #FAFCFD   | #FFFFFF    | Text on secondary              |
+  | accent               | #A78BFA   | #7C3AED    | Highlight, gratitude accents   |
+  | accent-foreground    | #FFFFFF   | #FFFFFF    | Accent text                    |
+  | success              | #10B981   | #059669    | Positive states                |
+  | warning              | #F59E0B   | #D97706    | Alerts, caution                |
+  | destructive          | #EF4444   | #DC2626    | Delete, remove, errors         |
+  | card                 | #13161B   | #FFFFFF    | Box background                 |
+  | border               | #252A30   | #E2E8F0    | Lines, dividers                |
+*/
+
+@import "tailwindcss";
+
+:root {
+    --radius: 0.625rem;
+
+    /* Base */
+    --background: oklch(0.985 0.003 220); /* #FAFCFD */
+    --foreground: oklch(0.22 0.01 240); /* #1A1D1F */
+
+    --card: oklch(1 0 0); /* #FFFFFF */
+    --card-foreground: oklch(0.22 0.01 240);
+
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.22 0.01 240);
+
+    /* Brand & accents */
+    --primary: oklch(0.6 0.24 260); /* #2563EB */
+    --primary-foreground: oklch(0.82 0.12 250); /* soft icy-blue, still blue */
+
+    --secondary: oklch(0.62 0.15 190); /* #0D9488 */
+    --secondary-foreground: oklch(0.82 0.09 185); /* pale jade */
+
+    --accent: oklch(0.65 0.2 280); /* #7C3AED */
+    --accent-foreground: oklch(0.83 0.1 285); /* lavender tint */
+
+    /* UI neutrals */
+    --muted: oklch(0.96 0.005 220); /* #F0F4F6 */
+    --muted-foreground: oklch(0.54 0.015 240); /* #5B6570 */
+
+    --border: oklch(0.92 0.005 220); /* #E2E8F0 */
+    --input: oklch(0.92 0.005 220);
+    --ring: oklch(0.6 0.24 260);
+
+    /* States */
+    --success: oklch(0.65 0.2 165); /* #059669 */
+    --warning: oklch(0.75 0.2 70); /* #D97706 */
+    --destructive: oklch(0.63 0.26 25); /* #DC2626 */
+    --success-foreground: oklch(1 0 0); /* white text on success bg */
+    --warning-foreground: oklch(0.13 0.01 260); /* dark text on warning bg */
+    --destructive-foreground: oklch(1 0 0); /* white text on destructive bg */
+
+    /* Sidebar */
+    --sidebar: oklch(0.98 0.003 220);
+    --sidebar-foreground: oklch(0.22 0.01 240);
+    --sidebar-primary: oklch(0.6 0.24 260);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-secondary: oklch(0.62 0.15 190);
+    --sidebar-secondary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.65 0.2 280);
+    --sidebar-accent-foreground: oklch(1 0 0);
+    --sidebar-border: oklch(0.92 0.005 220);
+    --sidebar-ring: oklch(0.6 0.24 260);
+
+    /* Charts */
+    --chart-1: oklch(0.65 0.2 260);
+    --chart-2: oklch(0.62 0.15 190);
+    --chart-3: oklch(0.55 0.12 280);
+    --chart-4: oklch(0.75 0.2 70);
+    --chart-5: oklch(0.7 0.18 150);
+
+    --outline-var-color: black;
+}
+
+.dark {
+    --radius: 0.625rem;
+
+    /* Base */
+    --background: oklch(0.12 0.01 240); /* #0A0E12 */
+    --foreground: oklch(0.89 0.008 240); /* #E8EBED */
+
+    --card: oklch(0.16 0.01 240); /* #13161B */
+    --card-foreground: oklch(0.91 0.008 240);
+
+    --popover: oklch(0.16 0.01 240);
+    --popover-foreground: oklch(0.91 0.008 240);
+
+    /* Brand & accents */
+    --primary: oklch(0.65 0.26 260); /* #3B82F6 */
+    --primary-foreground: oklch(0.35 0.1 260);
+
+    --secondary: oklch(0.68 0.16 190); /* #14B8A6 - Teal */
+    --secondary-foreground: oklch(0.35 0.1 190);
+
+    --accent: oklch(0.75 0.22 285); /* #A78BFA - Purple */
+    --accent-foreground: oklch(0.35 0.1 285);
+
+    /* UI neutrals */
+    --muted: oklch(0.19 0.01 240); /* #1A1E23 */
+    --muted-foreground: oklch(0.7 0.015 240); /* #9BA3AB */
+
+    --border: oklch(0.24 0.01 240); /* #252A30 */
+    --input: oklch(0.24 0.01 240);
+    --ring: oklch(0.65 0.26 260);
+
+    /* States */
+    --success: oklch(0.68 0.2 165);
+    --warning: oklch(0.78 0.2 70);
+    --destructive: oklch(0.65 0.26 25);
+    --success-foreground: oklch(0.13 0.01 240); /* #0A0E12 - dark text on bright green */
+    --warning-foreground: oklch(0.13 0.01 240); /* #0A0E12 - dark text on bright yellow */
+    --destructive-foreground: oklch(1 0 0); /* #FFFFFF - white text on red */
+
+    /* Sidebar */
+    --sidebar: oklch(0.14 0.01 240);
+    --sidebar-foreground: oklch(0.91 0.008 240);
+    --sidebar-primary: oklch(0.65 0.26 260);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-secondary: oklch(0.68 0.16 190);
+    --sidebar-secondary-foreground: oklch(0.985 0.003 220);
+    --sidebar-accent: oklch(0.75 0.22 285);
+    --sidebar-accent-foreground: oklch(0.985 0.003 220);
+    --sidebar-border: oklch(0.24 0.01 240);
+    --sidebar-ring: oklch(0.65 0.26 260);
+
+    /* Charts */
+    --chart-1: oklch(0.62 0.2 260);
+    --chart-2: oklch(0.6 0.15 190);
+    --chart-3: oklch(0.52 0.12 280);
+    --chart-4: oklch(0.72 0.2 70);
+    --chart-5: oklch(0.67 0.18 150);
+
+    --outline-var-color: white;
+}
+
+:root,
+.dark {
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}

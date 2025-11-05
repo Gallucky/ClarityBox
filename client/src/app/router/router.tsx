@@ -2,9 +2,9 @@
 
 import { createBrowserRouter } from "react-router-dom";
 
+import { lazyImportPage, lazyLoad } from "@utils/lazyLoad";
 import App from "@/App.tsx";
 
-import { lazyImportPage, lazyLoad } from "@/utils/lazyLoad";
 import RouteGuard from "./RouteGuard";
 
 const Home = lazyImportPage("Home");

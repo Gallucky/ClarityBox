@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import ProviderError from "@/errors/providerError";
+import ProviderError from "@errors/providerError";
 
 import AuthContext from "./AuthContext";
 

@@ -1,3 +1,4 @@
+import AuthProvider from "./Auth/AuthProvider";
 import { QueryProvider } from "./Query/QueryProvider";
 import { ThemeProvider } from "./Theme/ThemeProvider";
 
@@ -22,8 +23,9 @@ const AppProviders = (props: AppProvidersProps) => {
     return (
         <>
             <QueryProvider>
-                {/* Todo: Add AuthProvider here */}
-                <ThemeProvider>{props.children}</ThemeProvider>
+                <AuthProvider>
+                    <ThemeProvider>{props.children}</ThemeProvider>
+                </AuthProvider>
             </QueryProvider>
         </>
     );

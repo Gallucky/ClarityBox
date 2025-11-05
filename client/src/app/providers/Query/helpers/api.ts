@@ -1,5 +1,5 @@
 import axios from "axios";
-import ConfigurationError from "@/errors/ConfigurationError";
+import ConfigurationError from "@errors/ConfigurationError";
 
 const createAxiosInstance = () => {
     const baseURL = import.meta.env.VITE_API_URL;
