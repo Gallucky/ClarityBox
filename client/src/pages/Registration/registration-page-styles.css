@@ -1,0 +1,14 @@
+.page-title {
+    /* Size related */
+    @apply max-sm:scale-75 w-full! overflow-clip;
+
+    /* Location related */
+    @apply -mb-2.5;
+
+    /* Text related */
+    @apply font-[Inter] text-center;
+}
+
+.registration-form-content {
+    @apply -mt-0;
+}

@@ -19,8 +19,6 @@
   | border               | #252A30   | #E2E8F0    | Lines, dividers                |
 */
 
-@import "tailwindcss";
-
 :root {
     --radius: 0.625rem;
 
@@ -144,6 +142,7 @@
 }
 
 :root,
+:root *,
 .dark {
     transition:
         background-color 0.3s ease,

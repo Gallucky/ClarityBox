@@ -1,9 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
 .glass-card {
     /* Card Size */
-    @apply w-2/3 h-3/4 max-w-[500px];
+    @apply w-2/3 h-3/4 max-w-[750px];
 
     /* Card Coloring + Border */
     @apply bg-white/20 border border-white/30;

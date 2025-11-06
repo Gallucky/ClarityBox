@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import "@styles/fonts.css";
+@import "@styles/GlassCard.css";
+@import "@styles/textUtils.css";
+@import "@styles/colors/variables.css";
+@import "@styles/colors/classes.css";
+@import "@pages/Registration/registration-page-styles.css";
+
 @custom-variant dark (&:is(.dark *));
 
 * {
@@ -85,14 +92,6 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
-}
-
-:root,
-:root * {
-    transition:
-        background-color 1s ease,
-        color 1s ease,
-        border-color 1s ease;
 }
 
 @layer base {

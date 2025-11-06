@@ -32,7 +32,7 @@ const router = createBrowserRouter([
             },
             {
                 // GuestOnly
-                path: "/register",
+                path: "/registration",
                 element: <RouteGuard role="guest">{lazyLoad(Registration)}</RouteGuard>,
             },
             {
