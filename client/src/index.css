@@ -3,10 +3,11 @@
 
 @import "@styles/fonts.css";
 @import "@styles/GlassCard.css";
-@import "@styles/textUtils.css";
+@import "@styles/textUtils.tailwind.css";
 @import "@styles/colors/variables.css";
 @import "@styles/colors/classes.css";
-@import "@pages/Registration/registration-page-styles.css";
+@import "@pages/Registration/registrationPageStyles.css";
+@import "@pages/Error/errorPageStyles.css";
 
 @custom-variant dark (&:is(.dark *));
 

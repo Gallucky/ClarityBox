@@ -1,0 +1,3 @@
+.glass-card > *:not(.light-source) {
+    @apply outline;
+}

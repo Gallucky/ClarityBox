@@ -78,7 +78,7 @@
     background-color: var(--destructive);
 }
 .app-destructive-fg {
-    color: var(--foreground);
+    color: var(--destructive-foreground);
 }
 
 /* Sidebar */
