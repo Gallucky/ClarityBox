@@ -1,6 +1,6 @@
 .page-title {
     /* Size related */
-    @apply max-sm:scale-75 w-full! overflow-clip;
+    @apply max-sm:scale-75 w-full! overflow-clip flex-none;
 
     /* Location related */
     @apply -mb-2.5;
@@ -10,5 +10,31 @@
 }
 
 .registration-form-content {
-    @apply -mt-0;
+    @apply max-sm:overflow-y-auto! h-80 md:h-[90%] grow min-h-0 max-md:my-[5%]! md:flex flex-col justify-center;
+}
+
+/* Scrollbar styling */
+.registration-form-content::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.registration-form-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05); /* subtle glass effect */
+    border-radius: 1rem;
+}
+
+.registration-form-content::-webkit-scrollbar-thumb {
+    background-color: var(--secondary); /* teal tone */
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.registration-form-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(45, 212, 191, 0.8);
+}
+
+/* Firefox support */
+.registration-form-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary) rgba(255, 255, 255, 0.05);
 }
