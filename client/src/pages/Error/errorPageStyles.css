@@ -1,3 +1,38 @@
-.glass-card > *:not(.light-source) {
-    @apply outline;
+.error-page {
+    @apply h-7/12! w-[90%]!;
+}
+.error-page > .content {
+    /* Mobile layout + Size */
+    @apply flex flex-col w-full md:h-[90%];
+
+    /* Non-mobile layout */
+    @apply md:grid! md:grid-cols-2 md:grid-rows-2 place-items-center;
+
+    /* Gaps */
+    @apply gap-10 md:gap-0;
+}
+
+.error-page .content .title {
+    /* Font */
+    @apply font-inter font-bold;
+
+    /* Text */
+    @apply text-outline text-destructive;
+
+    /* Location & Overflow */
+    @apply overflow-hidden row-start-1 row-end-3 col-start-2 col-end-2;
+
+    @apply md:-translate-y-8;
+}
+
+.error-page .content .error-404-icon-logo {
+    @apply relative size-[25dvh] md:row-span-2 md:col-start-1 md:col-end-1;
+}
+
+.blur-text {
+    @apply justify-center!;
+}
+
+.blur-text > * {
+    @apply text-fluid-1.25;
 }
