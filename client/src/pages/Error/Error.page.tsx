@@ -35,7 +35,7 @@ const Error = () => {
                 <Button
                     onClick={() => navigate("/")}
                     variant={"outline"}
-                    className="size-fit p-2! fluid- font-inter">
+                    className="size-fit p-2! text-fluid font-inter">
                     Return to home page
                 </Button>
             </GlassCard>

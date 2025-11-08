@@ -1,0 +1,96 @@
+@theme {
+    /* Base fluid scale (everything depends on this) */
+    --font-base: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+}
+
+@utility text-fluid {
+    font-size: calc(var(--font-base) * var(--value));
+}
+
+@utility text-fluid-0.75 {
+    font-size: calc(var(--font-base) * 0.75);
+}
+
+@utility text-fluid-3/4 {
+    @apply text-fluid-0.75;
+}
+
+@utility text-fluid-0.9 {
+    font-size: calc(var(--font-base) * 0.9);
+}
+
+@utility text-fluid {
+    font-size: var(--font-base);
+}
+
+@utility text-fluid-1.25 {
+    font-size: calc(var(--font-base) * 1.25);
+}
+
+@utility text-fluid-1.5 {
+    font-size: calc(var(--font-base) * 1.5);
+}
+
+@utility text-fluid-1.75 {
+    font-size: calc(var(--font-base) * 1.75);
+}
+
+@utility text-fluid-2 {
+    font-size: calc(var(--font-base) * 2);
+}
+
+@utility text-fluid-2.25 {
+    font-size: calc(var(--font-base) * 2.25);
+}
+
+@utility text-fluid-2.5 {
+    font-size: calc(var(--font-base) * 2.5);
+}
+
+@utility text-fluid-2.75 {
+    font-size: calc(var(--font-base) * 2.75);
+}
+
+@utility text-fluid-3 {
+    font-size: calc(var(--font-base) * 3);
+}
+
+/* Headings */
+h1 {
+    @apply text-fluid-2.25;
+}
+
+h2 {
+    @apply text-fluid-2;
+}
+
+h3 {
+    @apply text-fluid-1.75;
+}
+
+h4 {
+    @apply text-fluid-1.5;
+}
+
+h5 {
+    @apply text-fluid-1.25;
+}
+
+h6 {
+    @apply text-fluid;
+}
+
+/* Body text */
+p,
+li,
+label,
+button,
+input,
+a,
+*:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+    @apply text-fluid-0.9;
+}
+
+small {
+    @apply text-fluid-0.75;
+}

@@ -1,0 +1,36 @@
+@theme {
+    --outline-width: 1px;
+    --outline-color: var(--outline-var-color);
+}
+
+@utility text-outline {
+    text-shadow:
+        calc(-1 * var(--outline-width)) calc(-1 * var(--outline-width)) 0px var(--outline-color),
+        var(--outline-width) calc(-1 * var(--outline-width)) 0px var(--outline-color),
+        calc(-1 * var(--outline-width)) var(--outline-width) 0px var(--outline-color),
+        var(--outline-width) var(--outline-width) 0px var(--outline-color);
+}
+
+@utility text-outline {
+    --outline-color: var(--value);
+}
+
+@utility text-outline-black {
+    --outline-color: black;
+}
+
+@utility text-outline-white {
+    --outline-color: white;
+}
+
+@utility text-outline-width {
+    --outline-width: var(--value);
+}
+
+@utility text-outline-width-1 {
+    --outline-width: 1;
+}
+
+@utility text-outline-width-2 {
+    --outline-width: 2;
+}
