@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ClarityBox • MVP Timeline (Nov 9 – Dec 4 2025)</title>
+        <style>
+            :root {
+                --bg: #0b0f14;
+                --panel: #141a21;
+                --bar: #3b82f6;
+                --accent: #a78bfa;
+                --text: #e8ecf1;
+                --muted: #7d8692;
+                --grid: #1f2933;
+            }
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: Inter, system-ui, sans-serif;
+                margin: 0;
+                padding: 32px;
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 8px;
+            }
+            h2 {
+                margin: 32px 0 8px;
+                color: var(--accent);
+            }
+            .timeline {
+                display: grid;
+                grid-template-columns: 140px repeat(26, 1fr);
+                border-collapse: collapse;
+                font-size: 13px;
+                overflow-x: auto;
+            }
+            .timeline-header {
+                background: var(--panel);
+                text-align: center;
+                padding: 6px 4px;
+                border: 1px solid var(--grid);
+            }
+            .phase-label {
+                writing-mode: vertical-rl;
+                transform: rotate(180deg);
+                background: var(--panel);
+                color: var(--accent);
+                text-align: center;
+                border-right: 1px solid var(--grid);
+                font-weight: 600;
+            }
+            .row {
+                display: contents;
+            }
+            .task-name {
+                border: 1px solid var(--grid);
+                padding: 6px 8px;
+                background: var(--panel);
+            }
+            .cell {
+                border: 1px solid var(--grid);
+                height: 16px;
+            }
+            .bar {
+                background: linear-gradient(90deg, var(--bar), var(--accent));
+                height: 100%;
+            }
+            .legend {
+                font-size: 12px;
+                color: var(--muted);
+                margin-top: 24px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>📅 ClarityBox MVP – Daily Gantt Plan</h1>
+        <p style="text-align: center; color: var(--muted)">
+            Nov 9 → Dec 4 2025 • Frontend completion and submission
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-header">Phase / Task</div>
+            <!-- Days -->
+            <script>
+                const start = 9,
+                    end = 4 + 30 - 8; // Nov9-Dec4 (26 days)
+                const headers = document.currentScript.parentNode;
+                for (let i = 0; i < 26; i++) {
+                    const d = document.createElement("div");
+                    d.className = "timeline-header";
+                    d.textContent = 9 + i <= 30 ? "Nov " + (9 + i) : "Dec " + (i - 21);
+                    headers.appendChild(d);
+                }
+            </script>
+
+            <!-- PHASE 1 -->
+            <div class="phase-label">Auth Pages</div>
+            <div class="task-name">Form structure + Joi schema</div>
+            <div class="cell" style="grid-column: span 1">
+                <div class="bar" style="width: 100%"></div>
+            </div>
+            <div class="task-name">Connect to API + handle JWT</div>
+            <div class="cell" style="grid-column: 2 / span 2"><div class="bar"></div></div>
+            <div class="task-name">Error toasts + polish</div>
+            <div class="cell" style="grid-column: 4 / span 1"><div class="bar"></div></div>
+
+            <!-- PHASE 2 -->
+            <div class="phase-label">Layout & Nav</div>
+            <div class="task-name">Navbar + Footer</div>
+            <div class="cell" style="grid-column: 5 / span 1"><div class="bar"></div></div>
+            <div class="task-name">RouteGuard layouts</div>
+            <div class="cell" style="grid-column: 6 / span 1"><div class="bar"></div></div>
+
+            <!-- PHASE 3 -->
+            <div class="phase-label">Dashboard</div>
+            <div class="task-name">Fetch summary + cards</div>
+            <div class="cell" style="grid-column: 7 / span 2"><div class="bar"></div></div>
+            <div class="task-name">Spinner + empty states</div>
+            <div class="cell" style="grid-column: 9 / span 1"><div class="bar"></div></div>
+
+            <!-- PHASE 4 -->
+            <div class="phase-label">Projects CRUD</div>
+            <div class="task-name">API integration</div>
+            <div class="cell" style="grid-column: 10 / span 1"><div class="bar"></div></div>
+            <div class="task-name">UI list + modal form</div>
+            <div class="cell" style="grid-column: 11 / span 2"><div class="bar"></div></div>
+            <div class="task-name">Edit/Delete + feedback</div>
+            <div class="cell" style="grid-column: 13 / span 1"><div class="bar"></div></div>
+
+            <!-- PHASE 5 -->
+            <div class="phase-label">Tasks & Gratitude</div>
+            <div class="task-name">Tasks module</div>
+            <div class="cell" style="grid-column: 14 / span 1"><div class="bar"></div></div>
+            <div class="task-name">Gratitude Boxes CRUD</div>
+            <div class="cell" style="grid-column: 15 / span 3"><div class="bar"></div></div>
+
+            <!-- PHASE 6 -->
+            <div class="phase-label">Profile & Admin</div>
+            <div class="task-name">Profile edit</div>
+            <div class="cell" style="grid-column: 18 / span 1"><div class="bar"></div></div>
+            <div class="task-name">Admin user mgmt</div>
+            <div class="cell" style="grid-column: 19 / span 2"><div class="bar"></div></div>
+
+            <!-- PHASE 7 -->
+            <div class="phase-label">UI Polish</div>
+            <div class="task-name">Responsive & styling</div>
+            <div class="cell" style="grid-column: 21 / span 2"><div class="bar"></div></div>
+
+            <!-- PHASE 8 -->
+            <div class="phase-label">QA + Testing</div>
+            <div class="task-name">Bugfixes & validation</div>
+            <div class="cell" style="grid-column: 23 / span 2"><div class="bar"></div></div>
+
+            <!-- PHASE 9 -->
+            <div class="phase-label">Docs + Submit</div>
+            <div class="task-name">Docs + screenshots + push</div>
+            <div class="cell" style="grid-column: 25 / span 2"><div class="bar"></div></div>
+        </div>
+
+        <p class="legend">
+            🟦 = Active workdays • Nov 9 → Dec 4 = 26 days total • Focus: frontend only (server
+            complete) Each block ≈ ½–1 day of work. Finish daily, commit, and tag progress.
+        </p>
+    </body>
+</html>

@@ -11,7 +11,7 @@
             "name": { "first": "User", "last": "Example" },
             "nickname": "example_user",
             "email": "user@gmail.com",
-            "password": "User123!",
+            "password": "User1234!",
             "isAdmin": false
         }
     ],

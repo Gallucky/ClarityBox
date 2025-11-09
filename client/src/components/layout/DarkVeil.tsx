@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+ 
 // Added from: https://reactbits.dev/
 import { Renderer, Program, Mesh, Triangle, Vec2 } from "ogl";
 import { useRef, useEffect } from "react";

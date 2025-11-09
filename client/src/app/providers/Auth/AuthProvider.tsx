@@ -4,10 +4,12 @@ import { useEffect, useState, type ReactNode } from "react";
 import useQuery from "@app/providers/Query/useQuery";
 import InvalidCredentialsError from "@/errors/InvalidCredentialsError";
 
+import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
 import type { Token } from "@/types/Token";
 import type { User } from "@/types/User";
 
+import { parseError } from "@/utils/parseError";
 import AuthContext from "./AuthContext";
 import { getStoredToken } from "./helpers/storageHelpers";
 
@@ -115,12 +117,21 @@ const AuthProvider = (props: AuthProviderProps) => {
      */
     const isAuthenticated = !!token;
 
+    const resetOnError = (error: Error) => {
+        setError(error);
+        console.error(error);
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem("token");
+        api.removeHeader("x-auth-token");
+    };
+
     // The auth methods.
     const login = async (credentials: LoginPayload) => {
         try {
             setLoading(true);
-            const response = await api.post("/users/login", credentials);
-            const { userToken } = response.data;
+            const userToken = await api.post("/users/login", credentials);
+            console.log("userToken", userToken);
 
             if (userToken) {
                 // Saving the token in the context.
@@ -142,13 +153,14 @@ const AuthProvider = (props: AuthProviderProps) => {
                     "The email or password were incorrect at this login attempt."
                 );
             }
-        } catch (error) {
-            setError(error as Error);
-            console.error(error);
-            setUser(null);
-            setToken(null);
-            localStorage.removeItem("token");
-            api.removeHeader("x-auth-token");
+        } catch (error: any) {
+            console.error("error", error);
+            const status = error.response?.status ?? error.status ?? 500;
+            const data = error.response?.data ?? error.data ?? error.message;
+
+            const parsedError = parseError(status, String(data));
+            resetOnError(parsedError);
+            throw parsedError;
         } finally {
             setLoading(false);
         }
@@ -168,9 +180,24 @@ const AuthProvider = (props: AuthProviderProps) => {
         }
     };
 
+    const registerUser = async (data: RegisterFormData) => {
+        try {
+            setLoading(true);
+            // Sending the user registration request.
+            await api.post("/users/", data);
+
+            // Auto login feature.
+            await login({ email: data.email, password: data.password });
+        } catch (error) {
+            resetOnError(error as Error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <AuthContext.Provider
-            value={{ user, token, isAuthenticated, login, logout, loading, error }}>
+            value={{ user, token, isAuthenticated, login, logout, registerUser, loading, error }}>
             {children}
         </AuthContext.Provider>
     );

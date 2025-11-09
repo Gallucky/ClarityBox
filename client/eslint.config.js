@@ -10,7 +10,6 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
 export default defineConfig([
-    // Ignore non-source files
     {
         ignores: [
             "dist",
@@ -28,11 +27,10 @@ export default defineConfig([
         files: ["src/**/*.{js,jsx,ts,tsx}"],
 
         languageOptions: {
-            ecmaVersion: 2022,
+            ecmaVersion: "latest",
             sourceType: "module",
             globals: globals.browser,
             parserOptions: {
-                projectService: false,
                 tsconfigRootDir: import.meta.dirname,
             },
         },
@@ -40,15 +38,12 @@ export default defineConfig([
         settings: {
             react: { version: "detect" },
             "import/resolver": {
-                node: { extensions: [".js", ".jsx", ".ts", ".tsx"] },
-                typescript: {
-                    alwaysTryTypes: true, // optional, resolves @types packages
-                    project: "./tsconfig.json", // ensure this points to your TS config
-                },
+                node: true,
+                typescript: true,
             },
             "boundaries/elements": [
                 { type: "app", pattern: "src/app/**" },
-                { type: "pages", pattern: "src/pages/*/**" },
+                { type: "pages", pattern: "src/pages/**" },
                 { type: "components", pattern: "src/components/**" },
                 { type: "hooks", pattern: "src/hooks/**" },
                 { type: "utils", pattern: "src/utils/**" },
@@ -65,51 +60,29 @@ export default defineConfig([
             "react-refresh": reactRefresh,
         },
 
-        extends: [js.configs.recommended, ...tseslint.configs.recommendedTypeChecked],
+        extends: [
+            js.configs.recommended,
+            ...tseslint.configs.recommended, // no type-checking needed
+        ],
 
         rules: {
-            // --- General ---
+            // General hygiene
             "no-console": ["warn", { allow: ["warn", "error"] }],
-            "func-style": ["error", "expression"], // enforce arrow functions only
-            "no-useless-rename": [
-                "warn",
-                {
-                    ignoreDestructuring: false,
-                    ignoreImport: false,
-                    ignoreExport: false,
-                },
-            ],
-            "max-lines": [
-                "warn",
-                {
-                    max: 200,
-                    skipBlankLines: true,
-                    skipComments: true,
-                },
-            ],
+            "func-style": ["error", "expression"],
+            "max-lines": ["warn", { max: 200, skipBlankLines: true, skipComments: true }],
 
-            // --- TypeScript ---
+            // TypeScript
             "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
             "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/class-methods-use-this": "off", // prevents conflict
-            "@typescript-eslint/unbound-method": "off", // disables `this` warnings
-            "@typescript-eslint/no-invalid-this": "off", // disables `this` enforcement
-            "@typescript-eslint/no-unsafe-assignment": "off",
-            "@typescript-eslint/no-unsafe-argument": "off",
-            "@typescript-eslint/no-unsafe-member-access": "off",
-            "@typescript-eslint/no-unsafe-return": "off",
-            "@typescript-eslint/prefer-promise-reject-errors": "off",
+            "@typescript-eslint/no-unused-vars": "off",
 
-            // --- React Hooks ---
+            // Hooks
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",
             "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 
-            // --- Unused imports ---
+            // Imports
             "unused-imports/no-unused-imports": "error",
-            "@typescript-eslint/no-unused-vars": "off",
-
-            // --- Import hygiene ---
             "import/no-duplicates": "error",
             "import/no-cycle": ["error", { ignoreExternal: true }],
             "import/order": [
@@ -128,7 +101,7 @@ export default defineConfig([
                 },
             ],
 
-            // --- Enforce path alias usage ---
+            // Enforce alias usage
             "no-restricted-imports": [
                 "error",
                 {
@@ -141,7 +114,7 @@ export default defineConfig([
                 },
             ],
 
-            // --- Architectural boundaries ---
+            // Architectural boundaries
             "boundaries/element-types": [
                 "error",
                 {

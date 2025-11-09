@@ -10,7 +10,6 @@ import {
     FieldTitle,
 } from "@/components/ui/shadcn/field";
 import { Input } from "@/components/ui/shadcn/input";
-import { Separator } from "@radix-ui/react-separator";
 
 const Registration = () => {
     const fieldClasses = "gap-1";

@@ -120,12 +120,10 @@ exports.login = async (normalizedUser) => {
                 if (user.strikes >= STRIKES_THRESHOLD) {
                     user.blocked = true;
                     user.lastBlockedAt = new Date();
-
-                    await user.save();
-
-                    throw new AuthenticationError("Invalid Password");
                 }
+
                 await user.save();
+                throw new AuthenticationError("Invalid Password");
             } else {
                 // Resetting strikes on successful login!
                 user.strikes = 0;

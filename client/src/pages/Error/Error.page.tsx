@@ -1,9 +1,9 @@
-import GlassCard from "@/components/form/GlassCard";
-import { TbError404 } from "react-icons/tb";
 import { BsFillHexagonFill } from "react-icons/bs";
+import { TbError404 } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
+import GlassCard from "@/components/form/GlassCard";
 import BlurText from "@/components/text/BlurText";
 import { Button } from "@/components/ui/shadcn/button";
-import { useNavigate } from "react-router-dom";
 
 const Error = () => {
     const navigate = useNavigate();

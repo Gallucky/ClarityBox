@@ -1,9 +1,9 @@
 // Imported from React Bits
-import React, { useRef, useEffect, useState } from "react";
+import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
-import { useGSAP } from "@gsap/react";
+import React, { useRef, useEffect, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
 

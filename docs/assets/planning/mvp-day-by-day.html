@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ClarityBox • MVP Day-by-Day Plan (Nov 9 → Dec 4, 2025)</title>
+        <style>
+            :root {
+                --bg: #0b0f14;
+                --panel: #12171d;
+                --muted: #9aa3ad;
+                --text: #e7ebee;
+                --border: #1f2a34;
+                --primary: #3b82f6;
+                --accent: #a78bfa;
+                --ok: #10b981;
+                --warn: #f59e0b;
+                --err: #ef4444;
+                --card: #0e141a;
+                --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+                --radius: 14px;
+                --radius-sm: 10px;
+            }
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --bg: #f8fafc;
+                    --panel: #ffffff;
+                    --muted: #51606e;
+                    --text: #101418;
+                    --border: #e5e7eb;
+                    --card: #f6f7f9;
+                    --shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+                }
+            }
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+                    Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial;
+                background: radial-gradient(
+                        1000px 700px at 10% -10%,
+                        rgba(59, 130, 246, 0.1),
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        900px 600px at 100% 110%,
+                        rgba(167, 139, 250, 0.1),
+                        transparent 60%
+                    ),
+                    var(--bg);
+                color: var(--text);
+            }
+            .container {
+                max-width: 1100px;
+                margin: 36px auto;
+                padding: 0 20px 64px;
+            }
+            header.hero {
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 22px;
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+                box-shadow: var(--shadow);
+            }
+            .badge {
+                display: inline-block;
+                padding: 6px 10px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, var(--primary), var(--accent));
+                color: #fff;
+                font-size: 12px;
+                letter-spacing: 0.35px;
+            }
+            h1 {
+                margin: 10px 0 6px;
+                font-size: 28px;
+            }
+            p.sub {
+                margin: 0;
+                color: var(--muted);
+                font-size: 13px;
+            }
+            .legend {
+                margin-top: 14px;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .day {
+                margin-top: 18px;
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                background: var(--panel);
+                box-shadow: var(--shadow);
+            }
+            .day > .head {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--border);
+            }
+            .date {
+                font-weight: 700;
+            }
+            .groups {
+                padding: 6px 12px 14px;
+            }
+            .group {
+                margin-top: 12px;
+                border: 1px dashed var(--border);
+                border-radius: 12px;
+                background: var(--card);
+            }
+            .group > .ghead {
+                padding: 10px 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .gname {
+                font-weight: 600;
+            }
+            .task {
+                margin: 10px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .task .tbar {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 12px;
+                border-bottom: 1px solid var(--border);
+            }
+            .tname {
+                font-weight: 600;
+            }
+            .pill {
+                font-size: 11px;
+                padding: 3px 8px;
+                border-radius: 999px;
+                border: 1px solid var(--border);
+                color: var(--muted);
+            }
+            .actions {
+                padding: 8px 12px;
+            }
+            .actions ul {
+                margin: 0;
+                padding-left: 18px;
+            }
+            .actions li {
+                margin: 4px 0;
+            }
+            .eta {
+                font-size: 11px;
+                color: var(--muted);
+            }
+            details {
+                border-top: 1px dashed var(--border);
+            }
+            details > summary {
+                cursor: pointer;
+                padding: 8px 12px;
+                color: var(--muted);
+            }
+            .footer {
+                margin-top: 22px;
+                text-align: center;
+                color: var(--muted);
+                font-size: 12px;
+            }
+            .ok {
+                color: var(--ok);
+            }
+            .warn {
+                color: var(--warn);
+            }
+            .err {
+                color: var(--err);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header class="hero">
+                <span class="badge">ClarityBox • Frontend-Only MVP</span>
+                <h1>Day-by-Day Execution Plan</h1>
+                <p class="sub">
+                    Range: Nov 9 → Dec 4, 2025 • Backend is complete and tested • This file breaks
+                    work into smallest actionable steps with ETAs.
+                </p>
+                <div class="legend">
+                    ⏱ ETAs are conservative: 5–15 min micro-steps, 20–45 min small tasks, 60–90 min
+                    larger tasks.<br />
+                    ✅ Ship something daily. Keep the console clean. Prioritize spec compliance, not
+                    extras.
+                </div>
+            </header>
+
+            <!-- ========= DAY 1 ========= -->
+            <section class="day" id="day-2025-11-09">
+                <div class="head">
+                    <div class="date">Sun • Nov 9</div>
+                    <div class="pill">Focus: Auth forms wiring + validation scaffolds</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Authentication • Register</div>
+                            <div class="pill">Goal: submit → server → token → redirect</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Create Joi schema file and RHF bridge</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create
+                                        <code>src/features/auth/validation/register.schema.ts</code>
+                                        <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        Add email rule (<code>email().required()</code>)
+                                        <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        Add password rule per spec (min 8, A/a/0/symbol)
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>Add confirmPassword match <span class="eta">5m</span></li>
+                                    <li>
+                                        Create <code>joiResolver</code> wrapper for RHF
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Unit-test schema with 3 valid + 3 invalid cases
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Wire Register form</div>
+                                <div class="pill">Est. 60 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Attach RHF to inputs + show inline errors
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Disable submit while submitting <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        On submit → <code>POST /api/auth/register</code> via
+                                        QueryProvider <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        On 201 → toast success + auto-login or redirect to login
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        On 400 → map server message to field toast
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Authentication • Login</div>
+                            <div class="pill">Goal: persist token + context state</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Implement login flow</div>
+                                <div class="pill">Est. 55 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>login.schema.ts</code> (email + password)
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Hook form submit → <code>POST /api/auth/login</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Extract <code>token</code> → save to
+                                        <code>localStorage</code> <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        Update <code>AuthProvider</code> state from token
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Navigate to <code>/dashboard</code> on success
+                                        <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        Toast on 401 + reset password field
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">UX Utilities</div>
+                            <div class="pill">Goal: common Spinner + error</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Add Spinner + ErrorText components</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>components/common/Spinner.tsx</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Create <code>ErrorText.tsx</code> with aria-live
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Replace ad-hoc loaders in Auth pages
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 2 ========= -->
+            <section class="day" id="day-2025-11-10">
+                <div class="head">
+                    <div class="date">Mon • Nov 10</div>
+                    <div class="pill">Focus: Guards + token lifecycle</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Routing & Guards</div>
+                            <div class="pill">Goal: enforce guest/auth/admin paths</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Finalize RouteGuard behaviors</div>
+                                <div class="pill">Est. 50 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Guest routes redirect if authenticated
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Auth routes redirect to login if no token
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Admin routes check <code>role===admin</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Add Suspense + Spinner for lazy pages
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        E2E clickthrough: login → dashboard → logout
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Token restore + expiry handling</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        On app mount: read token, decode exp, set auth
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        If expired: clear token, push to login
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Axios: attach Authorization header interceptor
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        401 response: auto-logout + toast
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Login/Register polish</div>
+                            <div class="pill">Goal: spec-grade forms</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Accessibility & UX</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Add labels + <code>aria-invalid</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Add “show password” toggle with <code>aria-pressed</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Keyboard focus order + Enter submits
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 3 ========= -->
+            <section class="day" id="day-2025-11-11">
+                <div class="head">
+                    <div class="date">Tue • Nov 11</div>
+                    <div class="pill">Focus: Navbar + Footer + Home/About</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Shared Layout</div>
+                            <div class="pill">Goal: persistent nav & footer</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Navbar implementation</div>
+                                <div class="pill">Est. 60 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>components/layout/Navbar.tsx</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Add links: Home, Projects, Gratitude, Admin*, Profile
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Show “Login/Register” for guests, “Logout” for auth
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Mobile menu with disclosure button
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Theme toggle, user avatar initials
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Footer implementation</div>
+                                <div class="pill">Est. 30 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>components/layout/Footer.tsx</code> with logo +
+                                        year <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Add contact links + social placeholders
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Ensure contrast + small screens fit
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Marketing Pages</div>
+                            <div class="pill">Goal: Home + About per spec</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Home page content</div>
+                                <div class="pill">Est. 40 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Hero: headline + sub + CTA Login/Register
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Insert real text and images (no lorem ipsum)
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Add favicon + set <code>&lt;title&gt;</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">About page</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Explain app goals + tech + how to use
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Add diagram/screenshot section <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Responsive spacing + headings <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 4 ========= -->
+            <section class="day" id="day-2025-11-12">
+                <div class="head">
+                    <div class="date">Wed • Nov 12</div>
+                    <div class="pill">Focus: Dashboard summary</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Dashboard</div>
+                            <div class="pill">Goal: fetch & render stats</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">GET /dashboard/summary integration</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>services/dashboard.ts</code> client
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Call in <code>/dashboard</code> page via QueryProvider
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Render cards: Projects, Tasks, Gratitude count
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>Empty states for zero data <span class="eta">15m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">UX polish</div>
+                                <div class="pill">Est. 25 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>Skeletons while loading <span class="eta">10m</span></li>
+                                    <li>
+                                        Error boundary: retry button <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 5 ========= -->
+            <section class="day" id="day-2025-11-13">
+                <div class="head">
+                    <div class="date">Thu • Nov 13</div>
+                    <div class="pill">Focus: Projects list UI</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Projects</div>
+                            <div class="pill">Goal: list & basic interactions</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">GET /projects list</div>
+                                <div class="pill">Est. 40 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>services/projects.ts</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>List component with cards <span class="eta">15m</span></li>
+                                    <li>
+                                        Empty state CTA “Create Project”
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Project detail route shell</div>
+                                <div class="pill">Est. 25 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>/projects/:id</code> page file
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Header with project name + back link
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 6 ========= -->
+            <section class="day" id="day-2025-11-14">
+                <div class="head">
+                    <div class="date">Fri • Nov 14</div>
+                    <div class="pill">Focus: Project create/edit/delete</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Projects</div>
+                            <div class="pill">Goal: full CRUD + toasts</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">ProjectForm + POST</div>
+                                <div class="pill">Est. 55 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create modal <code>ProjectForm</code> + RHF
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Title required, description optional
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Submit → POST /projects → refetch list
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>Toast success/error <span class="eta">15m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">PATCH & DELETE</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Edit button → prefill → PATCH <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Delete button → confirm dialog → DELETE
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Visual optimistic removal or refetch
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 7 ========= -->
+            <section class="day" id="day-2025-11-15">
+                <div class="head">
+                    <div class="date">Sat • Nov 15</div>
+                    <div class="pill">Focus: Tasks module</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Tasks</div>
+                            <div class="pill">Goal: list + status toggle</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">GET/POST /tasks</div>
+                                <div class="pill">Est. 50 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Service file <code>services/tasks.ts</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>List by project id filter <span class="eta">15m</span></li>
+                                    <li>
+                                        Create task inline form (title req)
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Toast + clear field on success <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Toggle status + delete</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>Checkbox → PATCH completed <span class="eta">10m</span></li>
+                                    <li>Delete icon → DELETE task <span class="eta">10m</span></li>
+                                    <li>
+                                        Filter: All / Active / Done <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 8 ========= -->
+            <section class="day" id="day-2025-11-16">
+                <div class="head">
+                    <div class="date">Sun • Nov 16</div>
+                    <div class="pill">Focus: Gratitude Boxes CRUD</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Gratitude</div>
+                            <div class="pill">Goal: create/list/favorite</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Boxes list + create</div>
+                                <div class="pill">Est. 55 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Service <code>services/gratitude.ts</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>List boxes with createdAt <span class="eta">15m</span></li>
+                                    <li>
+                                        Form: title required, note optional
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>POST → refetch + toast <span class="eta">15m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Favorite toggle + favorites page</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Heart icon → PATCH favorite <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Create <code>/favorites</code> page to show liked
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Empty state + unfavorite action <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 9 ========= -->
+            <section class="day" id="day-2025-11-17">
+                <div class="head">
+                    <div class="date">Mon • Nov 17</div>
+                    <div class="pill">Focus: Search + Filters + Views</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Browse & Filters</div>
+                            <div class="pill">Goal: spec #20–#21</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Search field</div>
+                                <div class="pill">Est. 30 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Add search input to Projects and Gratitude
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Client-side filter by title/text
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Filter & View modes</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Filters: date, status (for tasks), favorites (boxes)
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>View toggle: grid ↔ list <span class="eta">15m</span></li>
+                                    <li>
+                                        Persist view mode in <code>localStorage</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 10 ========= -->
+            <section class="day" id="day-2025-11-18">
+                <div class="head">
+                    <div class="date">Tue • Nov 18</div>
+                    <div class="pill">Focus: Dynamic detail pages</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Details</div>
+                            <div class="pill">Goal: spec #14</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Project detail view</div>
+                                <div class="pill">Est. 40 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        GET /projects/:id and render meta
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Show tasks subset + link “view all tasks”
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>Responsive layout fixes <span class="eta">10m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Gratitude detail view</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        GET /gratitude/:id and render note
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Favorite toggle present here too
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>Back to list link <span class="eta">10m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 11 ========= -->
+            <section class="day" id="day-2025-11-19">
+                <div class="head">
+                    <div class="date">Wed • Nov 19</div>
+                    <div class="pill">Focus: Profile page</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Profile</div>
+                            <div class="pill">Goal: edit self data</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">GET/PUT /users/me</div>
+                                <div class="pill">Est. 50 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Form: name, bio, avatar URL <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Preview avatar (fallback initials)
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        PUT save + toast + optimistic UI
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>Validation + a11y labels <span class="eta">10m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Change password modal</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        New password schema (same rules)
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Submit → PUT /users/me/password <span class="eta">15m</span>
+                                    </li>
+                                    <li>Reset form + toast <span class="eta">10m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 12 ========= -->
+            <section class="day" id="day-2025-11-20">
+                <div class="head">
+                    <div class="date">Thu • Nov 20</div>
+                    <div class="pill">Focus: Admin panel (roles)</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Admin</div>
+                            <div class="pill">Goal: users table + role change</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Users table</div>
+                                <div class="pill">Est. 45 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        GET /users list (admin only) <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Columns: name, email, role, actions
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Pagination or infinite scroll (simple)
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Role change + delete</div>
+                                <div class="pill">Est. 40 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Action to toggle role user/admin
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>Delete user with confirm <span class="eta">15m</span></li>
+                                    <li>Toasts + refetch <span class="eta">10m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 13 ========= -->
+            <section class="day" id="day-2025-11-21">
+                <div class="head">
+                    <div class="date">Fri • Nov 21</div>
+                    <div class="pill">Focus: Responsive & theming consistency</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">UI Polish</div>
+                            <div class="pill">Goal: mobile-first pass</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Spacing & typography tokens</div>
+                                <div class="pill">Est. 35 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Normalize headings and body sizes
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Consistent gaps on lists/forms <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Check color contrast in dark/light
+                                        <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Breakpoints check</div>
+                                <div class="pill">Est. 30 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        ≤400px, 768px, 1024px layout checks
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Fix overflows and wrap text <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 14 ========= -->
+            <section class="day" id="day-2025-11-22">
+                <div class="head">
+                    <div class="date">Sat • Nov 22</div>
+                    <div class="pill">Focus: Error states & global handling</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Reliability</div>
+                            <div class="pill">Goal: clean console, robust UX</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Global error boundary</div>
+                                <div class="pill">Est. 30 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Create <code>AppErrorBoundary</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Friendly message + “Reload app” <span class="eta">10m</span>
+                                    </li>
+                                    <li>Wrap router provider <span class="eta">10m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Console hygiene</div>
+                                <div class="pill">Est. 25 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Remove all stray <code>console.log</code>
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Fix warnings from React + TS <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAYS 15–20 ========= -->
+            <section class="day" id="day-2025-11-23-28">
+                <div class="head">
+                    <div class="date">Sun–Fri • Nov 23–28</div>
+                    <div class="pill">Focus: Deep QA across modules</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Cross-Module QA</div>
+                            <div class="pill">Goal: cover all flows</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Auth robustness</div>
+                                <div class="pill">Est. 90 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Expired token → redirect to login
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Missing token on protected pages
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Slow network spinners verified <span class="eta">10m</span>
+                                    </li>
+                                    <li>Login failure retries UX <span class="eta">10m</span></li>
+                                    <li>Logout clears all state <span class="eta">10m</span></li>
+                                    <li>
+                                        E2E: register→login→dashboard→logout
+                                        <span class="eta">30m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Projects + Tasks + Boxes</div>
+                                <div class="pill">Est. 120 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        CRUD success and failure paths <span class="eta">30m</span>
+                                    </li>
+                                    <li>
+                                        Validation errors surfaced per field
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Favorites sync across pages <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Filters and view modes persist <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Detail pages render all required data
+                                        <span class="eta">30m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Accessibility & responsiveness sweep</div>
+                                <div class="pill">Est. 80 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Keyboard navigation on all forms
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Alt text present on all images/icons
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        Color contrast check (dark/light)
+                                        <span class="eta">15m</span>
+                                    </li>
+                                    <li>
+                                        iPhone SE / Pixel 7 / iPad widths
+                                        <span class="eta">30m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAYS 21–23 ========= -->
+            <section class="day" id="day-2025-11-29-12-01">
+                <div class="head">
+                    <div class="date">Sat–Mon • Nov 29 – Dec 1</div>
+                    <div class="pill">Focus: Final polish + microfixes</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Polish</div>
+                            <div class="pill">Goal: production feel</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Microfixes and UX details</div>
+                                <div class="pill">Est. 120 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Consistent button styles + hover/active
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Form helper text and limits <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Empty states illustrations/text <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Route transitions feel smooth <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Error messages human and concise
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>Remove dead code and TODOs <span class="eta">20m</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 24 ========= -->
+            <section class="day" id="day-2025-12-02">
+                <div class="head">
+                    <div class="date">Tue • Dec 2</div>
+                    <div class="pill">Focus: Docs + screenshots</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Documentation</div>
+                            <div class="pill">Goal: submission-ready</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">README updates</div>
+                                <div class="pill">Est. 60 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Root README: features, tech, run steps
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Client README: env, scripts, pages
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Screenshots added to <code>/docs</code>
+                                        <span class="eta">20m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Spec checklist</div>
+                                <div class="pill">Est. 40 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Mark each spec item #1–#21 done/NA
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Note any “bonus” features present
+                                        <span class="eta">20m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 25 ========= -->
+            <section class="day" id="day-2025-12-03">
+                <div class="head">
+                    <div class="date">Wed • Dec 3</div>
+                    <div class="pill">Focus: Build + final test</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Release</div>
+                            <div class="pill">Goal: clean build</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Production build</div>
+                                <div class="pill">Est. 40 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        <code>npm run build</code> client passes
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Serve preview and clickthrough flows
+                                        <span class="eta">20m</span>
+                                    </li>
+                                    <li>
+                                        Final console scan for warnings <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Tag + push</div>
+                                <div class="pill">Est. 20 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>Tag <code>v1.0-mvp</code> <span class="eta">5m</span></li>
+                                    <li>
+                                        Push <code>main</code> and tag to origin
+                                        <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        Create release notes (short) <span class="eta">10m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========= DAY 26 ========= -->
+            <section class="day" id="day-2025-12-04">
+                <div class="head">
+                    <div class="date">Thu • Dec 4 • Deadline</div>
+                    <div class="pill">Focus: Submit</div>
+                </div>
+                <div class="groups">
+                    <div class="group">
+                        <div class="ghead">
+                            <div class="gname">Submission</div>
+                            <div class="pill">Goal: deliver per instructions</div>
+                        </div>
+
+                        <div class="task">
+                            <div class="tbar">
+                                <div class="tname">Final submission steps</div>
+                                <div class="pill">Est. 30 min</div>
+                            </div>
+                            <div class="actions">
+                                <ul>
+                                    <li>
+                                        Verify repo excludes <code>node_modules</code>
+                                        <span class="eta">5m</span>
+                                    </li>
+                                    <li>
+                                        Ensure README includes env instructions
+                                        <span class="eta">10m</span>
+                                    </li>
+                                    <li>
+                                        Submit Git repo link as required
+                                        <span class="eta">15m</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <details>
+                <summary>Notes and tips</summary>
+                <div style="padding: 10px 14px; color: var(--muted); font-size: 13px">
+                    • Keep each micro-task under 15 minutes when possible. If longer, split
+                    again.<br />
+                    • After any page CRUD is working, immediately add empty states, errors, and
+                    toasts.<br />
+                    • Re-run the spec checklist before tagging the final release.
+                </div>
+            </details>
+
+            <div class="footer">ClarityBox • Execution planner — local static HTML</div>
+        </div>
+    </body>
+</html>

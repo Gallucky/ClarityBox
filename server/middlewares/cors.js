@@ -9,7 +9,13 @@ const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS;
 // CORS configuration
 app.use(
     cors({
-        origin: ALLOWED_ORIGINS,
+        origin: (origin, callback) => {
+            if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+                return callback(null, origin || true); // return one allowed origin
+            } else {
+                return callback(new Error("Not allowed by CORS"));
+            }
+        },
         optionsSuccessStatus: 200,
     })
 );
