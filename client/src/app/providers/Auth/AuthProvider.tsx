@@ -2,8 +2,9 @@ import { jwtDecode } from "jwt-decode";
 import { useEffect, useState, type ReactNode } from "react";
 
 import useQuery from "@app/providers/Query/useQuery";
-import InvalidCredentialsError from "@/errors/InvalidCredentialsError";
 
+import InvalidCredentialsError from "@/errors/InvalidCredentialsError";
+import type { Auth, AuthPromise } from "@/types/AuthPromise";
 import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
 import type { Token } from "@/types/Token";
@@ -65,7 +66,6 @@ const AuthProvider = (props: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
         const restoreSession = async () => {
@@ -87,11 +87,12 @@ const AuthProvider = (props: AuthProviderProps) => {
                 api.addHeader("x-auth-token", storedToken);
                 const { user: userData } = await api.get(`/users/${userId}`);
                 setUser(userData ?? null);
+
+                return { ok: true };
             } catch (error) {
-                console.error(error);
                 localStorage.removeItem("token");
-                setToken(null);
                 setUser(null);
+                setToken(null);
                 api.removeHeader("x-auth-token");
             } finally {
                 setLoading(false);
@@ -117,70 +118,61 @@ const AuthProvider = (props: AuthProviderProps) => {
      */
     const isAuthenticated = !!token;
 
-    const resetOnError = (error: Error) => {
-        setError(error);
-        console.error(error);
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem("token");
-        api.removeHeader("x-auth-token");
+    const onError = (error: any): Auth => {
+        const status = error.response?.status ?? error.status ?? 500;
+        const data = error.response?.data ?? error.data ?? error.message;
+
+        const parsedError = parseError(status, String(data));
+        console.error(parsedError);
+        return { ok: false, error: parsedError };
     };
 
     // The auth methods.
-    const login = async (credentials: LoginPayload) => {
+    const login = async (credentials: LoginPayload): AuthPromise => {
         try {
             setLoading(true);
             const userToken = await api.post("/users/login", credentials);
-            console.log("userToken", userToken);
 
-            if (userToken) {
-                // Saving the token in the context.
-                setToken(userToken);
-                // Saving the token in the local storage.
-                localStorage.setItem("token", userToken);
-
-                // Decoding the token.
-                const decodedToken = jwtDecode<Token>(userToken);
-                // Getting the user id from the decoded token.
-                const userId = decodedToken._id;
-
-                // Fetching the user data.
-                api.addHeader("x-auth-token", userToken);
-                const { user } = await api.get(`/users/${userId}`);
-                setUser(user ?? null);
-            } else {
-                throw new InvalidCredentialsError(
-                    "The email or password were incorrect at this login attempt."
-                );
+            if (!userToken) {
+                return {
+                    ok: false,
+                    error: new InvalidCredentialsError(
+                        "The email or password were incorrect at this login attempt."
+                    ),
+                };
             }
-        } catch (error: any) {
-            console.error("error", error);
-            const status = error.response?.status ?? error.status ?? 500;
-            const data = error.response?.data ?? error.data ?? error.message;
 
-            const parsedError = parseError(status, String(data));
-            resetOnError(parsedError);
-            throw parsedError;
+            // Saving the token in the context.
+            setToken(userToken);
+            // Saving the token in the local storage.
+            localStorage.setItem("token", userToken);
+
+            // Decoding the token.
+            const decodedToken = jwtDecode<Token>(userToken);
+            // Getting the user id from the decoded token.
+            const userId = decodedToken._id;
+
+            // Fetching the user data.
+            api.addHeader("x-auth-token", userToken);
+            const { user } = await api.get(`/users/${userId}`);
+            setUser(user ?? null);
+
+            return { ok: true };
+        } catch (error: any) {
+            return onError(error);
         } finally {
             setLoading(false);
         }
     };
 
     const logout = () => {
-        try {
-            setLoading(true);
-            setToken(null);
-            localStorage.removeItem("token");
-            setUser(null);
-        } catch (error) {
-            setError(error as Error);
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem("token");
+        api.removeHeader("x-auth-token");
     };
 
-    const registerUser = async (data: RegisterFormData) => {
+    const registerUser = async (data: RegisterFormData): AuthPromise => {
         try {
             setLoading(true);
             // Sending the user registration request.
@@ -188,8 +180,10 @@ const AuthProvider = (props: AuthProviderProps) => {
 
             // Auto login feature.
             await login({ email: data.email, password: data.password });
+
+            return { ok: true };
         } catch (error) {
-            resetOnError(error as Error);
+            return onError(error);
         } finally {
             setLoading(false);
         }
@@ -197,7 +191,7 @@ const AuthProvider = (props: AuthProviderProps) => {
 
     return (
         <AuthContext.Provider
-            value={{ user, token, isAuthenticated, login, logout, registerUser, loading, error }}>
+            value={{ user, token, isAuthenticated, login, logout, registerUser, loading }}>
             {children}
         </AuthContext.Provider>
     );

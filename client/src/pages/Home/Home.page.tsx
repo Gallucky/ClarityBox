@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/shadcn/button";
 
+// Todo: Home page changes when the user is logged in.
 const Home = () => {
     const navigate = useNavigate();
 

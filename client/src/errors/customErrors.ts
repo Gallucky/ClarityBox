@@ -5,10 +5,22 @@ class CustomError extends Error {
     rawMessage: string;
 
     constructor(message: string, name: string, status: number) {
-        super(message.substring(message.indexOf("]:") + 2));
+        super(message);
         this.name = name;
+        this.message = message.includes("]:")
+            ? message.substring(message.indexOf("]:") + 2)
+            : (this.message = message);
         this.rawMessage = message;
         this.status = status || ErrorCodes.INTERNAL_SERVER_ERROR;
+    }
+
+    formattedError() {
+        return `${this.name} {${{
+            type: this.name,
+            message: this.message,
+            status: this.status,
+            rawMessage: this.rawMessage,
+        }}}`;
     }
 }
 

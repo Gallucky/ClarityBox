@@ -13,10 +13,10 @@ type RouteGuardProps = {
 
 const RouteGuard = (props: RouteGuardProps) => {
     const { children, role } = props;
-    const { user, loading } = useAuth();
+    const { user, loading, token } = useAuth();
 
     // Wait for the user to be loaded.
-    if (loading) return <Spinner />;
+    if (loading && user === null && token !== null) return <Spinner />;
 
     // If there are no restrictions skip checking.
     const noRestrictions = !role;

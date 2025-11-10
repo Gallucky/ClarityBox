@@ -24,6 +24,7 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             { path: "/", element: lazyLoad(Home) },
+            { path: "/home", element: lazyLoad(Home) },
             { path: "/about", element: lazyLoad(About) },
             {
                 // GuestOnly
