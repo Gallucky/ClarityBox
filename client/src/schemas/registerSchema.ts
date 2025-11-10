@@ -1,7 +1,8 @@
+/* eslint-disable no-useless-escape */
 import Joi from "joi";
 
 const emailRegex = /^([a-zA-Z0-9_.\-]+)@([a-zA-Z0-9_.\-]+)\.([a-zA-Z]{2,5})$/;
-const passwordRegex = /^(?=.{9,}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\-&\^%$#@!]).+$/;
+export const passwordRegex = /^(?=.{9,}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\-&\^%$#@!]).+$/;
 const urlRegex =
     /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,})/;
 
@@ -29,8 +30,6 @@ const registerSchema = Joi.object({
         .required()
         .messages({ "any.required": "Name is required" }),
 
-    isAdmin: Joi.boolean().default(false),
-
     email: Joi.string().pattern(emailRegex).required().messages({
         "string.empty": "Email cannot be empty",
         "string.pattern.base": "Email must be a valid address",
@@ -43,6 +42,11 @@ const registerSchema = Joi.object({
             "Password must be at least 9 characters, include upper and lower case letters, a number, and one of -&^%$#@!",
         "any.required": "Password is required",
     }),
+
+    confirmPassword: Joi.string()
+        .valid(Joi.ref("password"))
+        .required()
+        .messages({ "any.only": "Passwords do not match" }),
 
     profileImage: Joi.object({
         url: Joi.string().regex(urlRegex).allow("").messages({

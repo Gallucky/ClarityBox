@@ -131,6 +131,9 @@ const AuthProvider = (props: AuthProviderProps) => {
     const login = async (credentials: LoginPayload): AuthPromise => {
         try {
             setLoading(true);
+
+            api.removeHeader("x-auth-token");
+
             const userToken = await api.post("/users/login", credentials);
 
             if (!userToken) {
@@ -142,11 +145,6 @@ const AuthProvider = (props: AuthProviderProps) => {
                 };
             }
 
-            // Saving the token in the context.
-            setToken(userToken);
-            // Saving the token in the local storage.
-            localStorage.setItem("token", userToken);
-
             // Decoding the token.
             const decodedToken = jwtDecode<Token>(userToken);
             // Getting the user id from the decoded token.
@@ -155,6 +153,18 @@ const AuthProvider = (props: AuthProviderProps) => {
             // Fetching the user data.
             api.addHeader("x-auth-token", userToken);
             const { user } = await api.get(`/users/${userId}`);
+
+            if (!user) {
+                return {
+                    ok: false,
+                    error: new InvalidCredentialsError("User data could not be loaded."),
+                };
+            }
+
+            // Saving the token in the context.
+            setToken(userToken);
+            // Saving the token in the local storage.
+            localStorage.setItem("token", userToken);
             setUser(user ?? null);
 
             return { ok: true };
@@ -177,9 +187,6 @@ const AuthProvider = (props: AuthProviderProps) => {
             setLoading(true);
             // Sending the user registration request.
             await api.post("/users/", data);
-
-            // Auto login feature.
-            await login({ email: data.email, password: data.password });
 
             return { ok: true };
         } catch (error) {

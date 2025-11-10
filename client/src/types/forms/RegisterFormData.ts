@@ -7,9 +7,9 @@ export type RegisterFormData = {
     nickname: string;
     email: string;
     password: string;
+    confirmPassword: string;
     profileImage: {
         url?: string;
         alt?: string;
     };
-    isAdmin: boolean;
 };

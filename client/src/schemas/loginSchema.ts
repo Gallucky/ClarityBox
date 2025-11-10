@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import Joi from "joi";
 
 const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;

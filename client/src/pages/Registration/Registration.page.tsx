@@ -1,3 +1,5 @@
+import { joiResolver } from "@hookform/resolvers/joi";
+import { useForm } from "react-hook-form";
 import GlassCard from "@/components/form/GlassCard";
 import DarkVeil from "@/components/layout/DarkVeil";
 import { Button } from "@/components/ui/shadcn/button";
@@ -10,56 +12,75 @@ import {
     FieldTitle,
 } from "@/components/ui/shadcn/field";
 import { Input } from "@/components/ui/shadcn/input";
+import registerSchema from "@/schemas/registerSchema";
+import type { RegisterFormData } from "@/types/forms/RegisterFormData";
+import RegistrationForm from "./RegistrationForm";
+import defaultValues from "./registrationFormInitialValues";
 
 const Registration = () => {
-    const fieldClasses = "gap-1";
-    const inputClasses = "ps-1!";
+    const {
+        register,
+        formState: { errors, isValid },
+        handleSubmit,
+    } = useForm<RegisterFormData>({
+        defaultValues,
+        mode: "onChange",
+        resolver: joiResolver(registerSchema),
+        shouldUnregister: false,
+    });
 
     return (
         <>
             <div className="h-dvh w-dvw relative">
                 <DarkVeil />
-                <GlassCard
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2
-                        -translate-y-1/2 h-7/12! md:h-[71%]! lg:h-10/12! w-[90%]!`}>
-                    <form className="size-full flex flex-col justify-between">
-                        <h2 className="page-title text-outline app-primary-fg">
-                            Registration Page
-                        </h2>
+                <GlassCard centered className={`h-7/12! md:h-fit! w-[90%]!`}>
+                    <RegistrationForm handleSubmit={handleSubmit}>
                         <div className="registration-form-content">
                             <FieldTitle className="text-teal-500">Name</FieldTitle>
                             <FieldGroup className="flex flex-col md:flex-row gap-2 p-2!">
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.name?.first}>
                                     <FieldLabel htmlFor="registration-name-first">First</FieldLabel>
                                     <Input
+                                        {...register("name.first")}
                                         id="registration-name-first"
                                         type="text"
                                         placeholder="First Name"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.name?.first}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.name?.first]}
+                                    />
                                 </Field>
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.name?.middle}>
                                     <FieldLabel htmlFor="registration-name-middle">
                                         Middle
                                     </FieldLabel>
                                     <Input
+                                        {...register("name.middle")}
                                         id="registration-name-middle"
                                         type="text"
                                         placeholder="Middle Name"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.name?.middle}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.name?.middle]}
+                                    />
                                 </Field>
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.name?.last}>
                                     <FieldLabel htmlFor="registration-name-last">Last</FieldLabel>
                                     <Input
+                                        {...register("name.last")}
                                         id="registration-name-last"
                                         type="text"
                                         placeholder="Last Name"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.name?.last}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.name?.last]}
+                                    />
                                 </Field>
                             </FieldGroup>
 
@@ -67,51 +88,67 @@ const Registration = () => {
 
                             <FieldTitle className="text-teal-500">General Info</FieldTitle>
                             <FieldGroup className="flex flex-col md:grid md:grid-cols-2 md:grid-rows-2 p-2! gap-2">
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.nickname}>
                                     <FieldLabel htmlFor="registration-nickname">
                                         Nickname
                                     </FieldLabel>
                                     <Input
+                                        {...register("nickname")}
                                         id="registration-nickname"
                                         type="text"
                                         placeholder="Nickname"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.nickname}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.nickname]}
+                                    />
                                 </Field>
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.email}>
                                     <FieldLabel htmlFor="registration-email">Email</FieldLabel>
                                     <Input
+                                        {...register("email")}
                                         id="registration-email"
                                         type="email"
                                         placeholder="Email"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.email}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.email]}
+                                    />
                                 </Field>
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.password}>
                                     <FieldLabel htmlFor="registration-password">
                                         Password
                                     </FieldLabel>
                                     <Input
+                                        {...register("password")}
                                         id="registration-password"
                                         type="password"
                                         placeholder="Password"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.password}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.password]}
+                                    />
                                 </Field>
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.confirmPassword}>
                                     <FieldLabel htmlFor="registration-confirm-password">
                                         Confirm Password
                                     </FieldLabel>
                                     <Input
+                                        {...register("confirmPassword")}
                                         id="registration-confirm-password"
                                         type="password"
                                         placeholder="Confirm Password"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.confirmPassword}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[{ message: errors.confirmPassword?.message }]}
+                                    />
                                 </Field>
                             </FieldGroup>
 
@@ -119,36 +156,47 @@ const Registration = () => {
 
                             <FieldTitle className="text-teal-500">Profile Picture</FieldTitle>
                             <FieldGroup className="flex flex-col md:grid md:grid-cols-2 md:grid-rows-1 p-2! gap-2">
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.profileImage?.url}>
                                     <FieldLabel htmlFor="registration-profile-picture-url">
                                         Url
                                     </FieldLabel>
                                     <Input
+                                        {...register("profileImage.url")}
                                         id="registration-profile-picture-url"
                                         type="url"
                                         placeholder="Picture Url"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.profileImage?.url}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.profileImage?.url]}
+                                    />
                                 </Field>
-                                <Field className={fieldClasses}>
+                                <Field data-invalid={!!errors.profileImage?.alt}>
                                     <FieldLabel htmlFor="registration-profile-picture-alt">
                                         Alt
                                     </FieldLabel>
                                     <Input
+                                        {...register("profileImage.alt")}
                                         id="registration-profile-picture-alt"
                                         type="text"
                                         placeholder="Picture Alt Text"
-                                        className={inputClasses}
+                                        aria-invalid={!!errors.profileImage?.alt}
                                     />
-                                    <FieldError />
+                                    <FieldError
+                                        className="text-fluid-0.625! overflow-clip"
+                                        errors={[errors.profileImage?.alt]}
+                                    />
                                 </Field>
                             </FieldGroup>
                         </div>
-                        <Button type="submit" className="w-1/2 self-center flex-none mt-2">
+                        <Button
+                            disabled={!isValid}
+                            type="submit"
+                            className="w-1/2 self-center flex-none mt-4! select-none">
                             Submit
                         </Button>
-                    </form>
+                    </RegistrationForm>
                 </GlassCard>
             </div>
         </>

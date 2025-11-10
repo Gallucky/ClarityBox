@@ -32,17 +32,21 @@ const Login = () => {
         if (!ok) {
             const errorMessage = error.message ?? "Something went wrong!";
 
-            toast.error(`Login failed!\n${error.name}: ${errorMessage}`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: themeValue,
-                transition: Slide,
-            });
+            toast.error(
+                `Login failed!\n${error.name}: 
+            ${errorMessage}`,
+                {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: themeValue,
+                    transition: Slide,
+                }
+            );
 
             return;
         }
