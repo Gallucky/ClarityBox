@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
+import { toast } from "react-toastify";
 import useQuery from "@app/providers/Query/useQuery";
 
 import InvalidCredentialsError from "@/errors/InvalidCredentialsError";
@@ -12,7 +13,7 @@ import type { User } from "@/types/User";
 
 import { parseError } from "@/utils/parseError";
 import AuthContext from "./AuthContext";
-import { getStoredToken } from "./helpers/storageHelpers";
+import useRestoreSession from "./helpers/useRestoreSession";
 
 // Defining the context's provider's props.
 type AuthProviderProps = {
@@ -66,41 +67,10 @@ const AuthProvider = (props: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [restoring, setRestoring] = useState(true);
 
-    useEffect(() => {
-        const restoreSession = async () => {
-            const { token: storedToken, decodedToken, status } = getStoredToken();
-
-            // If there is an error skipping because that means the token is expired/invalid/missing.
-            if (status || !storedToken || !decodedToken) return;
-
-            try {
-                // Loading the token.
-                setLoading(true);
-                setToken(storedToken);
-
-                // Fetching the user data.
-                const userId = decodedToken._id;
-                // Getting the data from the API.
-                // It is called user the same as the user
-                // state value so the returned data is renamed to userData.
-                api.addHeader("x-auth-token", storedToken);
-                const { user: userData } = await api.get(`/users/${userId}`);
-                setUser(userData ?? null);
-
-                return { ok: true };
-            } catch (error) {
-                localStorage.removeItem("token");
-                setUser(null);
-                setToken(null);
-                api.removeHeader("x-auth-token");
-            } finally {
-                setLoading(false);
-            }
-        };
-        void restoreSession();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // Trying to re-log a user after a page refresh/close.
+    useRestoreSession({ api, setUser, setToken, setLoading, setRestoring });
 
     /**
      * `isAuthenticated` is a derived constant based on the {@link token | token} state.
@@ -152,7 +122,7 @@ const AuthProvider = (props: AuthProviderProps) => {
 
             // Fetching the user data.
             api.addHeader("x-auth-token", userToken);
-            const { user } = await api.get(`/users/${userId}`);
+            const user = await api.get(`/users/${userId}`);
 
             if (!user) {
                 return {
@@ -180,6 +150,7 @@ const AuthProvider = (props: AuthProviderProps) => {
         setUser(null);
         localStorage.removeItem("token");
         api.removeHeader("x-auth-token");
+        toast.success("Logged out successfully!");
     };
 
     const registerUser = async (data: RegisterFormData): AuthPromise => {
@@ -198,7 +169,16 @@ const AuthProvider = (props: AuthProviderProps) => {
 
     return (
         <AuthContext.Provider
-            value={{ user, token, isAuthenticated, login, logout, registerUser, loading }}>
+            value={{
+                user,
+                token,
+                isAuthenticated,
+                login,
+                logout,
+                registerUser,
+                loading,
+                restoring,
+            }}>
             {children}
         </AuthContext.Provider>
     );

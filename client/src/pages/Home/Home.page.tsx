@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import useAuth from "@/app/providers/Auth/useAuth";
 import { Button } from "@/components/ui/shadcn/button";
 
 // Todo: Home page changes when the user is logged in.
 const Home = () => {
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     return (
         <>
@@ -31,6 +33,10 @@ const Home = () => {
                     onClick={() => void navigate("/")}
                     className="hover:opacity-75 p-2!">
                     Home
+                </Button>
+
+                <Button type="button" onClick={() => logout()} className="hover:opacity-75 p-2!">
+                    Logout
                 </Button>
             </div>
         </>

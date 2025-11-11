@@ -14,6 +14,7 @@ type AuthContextType = {
     logout: () => void;
     registerUser: (data: RegisterFormData) => AuthPromise;
     loading: boolean;
+    restoring: boolean;
 };
 
 // Creating the context.
