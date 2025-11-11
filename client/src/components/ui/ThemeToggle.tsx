@@ -1,4 +1,4 @@
-import { FaSun, FaMoon } from "react-icons/fa";
+import { Moon, Sun } from "lucide-react";
 import GlassCard from "@components/form/GlassCard";
 import MotionSwitch from "@components/utils/MotionSwitch";
 import { useTheme } from "@/app/providers/Theme/useTheme";
@@ -22,9 +22,7 @@ const ThemeToggle = () => {
                         exit: { opacity: 0, rotateY: 0 },
                         transition: { duration: 0.3 },
                     }}>
-                    {(val) =>
-                        val === "dark" ? <FaSun color="yellow" /> : <FaMoon color="white" />
-                    }
+                    {(val) => (val === "dark" ? <Sun color="yellow" /> : <Moon color="white" />)}
                 </MotionSwitch>
             </GlassCard>
         </button>

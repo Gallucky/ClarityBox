@@ -18,6 +18,9 @@ const Admin = lazyImportPage("Admin");
 const Profile = lazyImportPage("Profile");
 const ErrorPage = lazyImportPage("Error");
 
+// Todo: Remove the Playground page.
+const PlaygroundPage = lazyImportPage("Playground");
+
 const router = createBrowserRouter([
     {
         // The static elements/components that will always be rendered.
@@ -26,6 +29,7 @@ const router = createBrowserRouter([
             { path: "/", element: lazyLoad(Home) },
             { path: "/home", element: lazyLoad(Home) },
             { path: "/about", element: lazyLoad(About) },
+            { path: "/playground", element: lazyLoad(PlaygroundPage) },
             {
                 // GuestOnly
                 path: "/login",

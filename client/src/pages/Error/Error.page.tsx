@@ -1,9 +1,10 @@
-import { BsFillHexagonFill } from "react-icons/bs";
-import { TbError404 } from "react-icons/tb";
+import { Hexagon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import GlassCard from "@/components/form/GlassCard";
 import BlurText from "@/components/text/BlurText";
 import { Button } from "@/components/ui/shadcn/button";
+
+import "./errorPageStyles.css";
 
 const Error = () => {
     const navigate = useNavigate();
@@ -14,8 +15,10 @@ const Error = () => {
                 <div className="content">
                     <h2 className="title">404 Not Found</h2>
                     <div className="error-404-icon-logo">
-                        <TbError404 size={"80%"} className="absolute-center" color="black" />
-                        <BsFillHexagonFill size={"100%"} className="size-full" color="red" />
+                        <span className="absolute-center font-bold text-fluid-3! font-inter text-black text-outline text-outline-white select-none">
+                            404
+                        </span>
+                        <Hexagon size={"100%"} className="size-full fill-[red]" color="red" />
                     </div>
                     <BlurText
                         text="The page you are looking for does not exist."
@@ -29,7 +32,7 @@ const Error = () => {
                 <Button
                     onClick={() => navigate("/")}
                     variant={"outline"}
-                    className="size-fit p-2! text-fluid font-inter max-sm:mt-5!">
+                    className="size-fit p-2! text-fluid font-inter max-sm:mt-5! text-accent">
                     Return to home page
                 </Button>
             </GlassCard>

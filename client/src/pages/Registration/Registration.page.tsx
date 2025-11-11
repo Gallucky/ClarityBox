@@ -17,6 +17,8 @@ import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import RegistrationForm from "./RegistrationForm";
 import defaultValues from "./registrationFormInitialValues";
 
+import "./registrationPageStyles.css";
+
 const Registration = () => {
     const {
         register,

@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+.mobile-navbar {
+    @apply flex h-dvh flex-col;
+
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-inline-end: 1px solid var(--border);
+}
+
+.mobile-navbar-header {
+    /* @apply bg-red-500; */
+}
+
+.nav-items {
+    @apply bg-green-500;
+}
+
+.nav-items .nav-item {
+}
+
+.nav-items .nav-link {
+}
+
+.mobile-navbar-footer {
+    @apply bg-blue-500;
+}
+
+.logo {
+    @apply ms-2 h-full shrink-0;
+    object-fit: contain;
+    object-position: center;
+}
+
+#navbar-overlay {
+    @apply absolute z-10 h-dvh w-dvw;
+}

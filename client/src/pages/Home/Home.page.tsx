@@ -38,6 +38,13 @@ const Home = () => {
                 <Button type="button" onClick={() => logout()} className="hover:opacity-75 p-2!">
                     Logout
                 </Button>
+
+                <Button
+                    type="button"
+                    onClick={() => void navigate("/playground")}
+                    className="hover:opacity-75 p-2!">
+                    Playground
+                </Button>
             </div>
         </>
     );

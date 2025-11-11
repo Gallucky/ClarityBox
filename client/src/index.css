@@ -7,8 +7,6 @@
 @import "./styles/textUtils/textFluid.css";
 @import "./styles/colors/variables.css";
 @import "./styles/colors/classes.css";
-@import "./pages/Registration/registrationPageStyles.css";
-@import "./pages/Error/errorPageStyles.css";
 @import "./styles/generalUtils.css";
 
 @custom-variant dark (&:is(.dark *));
