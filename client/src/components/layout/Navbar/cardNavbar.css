@@ -1,0 +1,7 @@
+.card-nav-content {
+    @apply gap-3 p-3;
+}
+
+.card-nav-content > * {
+    @apply bg-amber-500! p-2 outline;
+}

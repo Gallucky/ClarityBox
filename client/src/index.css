@@ -10,6 +10,7 @@
 @import "./styles/generalUtils.css";
 @import "./components/layout/Navbar/mobileNavbar.css";
 @import "./pages/Registration/registrationPageStyles.css";
+@import "./components/layout/Navbar/cardNavbar.css";
 
 @custom-variant dark (&:is(.dark *));
 

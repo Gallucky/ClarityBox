@@ -69,7 +69,7 @@ const router = createBrowserRouter([
                                 ),
                             },
                             {
-                                path: "gratitude",
+                                path: "gratitude-boxes",
                                 element: (
                                     <RouteGuard role="authenticated">
                                         {lazyLoad(Gratitude)}
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
                     },
                     {
                         // Allowed for admin
-                        path: "/admin",
+                        path: "/crm",
                         element: (
                             <RouteGuard role="admin">
                                 {lazyLoad(Admin)}
