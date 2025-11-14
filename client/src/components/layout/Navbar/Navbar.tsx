@@ -9,7 +9,9 @@ const Navbar = () => {
     const { user } = useAuth();
     const isMobile = useMediaQuery("(max-width: 768px)");
 
-    const renderDock = (items: MobileNavItem[]) => <MobileNav items={items} />;
+    const renderMobileNav = (items: MobileNavItem[]) => (
+        <MobileNav items={items} />
+    );
 
     const renderCardNav = (items: CardNavItem[]) => (
         <CardNav
@@ -26,14 +28,27 @@ const Navbar = () => {
 
     // Mobile Mode.
     if (isMobile) {
-        const guestItems: MobileNavItem[] = [];
-        const userItems: MobileNavItem[] = [];
+        const guestItems: MobileNavItem[] = [
+            { text: "Home", href: "/", link: true, active: true },
+            { text: "About", href: "/", link: true },
+            { text: "Login", href: "/", link: true },
+            { text: "Register", href: "/", link: true },
+        ];
+        const userItems: MobileNavItem[] = [
+            { text: "Home", href: "/", link: true, active: true },
+            { text: "About", href: "/", link: true },
+            { text: "Gratitude Boxes", href: "/", link: true },
+            { text: "Projects", href: "/", link: true },
+            { text: "Search Public Gratitude Boxes", href: "/", link: true },
+            { text: "Settings", href: "/", link: true },
+            { text: "Logout", href: "/", link: true },
+        ];
         const adminExtras: MobileNavItem[] = [];
 
-        if (!user) return renderDock(guestItems);
-        if (!user.isAdmin) return renderDock(userItems);
+        if (!user) return renderMobileNav(guestItems);
+        if (!user.isAdmin) return renderMobileNav(userItems);
 
-        return renderDock([...userItems, ...adminExtras]);
+        return renderMobileNav([...userItems, ...adminExtras]);
     }
 
     const guestItems: CardNavItem[] = [];

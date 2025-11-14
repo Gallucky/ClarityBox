@@ -1,5 +1,6 @@
 type MobileNavItemBase = {
     text: string;
+    active?: boolean;
     disabled?: boolean;
     ariaLabel?: string;
     className?: string;
@@ -8,7 +9,7 @@ type MobileNavItemBase = {
 type MobileNavItemLink = MobileNavItemBase & {
     link: true;
     href: string;
-    onClick: () => void;
+    onClick?: () => void;
 };
 
 type MobileNavItemNonLink = MobileNavItemBase & {

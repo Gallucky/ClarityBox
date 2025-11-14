@@ -1,37 +1,70 @@
 @import "tailwindcss";
 
+/* MOBILE NAVBAR ROOT */
 .mobile-navbar {
-    @apply flex h-dvh flex-col;
-
-    background-color: var(--muted);
-    color: var(--foreground);
-    border-inline-end: 1px solid var(--border);
+    @apply bg-muted text-foreground border-border flex h-dvh flex-col border-e;
 }
 
+/* HEADER */
 .mobile-navbar-header {
-    /* @apply bg-red-500; */
+    @apply flex flex-col gap-4 px-4 py-3;
 }
 
+/* LOGO */
+.mobile-navbar-header .logo {
+    @apply h-[clamp(3.75rem,12vw,5.5rem)] w-auto object-contain;
+}
+
+/* USER PROFILE */
+.mobile-navbar-header .user-profile {
+    @apply flex w-full items-center gap-4;
+}
+
+.mobile-navbar-header .user-profile img {
+    @apply ml-2 h-[clamp(3.75rem,12vw,5.5rem)] w-[clamp(3.75rem,12vw,5.5rem)] rounded-full border-2 shadow-md shadow-black/20;
+    border-style: groove;
+}
+
+/* USER INFO */
+.mobile-navbar-header .user-info {
+    @apply font-inter flex w-[28dvw] flex-col;
+}
+
+.mobile-navbar-header .user-nickname {
+    @apply text-fluid-1.25 font-semibold;
+}
+
+.mobile-navbar-header .user-name {
+    @apply text-fluid-0.9 text-gray-400 italic;
+}
+
+/* NAVIGATION ITEMS */
 .nav-items {
-    @apply bg-green-500;
+    @apply mt-4 flex w-full flex-col gap-3;
 }
 
-.nav-items .nav-item {
+.nav-item {
+    @apply border-border/40 flex items-center border-y px-5 py-2;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
-.nav-items .nav-link {
+.nav-item .nav-text {
+    @apply font-inter text-fluid text-primary/70;
 }
 
+/* ACTIVE STATE */
+.nav-item.active {
+    @apply bg-primary/10 text-primary border-primary/40 font-bold;
+}
+
+/* FOOTER */
 .mobile-navbar-footer {
-    @apply bg-blue-500;
+    @apply border-border/50 absolute right-0 bottom-0 left-0 border-t shadow-[0_-4px_8px_rgba(0,0,0,0.15)];
 }
 
-.logo {
-    @apply ms-2 h-full shrink-0;
-    object-fit: contain;
-    object-position: center;
-}
-
+/* OVERLAY */
 #navbar-overlay {
-    @apply absolute z-10 h-dvh w-dvw;
+    @apply absolute inset-0 z-10;
 }

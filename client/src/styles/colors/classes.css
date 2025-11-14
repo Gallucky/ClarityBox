@@ -123,3 +123,7 @@
 .app-chart-5 {
     background-color: var(--chart-5);
 }
+
+.shadow-black-white {
+    @apply shadow-(--black-white);
+}

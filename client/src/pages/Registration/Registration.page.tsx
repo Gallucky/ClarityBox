@@ -17,8 +17,6 @@ import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import RegistrationForm from "./RegistrationForm";
 import defaultValues from "./registrationFormInitialValues";
 
-import "./registrationPageStyles.css";
-
 const Registration = () => {
     const {
         register,
@@ -33,15 +31,19 @@ const Registration = () => {
 
     return (
         <>
-            <div className="h-dvh w-dvw relative">
+            <div className="relative h-dvh w-dvw">
                 <DarkVeil />
-                <GlassCard centered className={`h-7/12! md:h-fit! w-[90%]!`}>
+                <GlassCard centered className={`h-7/12! w-[90%]! md:h-fit!`}>
                     <RegistrationForm handleSubmit={handleSubmit}>
                         <div className="registration-form-content">
-                            <FieldTitle className="text-teal-500">Name</FieldTitle>
-                            <FieldGroup className="flex flex-col md:flex-row gap-2 p-2!">
+                            <FieldTitle className="text-teal-500">
+                                Name
+                            </FieldTitle>
+                            <FieldGroup className="flex flex-col gap-2 p-2! md:flex-row">
                                 <Field data-invalid={!!errors.name?.first}>
-                                    <FieldLabel htmlFor="registration-name-first">First</FieldLabel>
+                                    <FieldLabel htmlFor="registration-name-first">
+                                        First
+                                    </FieldLabel>
                                     <Input
                                         {...register("name.first")}
                                         id="registration-name-first"
@@ -71,7 +73,9 @@ const Registration = () => {
                                     />
                                 </Field>
                                 <Field data-invalid={!!errors.name?.last}>
-                                    <FieldLabel htmlFor="registration-name-last">Last</FieldLabel>
+                                    <FieldLabel htmlFor="registration-name-last">
+                                        Last
+                                    </FieldLabel>
                                     <Input
                                         {...register("name.last")}
                                         id="registration-name-last"
@@ -88,8 +92,10 @@ const Registration = () => {
 
                             <FieldSeparator />
 
-                            <FieldTitle className="text-teal-500">General Info</FieldTitle>
-                            <FieldGroup className="flex flex-col md:grid md:grid-cols-2 md:grid-rows-2 p-2! gap-2">
+                            <FieldTitle className="text-teal-500">
+                                General Info
+                            </FieldTitle>
+                            <FieldGroup className="flex flex-col gap-2 p-2! md:grid md:grid-cols-2 md:grid-rows-2">
                                 <Field data-invalid={!!errors.nickname}>
                                     <FieldLabel htmlFor="registration-nickname">
                                         Nickname
@@ -107,7 +113,9 @@ const Registration = () => {
                                     />
                                 </Field>
                                 <Field data-invalid={!!errors.email}>
-                                    <FieldLabel htmlFor="registration-email">Email</FieldLabel>
+                                    <FieldLabel htmlFor="registration-email">
+                                        Email
+                                    </FieldLabel>
                                     <Input
                                         {...register("email")}
                                         id="registration-email"
@@ -149,16 +157,26 @@ const Registration = () => {
                                     />
                                     <FieldError
                                         className="text-fluid-0.625! overflow-clip"
-                                        errors={[{ message: errors.confirmPassword?.message }]}
+                                        errors={[
+                                            {
+                                                message:
+                                                    errors.confirmPassword
+                                                        ?.message,
+                                            },
+                                        ]}
                                     />
                                 </Field>
                             </FieldGroup>
 
                             <FieldSeparator />
 
-                            <FieldTitle className="text-teal-500">Profile Picture</FieldTitle>
-                            <FieldGroup className="flex flex-col md:grid md:grid-cols-2 md:grid-rows-1 p-2! gap-2">
-                                <Field data-invalid={!!errors.profileImage?.url}>
+                            <FieldTitle className="text-teal-500">
+                                Profile Picture
+                            </FieldTitle>
+                            <FieldGroup className="flex flex-col gap-2 p-2! md:grid md:grid-cols-2 md:grid-rows-1">
+                                <Field
+                                    data-invalid={!!errors.profileImage?.url}
+                                >
                                     <FieldLabel htmlFor="registration-profile-picture-url">
                                         Url
                                     </FieldLabel>
@@ -167,14 +185,18 @@ const Registration = () => {
                                         id="registration-profile-picture-url"
                                         type="url"
                                         placeholder="Picture Url"
-                                        aria-invalid={!!errors.profileImage?.url}
+                                        aria-invalid={
+                                            !!errors.profileImage?.url
+                                        }
                                     />
                                     <FieldError
                                         className="text-fluid-0.625! overflow-clip"
                                         errors={[errors.profileImage?.url]}
                                     />
                                 </Field>
-                                <Field data-invalid={!!errors.profileImage?.alt}>
+                                <Field
+                                    data-invalid={!!errors.profileImage?.alt}
+                                >
                                     <FieldLabel htmlFor="registration-profile-picture-alt">
                                         Alt
                                     </FieldLabel>
@@ -183,7 +205,9 @@ const Registration = () => {
                                         id="registration-profile-picture-alt"
                                         type="text"
                                         placeholder="Picture Alt Text"
-                                        aria-invalid={!!errors.profileImage?.alt}
+                                        aria-invalid={
+                                            !!errors.profileImage?.alt
+                                        }
                                     />
                                     <FieldError
                                         className="text-fluid-0.625! overflow-clip"
@@ -195,7 +219,8 @@ const Registration = () => {
                         <Button
                             disabled={!isValid}
                             type="submit"
-                            className="w-1/2 self-center flex-none mt-4! select-none">
+                            className="mt-4! w-1/2 flex-none self-center select-none"
+                        >
                             Submit
                         </Button>
                     </RegistrationForm>

@@ -1,16 +1,16 @@
 .page-title {
     /* Size related */
-    @apply max-sm:scale-75 w-full! overflow-clip flex-none;
+    @apply w-full! flex-none overflow-clip max-sm:scale-75;
 
     /* Location related */
     @apply -mb-2.5;
 
     /* Text related */
-    @apply font-[Inter] text-center;
+    @apply text-center font-[Inter];
 }
 
 .registration-form-content {
-    @apply max-sm:overflow-y-auto! h-80 md:h-[90%] grow min-h-0 max-md:my-[5%]! md:flex flex-col justify-center;
+    @apply h-80 min-h-0 grow flex-col justify-center max-md:my-[5%]! max-sm:overflow-y-auto! md:flex md:h-[90%];
 }
 
 /* Scrollbar styling */
@@ -48,5 +48,5 @@
 }
 
 #registration-form {
-    @apply size-full flex flex-col justify-between;
+    @apply flex size-full flex-col justify-between;
 }

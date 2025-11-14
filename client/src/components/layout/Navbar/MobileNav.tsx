@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { FieldSeparator } from "@/components/ui/shadcn/field";
+import { useNavigate } from "react-router-dom";
+import useAuth from "@app/providers/Auth/useAuth";
+import { FieldSeparator } from "@components/ui/shadcn/field";
 import type { MobileNavItem } from "./localTypes/MobileNav";
-
-import "./mobileNavbar.css";
 
 type MobileNavProps = {
     items: MobileNavItem[];
@@ -13,6 +13,39 @@ type MobileNavProps = {
 const MobileNav = (props: MobileNavProps) => {
     const { items } = props;
     const [open, setOpen] = useState(false);
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
+    const hasMiddleName = user?.name.middle;
+
+    const userFullName =
+        (user &&
+            user.name &&
+            (hasMiddleName
+                ? `${user.name.first} ${user.name.middle} ${user.name.last}`
+                : `${user.name.first} ${user.name.last}`)) ||
+        undefined;
+
+    const [currentItems, setCurrentItems] = useState<MobileNavItem[]>(items);
+
+    const linkAction = (item: MobileNavItem, index: number) => {
+        if (!item.href) return;
+
+        // Execute onClick if it exists
+        item.onClick?.();
+
+        const updatedItems = currentItems.map((navItem, i) =>
+            i === index
+                ? { ...navItem, active: true }
+                : { ...navItem, active: false },
+        );
+
+        setCurrentItems(updatedItems);
+
+        // Navigating.
+        navigate(item.href);
+    };
+
     return (
         <>
             <button
@@ -37,47 +70,59 @@ const MobileNav = (props: MobileNavProps) => {
             >
                 <div className="mobile-navbar">
                     <div className="mobile-navbar-header">
-                        <div className="h-20 w-full">
+                        <img
+                            src="claritybox-logo.svg"
+                            alt="ClarityBox's Logo"
+                            className="logo"
+                        />
+
+                        <div className="user-profile">
                             <img
-                                src="claritybox-logo.svg"
-                                alt="ClarityBox's Logo"
-                                className="logo"
+                                src="https://cdn.pixabay.com/photo/2016/04/20/08/21/entrepreneur-1340649_960_720.jpg"
+                                alt="User profile image"
                             />
 
-                            <button
-                                onClick={() => setOpen(false)}
-                                className="absolute top-3 right-3"
-                            >
-                                <X className="size-6" />
-                            </button>
+                            <div className="user-info text-fluid-2!">
+                                <span className="user-nickname">
+                                    {user?.nickname}
+                                </span>
+                                <span className="user-name max-sm:text-fluid-0.75!">
+                                    {userFullName
+                                        ? `Hello, ${userFullName}!`
+                                        : "Hello there!"}
+                                </span>
+                            </div>
                         </div>
+
+                        <button
+                            onClick={() => setOpen(false)}
+                            className="absolute top-3 right-3"
+                        >
+                            <X className="size-6" />
+                        </button>
                     </div>
-                    <FieldSeparator />
+                    <FieldSeparator className="my-5!" />
                     <ul className="nav-items list-none">
                         {/* Nav Links */}
-                        {items.map((item, index) => (
-                            <li key={index}>
-                                {item.link ? (
-                                    <a
-                                        href={item.href}
-                                        aria-label={item.ariaLabel}
-                                        className="nav-item nav-link"
-                                    >
-                                        {item.text}
-                                    </a>
-                                ) : (
-                                    <span
-                                        aria-label={item.ariaLabel}
-                                        className="nav-item"
-                                    >
-                                        {item.text}
-                                    </span>
-                                )}
+                        {currentItems.map((item, index) => (
+                            <li
+                                key={index}
+                                onClick={() => linkAction(item, index)}
+                                className={`nav-item ${item.active ? "active" : ""}`}
+                            >
+                                <span
+                                    aria-label={item.ariaLabel}
+                                    className="nav-text"
+                                >
+                                    {item.text}
+                                </span>
                             </li>
                         ))}
                     </ul>
-                    <FieldSeparator />
-                    <div className="mobile-navbar-footer"></div>
+                    <FieldSeparator className="my-5!" />
+                    <div className="mobile-navbar-footer text-fluid! text-center">
+                        ClarityBox © 2025 - Gal Ben Abu
+                    </div>
                 </div>
             </motion.aside>
         </>

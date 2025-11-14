@@ -1,11 +1,13 @@
 import { lazy, Suspense } from "react";
-import Spinner from "@components/ui/Spinner";
+import Spinner from "@/components/ui/Spinner";
 import type { LazyModuleMap, LazyComponent } from "@/types/lazyTypes";
 import type { ComponentType, JSX } from "react";
 
 // Importing all the pages and components.
 const pages = import.meta.glob("../pages/**/*.{ts,tsx}") as LazyModuleMap;
-const components = import.meta.glob("../components/**/*.{ts,tsx}") as LazyModuleMap;
+const components = import.meta.glob(
+    "../components/**/*.{ts,tsx}",
+) as LazyModuleMap;
 
 const scripts: LazyModuleMap = { ...pages, ...components };
 
@@ -44,7 +46,9 @@ export const lazyImport = (relativePath: string, namedExport?: string) => {
 
         // If the named export is not found, throw an error.
         if (!selected)
-            throw new Error(`Named export "${namedExport}" not found in ${relativePath}`);
+            throw new Error(
+                `Named export "${namedExport}" not found in ${relativePath}`,
+            );
 
         // Return the selected export as the default export.
         return { default: selected as ComponentType<unknown> };
@@ -63,7 +67,10 @@ export const lazyImport = (relativePath: string, namedExport?: string) => {
  *  folder, named the same as the page name, set this to false.
  * @returns {React.LazyExoticComponent<any>} The lazy loaded component.
  */
-export const lazyImportPage = (pageName: string, insideDedicatedFolder: boolean = true) => {
+export const lazyImportPage = (
+    pageName: string,
+    insideDedicatedFolder: boolean = true,
+) => {
     // Adding the prefix - the path to the pages folder there the pages are located.
     const relativePath = insideDedicatedFolder
         ? `../pages/${pageName}/${pageName}.page.tsx`
@@ -90,7 +97,10 @@ export const lazyImportPage = (pageName: string, insideDedicatedFolder: boolean 
  *  folder named the same as the component name, set this to true.
  * @returns {React.LazyExoticComponent<any>} The lazy loaded component.
  */
-export const lazyImportComponent = (componentName: string, insideDedicatedFolder?: boolean) => {
+export const lazyImportComponent = (
+    componentName: string,
+    insideDedicatedFolder?: boolean,
+) => {
     // Adding the prefix - the path to the components folder there the components are located.
     const relativePath = insideDedicatedFolder
         ? `../components/${componentName}/${componentName}.tsx`
@@ -107,7 +117,17 @@ export const lazyImportComponent = (componentName: string, insideDedicatedFolder
 
 export const lazyLoad = (Component: LazyComponent): JSX.Element => {
     return (
-        <Suspense fallback={<Spinner />}>
+        <Suspense
+            fallback={
+                <div className="flex min-h-screen items-center justify-center">
+                    <Spinner
+                        text="Loading..."
+                        className="absolute-center"
+                        elementClassName="size-8"
+                    />
+                </div>
+            }
+        >
             <Component />
         </Suspense>
     );

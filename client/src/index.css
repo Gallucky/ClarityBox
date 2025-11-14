@@ -8,6 +8,8 @@
 @import "./styles/colors/variables.css";
 @import "./styles/colors/classes.css";
 @import "./styles/generalUtils.css";
+@import "./components/layout/Navbar/mobileNavbar.css";
+@import "./pages/Registration/registrationPageStyles.css";
 
 @custom-variant dark (&:is(.dark *));
 

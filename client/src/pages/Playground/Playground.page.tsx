@@ -1,7 +1,11 @@
 import Navbar from "@/components/layout/Navbar/Navbar";
 
 const Playground = () => {
-    return <Navbar />;
+    return (
+        <>
+            <Navbar />
+        </>
+    );
 };
 
 export default Playground;

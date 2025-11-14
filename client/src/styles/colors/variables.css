@@ -19,6 +19,8 @@
     --success: #059669;
     --warning: #d97706;
     --destructive: #dc2626;
+
+    --black-white: black;
 }
 
 .dark {
@@ -31,7 +33,6 @@
     --secondary: #14b8a6;
     --secondary-foreground: #0a0e12;
 
-    --accent: #a78bfa;
     --accent-foreground: #0a0e12;
 
     --muted: #1a1e23;
@@ -42,6 +43,8 @@
     --success: #10b981;
     --warning: #f59e0b;
     --destructive: #ef4444;
+
+    --black-white: white;
 }
 
 html,
