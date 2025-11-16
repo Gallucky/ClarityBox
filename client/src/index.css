@@ -8,9 +8,9 @@
 @import "./styles/colors/variables.css";
 @import "./styles/colors/classes.css";
 @import "./styles/generalUtils.css";
-@import "./components/layout/Navbar/mobileNavbar.css";
+@import "./components/layout/Navbar/mobileNav.css";
 @import "./pages/Registration/registrationPageStyles.css";
-@import "./components/layout/Navbar/cardNavbar.css";
+@import "./components/layout/Navbar/desktopNav.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,9 +1,5 @@
 const data = require("./initialData.json");
 
-const { findOne: findUserById } = require("@features/users/models/usersDataAccessService");
-const { create: createPost } = require("@features/posts/models/postsDataAccessService");
-const { create: createProject } = require("@features/projects/models/projectsDataAccessService");
-const { create: createTask } = require("@features/tasks/models/tasksDataAccessService");
 const { ConfigurationError, AlreadyExistsError, NotFoundError } = require("@/utils/customErrors");
 const { generateUserPassword } = require("@/features/users/helpers/bcrypt");
 const Log = require("@logger/loggers/customLogger");
@@ -13,6 +9,8 @@ const User = require("@features/users/models/mongodb/User");
 const Project = require("@features/projects/models/mongodb/Project");
 const Task = require("@features/tasks/models/mongodb/Task");
 const Post = require("@features/posts/models/mongodb/Post");
+
+const normalizeUser = require("@features/users/helpers/normalizeUser");
 
 const usersMap = {};
 const projectsMap = {};
@@ -48,6 +46,7 @@ const generateInitialUsers = async (debug) => {
                 user.password = generateUserPassword(user.password);
             }
 
+            user = normalizeUser(user);
             user = await User(user);
             user = await user.save();
             usersMap[user.nickname] = user;

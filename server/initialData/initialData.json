@@ -5,14 +5,16 @@
             "nickname": "admin",
             "email": "admin@gmail.com",
             "password": "admin-password-is-protected",
-            "isAdmin": true
+            "isAdmin": true,
+            "profileImage": {}
         },
         {
             "name": { "first": "User", "last": "Example" },
             "nickname": "example_user",
             "email": "user@gmail.com",
             "password": "User1234!",
-            "isAdmin": false
+            "isAdmin": false,
+            "profileImage": {}
         }
     ],
 

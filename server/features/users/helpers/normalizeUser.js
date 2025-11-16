@@ -20,6 +20,8 @@ const normalizeUser = (rawUser) => {
         profileImage,
     };
 
+    console.log("RawUser", rawUser);
+    console.log("NormalizedUser", user);
     return user;
 };
 

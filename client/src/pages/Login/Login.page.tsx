@@ -7,7 +7,12 @@ import { useTheme } from "@/app/providers/Theme/useTheme";
 import GlassCard from "@/components/form/GlassCard";
 import DarkVeil from "@/components/layout/DarkVeil";
 import { Button } from "@/components/ui/shadcn/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/shadcn/field";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from "@/components/ui/shadcn/field";
 import { Input } from "@/components/ui/shadcn/input";
 import loginSchema from "@/schemas/loginSchema";
 import type { LoginFormData } from "@/types/forms/LoginFormData";
@@ -45,7 +50,7 @@ const Login = () => {
                     progress: undefined,
                     theme: themeValue,
                     transition: Slide,
-                }
+                },
             );
 
             return;
@@ -68,24 +73,28 @@ const Login = () => {
 
     return (
         <>
-            <div className="h-dvh w-dvw relative overflow-hidden">
+            <div className="relative h-dvh w-dvw overflow-hidden">
                 <DarkVeil />
                 <GlassCard centered className="h-7/12! w-[90%]!">
                     <form
                         id="login-form"
                         noValidate
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col items-center justify-center w-full">
-                        <h1 className="font-[Inter] font-semibold app-primary-fg text-outline overflow-clip">
+                        className="flex w-full flex-col items-center justify-center"
+                    >
+                        <h1 className="app-primary-fg text-outline overflow-clip font-[Inter] font-semibold">
                             Login Page
                         </h1>
-                        <FieldGroup className="flex flex-col items-center mt-10! md:w-7/12 max-sm:gap-10">
+                        <FieldGroup className="mt-10! flex flex-col items-center max-sm:gap-10 md:w-7/12">
                             <Controller
                                 name="email"
                                 control={form.control}
                                 render={({ field, fieldState }) => (
                                     <Field data-invalid={fieldState.invalid}>
-                                        <FieldLabel htmlFor={field.name} className="overflow-clip">
+                                        <FieldLabel
+                                            htmlFor={field.name}
+                                            className="overflow-clip"
+                                        >
                                             Email:
                                         </FieldLabel>
                                         <Input
@@ -111,7 +120,10 @@ const Login = () => {
                                 control={form.control}
                                 render={({ field, fieldState }) => (
                                     <Field data-invalid={fieldState.invalid}>
-                                        <FieldLabel htmlFor={field.name} className="overflow-clip">
+                                        <FieldLabel
+                                            htmlFor={field.name}
+                                            className="overflow-clip"
+                                        >
                                             Password:
                                         </FieldLabel>
                                         <Input
@@ -131,10 +143,20 @@ const Login = () => {
 
                             <Button
                                 disabled={!form.formState.isValid}
-                                className="w-3/4 rounded-xl app-primary-bg select-none hover:opacity-85 hover:brightness-90 transition-all! ease-in-out! duration-200! mt-5!">
+                                className="app-primary-bg mt-5! w-3/4 rounded-xl transition-all! duration-200! ease-in-out! select-none hover:opacity-85 hover:brightness-90"
+                            >
                                 Login
                             </Button>
                         </FieldGroup>
+                        <p className="text-fluid-0.75! mt-2!">
+                            Don't have an account yet?{" "}
+                            <span
+                                className="text-fluid-0.75! text-primary cursor-pointer hover:underline"
+                                onClick={() => navigate("/registration")}
+                            >
+                                Register
+                            </span>
+                        </p>
                     </form>
                 </GlassCard>
             </div>

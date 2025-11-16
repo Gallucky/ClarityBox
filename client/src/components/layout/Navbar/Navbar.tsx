@@ -1,8 +1,7 @@
 import useMediaQuery from "@hooks/useMediaQuery";
 import useAuth from "@/app/providers/Auth/useAuth";
-import CardNav from "./CardNav";
+import DesktopNav, { type DesktopNavItem } from "./DesktopNav";
 import MobileNav from "./MobileNav";
-import type { CardNavItem } from "./localTypes/CardNav";
 import type { MobileNavItem } from "./localTypes/MobileNav";
 
 const Navbar = () => {
@@ -13,16 +12,11 @@ const Navbar = () => {
         <MobileNav items={items} />
     );
 
-    const renderCardNav = (items: CardNavItem[]) => (
-        <CardNav
-            logo={"/claritybox-icon.svg"}
+    const renderCardNav = (items: DesktopNavItem[]) => (
+        <DesktopNav
+            logo={"/claritybox-logo.svg"}
             logoAlt="ClarityBox's Logo"
-            items={items}
-            baseColor="#fff"
-            menuColor="#000"
-            buttonBgColor="#111"
-            buttonTextColor="#fff"
-            ease="power3.out"
+            links={items}
         />
     );
 
@@ -57,19 +51,36 @@ const Navbar = () => {
         return renderMobileNav([...userItems, ...adminExtras]);
     }
 
-    const guestItems: CardNavItem[] = [
+    const guestItems: DesktopNavItem[] = [
         {
-            label: "Home",
-            bgColor: "#fff",
-            textColor: "#000",
-            links: [{ label: "Home", href: "/", ariaLabel: "Home" }],
+            label: "Login",
+            href: "/login",
+            ariaLabel: "Login",
         },
-        { label: "About", bgColor: "#fff", textColor: "#000", links: [] },
-        { label: "Login", bgColor: "#fff", textColor: "#000", links: [] },
-        { label: "Register", bgColor: "#fff", textColor: "#000", links: [] },
+        {
+            label: "Register",
+            href: "/registration",
+            ariaLabel: "Register",
+        },
     ];
-    const userItems: CardNavItem[] = [];
-    const adminExtras: CardNavItem[] = [];
+    const userItems: DesktopNavItem[] = [
+        {
+            label: "Dashboard",
+            href: "/dashboard",
+            ariaLabel: "Dashboard",
+        },
+        {
+            label: "Projects",
+            href: "/projects",
+            ariaLabel: "Projects",
+        },
+        {
+            label: "Gratitude Boxes",
+            href: "/gratitude-boxes",
+            ariaLabel: "Gratitude Boxes",
+        },
+    ];
+    const adminExtras: DesktopNavItem[] = [];
 
     if (!user) return renderCardNav(guestItems);
     if (!user.isAdmin) return renderCardNav(userItems);

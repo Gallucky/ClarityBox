@@ -2,16 +2,18 @@ import { type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "@/app/providers/Auth/useAuth";
+import { Button } from "@/components/ui/shadcn/button";
 import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import type { UseFormHandleSubmit } from "react-hook-form";
 
 type RegistrationFormProps = {
     children: ReactNode;
     handleSubmit: UseFormHandleSubmit<RegisterFormData, RegisterFormData>;
+    isValid: boolean;
 };
 
 const RegistrationForm = (props: RegistrationFormProps) => {
-    const { handleSubmit } = props;
+    const { handleSubmit, isValid } = props;
 
     const auth = useAuth();
     const navigate = useNavigate();
@@ -23,15 +25,30 @@ const RegistrationForm = (props: RegistrationFormProps) => {
             const errorMessage = error.message ?? "Something went wrong!";
             toast.error(`Registration failed!\n${error.name}: ${errorMessage}`);
         } else {
-            toast.success("Account created successfully! Redirecting to login page.");
+            toast.success(
+                "Account created successfully! Redirecting to login page.",
+            );
             navigate("/login");
         }
     };
 
     return (
-        <form id="registration-form" noValidate onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="page-title text-outline app-primary-fg">Registration Page</h2>
+        <form
+            id="registration-form"
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <h2 className="page-title text-outline app-primary-fg">
+                Registration Page
+            </h2>
             {props.children}
+            <Button
+                disabled={!isValid}
+                type="submit"
+                className="mt-4! w-1/2 flex-none self-center select-none"
+            >
+                Submit
+            </Button>
         </form>
         // <div>
         //     <Button

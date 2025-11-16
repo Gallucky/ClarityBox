@@ -1,0 +1,41 @@
+.desktop-navbar {
+    @apply flex h-[10dvh]! max-h-[50px] w-[65dvw];
+    @apply fixed top-5 left-1/2 -translate-x-1/2;
+    @apply z-999 rounded bg-[#22252c] select-none;
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.desktop-navbar .static-content {
+    @apply flex items-center justify-center gap-2;
+}
+
+.static-content button {
+    @apply my-auto;
+}
+
+/* Project Logo */
+.static-content img {
+    @apply ms-2 h-full;
+    @apply object-contain object-center;
+}
+
+.desktop-navbar .links {
+    @apply mx-auto me-2 flex items-center justify-end gap-2;
+}
+
+.desktop-navbar .link {
+    @apply bg-secondary/0 font-inter text-fluid-0.625 hover:bg-secondary cursor-pointer rounded p-1 align-middle transition-all duration-500 ease-in-out hover:scale-90;
+}
+
+.desktop-navbar .link.active {
+    @apply text-secondary font-bold;
+}
+
+.profile {
+    @apply flex items-center justify-center;
+}
+
+.profile img {
+    @apply me-2 size-10 rounded-full border-2;
+    border-style: groove;
+}

@@ -2,7 +2,6 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import GlassCard from "@/components/form/GlassCard";
 import DarkVeil from "@/components/layout/DarkVeil";
-import { Button } from "@/components/ui/shadcn/button";
 import {
     Field,
     FieldError,
@@ -16,6 +15,7 @@ import registerSchema from "@/schemas/registerSchema";
 import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import RegistrationForm from "./RegistrationForm";
 import defaultValues from "./registrationFormInitialValues";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
     const {
@@ -29,12 +29,17 @@ const Registration = () => {
         shouldUnregister: false,
     });
 
+    const navigate = useNavigate();
+
     return (
         <>
             <div className="relative h-dvh w-dvw">
                 <DarkVeil />
                 <GlassCard centered className={`h-7/12! w-[90%]! md:h-fit!`}>
-                    <RegistrationForm handleSubmit={handleSubmit}>
+                    <RegistrationForm
+                        handleSubmit={handleSubmit}
+                        isValid={isValid}
+                    >
                         <div className="registration-form-content">
                             <FieldTitle className="text-teal-500">
                                 Name
@@ -216,14 +221,16 @@ const Registration = () => {
                                 </Field>
                             </FieldGroup>
                         </div>
-                        <Button
-                            disabled={!isValid}
-                            type="submit"
-                            className="mt-4! w-1/2 flex-none self-center select-none"
-                        >
-                            Submit
-                        </Button>
                     </RegistrationForm>
+                    <p className="text-fluid-0.75! mt-2!">
+                        Already have an account{" "}
+                        <span
+                            className="text-fluid-0.75! text-primary cursor-pointer hover:underline"
+                            onClick={() => navigate("/login")}
+                        >
+                            Login
+                        </span>
+                    </p>
                 </GlassCard>
             </div>
         </>
