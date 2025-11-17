@@ -1,7 +1,9 @@
+import { Box, LayoutDashboard, Package, Shield } from "lucide-react";
 import useMediaQuery from "@hooks/useMediaQuery";
 import useAuth from "@/app/providers/Auth/useAuth";
-import DesktopNav, { type DesktopNavItem } from "./DesktopNav";
+import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
+import type { DesktopNavItem } from "./localTypes/DesktopNav";
 import type { MobileNavItem } from "./localTypes/MobileNav";
 
 const Navbar = () => {
@@ -68,19 +70,29 @@ const Navbar = () => {
             label: "Dashboard",
             href: "/dashboard",
             ariaLabel: "Dashboard",
+            icon: LayoutDashboard,
         },
         {
             label: "Projects",
             href: "/projects",
             ariaLabel: "Projects",
+            icon: Package,
         },
         {
             label: "Gratitude Boxes",
             href: "/gratitude-boxes",
             ariaLabel: "Gratitude Boxes",
+            icon: Box,
         },
     ];
-    const adminExtras: DesktopNavItem[] = [];
+    const adminExtras: DesktopNavItem[] = [
+        {
+            label: "CRM",
+            href: "/crm",
+            ariaLabel: "crm",
+            icon: Shield,
+        },
+    ];
 
     if (!user) return renderCardNav(guestItems);
     if (!user.isAdmin) return renderCardNav(userItems);

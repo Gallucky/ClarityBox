@@ -1,50 +1,114 @@
 :root {
-    --background: #fafcfd;
-    --foreground: #1a1d1f;
+    /* Backgrounds */
+    --background: #f8fafc; /* slate-50 */
+    --foreground: #0f172a; /* slate-900 */
 
-    --primary: #2563eb;
+    /* Primary (Blue) */
+    --primary: #2563eb; /* blue-600 */
     --primary-foreground: #ffffff;
 
-    --secondary: #0d9488;
+    /* Secondary (Teal) */
+    --secondary: #0d9488; /* teal-600 */
     --secondary-foreground: #ffffff;
 
-    --accent: #7c3aed;
+    /* Accent (Purple for admin features) */
+    --accent: #9333ea; /* purple-600 */
     --accent-foreground: #ffffff;
 
-    --muted: #f0f4f6;
-    --muted-foreground: #5b6570;
+    /* Muted */
+    --muted: #f1f5f9; /* slate-100 */
+    --muted-foreground: #475569; /* slate-600 */
 
-    --border: #e2e8f0;
+    /* Card/Container */
+    --card: #ffffff;
+    --card-foreground: #0f172a; /* slate-900 */
 
-    --success: #059669;
-    --warning: #d97706;
-    --destructive: #dc2626;
+    /* Popover (dropdowns) */
+    --popover: #ffffff;
+    --popover-foreground: #0f172a; /* slate-900 */
 
+    /* Borders */
+    --border: #e2e8f0; /* slate-200 */
+
+    /* Input */
+    --input: #e2e8f0; /* slate-200 */
+    --ring: #3b82f6; /* blue-500 */
+
+    /* Status Colors */
+    --success: #059669; /* emerald-600 */
+    --warning: #d97706; /* amber-600 */
+    --destructive: #dc2626; /* red-600 */
+    --destructive-foreground: #ffffff;
+
+    /* Utility */
     --black-white: black;
+
+    /* Navbar specific */
+    --navbar-bg: rgba(255, 255, 255, 0.7); /* white with 70% opacity */
+    --navbar-hover: #f1f5f9; /* slate-100 */
+    --active-link-bg: #eff6ff; /* blue-50 */
+    --active-link-text: #2563eb; /* blue-600 */
+    --admin-active-bg: #faf5ff; /* purple-50 */
+    --admin-active-text: #9333ea; /* purple-600 */
 }
 
 .dark {
-    --background: #0a0e12;
-    --foreground: #e8ebed;
+    /* Backgrounds */
+    --background: #0f172a; /* slate-900 */
+    --foreground: #e2e8f0; /* slate-200 */
 
-    --primary: #3b82f6;
+    /* Primary (Blue) */
+    --primary: #3b82f6; /* blue-500 */
     --primary-foreground: #ffffff;
 
-    --secondary: #14b8a6;
-    --secondary-foreground: #0a0e12;
+    /* Secondary (Teal) */
+    --secondary: #14b8a6; /* teal-500 */
+    --secondary-foreground: #0f172a;
 
-    --accent-foreground: #0a0e12;
+    /* Accent (Purple for admin features) */
+    --accent: #a855f7; /* purple-500 */
+    --accent-foreground: #0f172a;
 
-    --muted: #1a1e23;
-    --muted-foreground: #9ba3ab;
+    /* Muted */
+    --muted: #334155; /* slate-700 */
+    --muted-foreground: #cbd5e1; /* slate-300 */
 
-    --border: #252a30;
+    /* Card/Container */
+    --card: #1e293b; /* slate-800 */
+    --card-foreground: #e2e8f0; /* slate-200 */
 
-    --success: #10b981;
-    --warning: #f59e0b;
-    --destructive: #ef4444;
+    /* Popover (dropdowns) */
+    --popover: #1e293b; /* slate-800 */
+    --popover-foreground: #e2e8f0; /* slate-200 */
 
+    /* Borders */
+    --border: #334155; /* slate-700 */
+
+    /* Input */
+    --input: #334155; /* slate-700 */
+    --ring: #60a5fa; /* blue-400 */
+
+    /* Status Colors */
+    --success: #10b981; /* emerald-500 */
+    --warning: #f59e0b; /* amber-500 */
+    --destructive: #ef4444; /* red-500 */
+    --destructive-foreground: #ffffff;
+
+    /* Utility */
     --black-white: white;
+
+    /* Navbar specific */
+    --navbar-bg: rgba(30, 41, 59, 0.7); /* slate-800 with 70% opacity */
+    --navbar-hover: rgba(51, 65, 85, 0.5); /* slate-700 with 50% opacity */
+    --active-link-bg: rgba(59, 130, 246, 0.1); /* blue-500 with 10% opacity */
+    --active-link-text: #60a5fa; /* blue-400 */
+    --admin-active-bg: rgba(
+        168,
+        85,
+        247,
+        0.1
+    ); /* purple-500 with 10% opacity */
+    --admin-active-text: #c084fc; /* purple-400 */
 }
 
 html,

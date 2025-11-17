@@ -1,41 +1,148 @@
+/* Main Navbar Container */
 .desktop-navbar {
-    @apply flex h-[10dvh]! max-h-[50px] w-[65dvw];
-    @apply fixed top-5 left-1/2 -translate-x-1/2;
-    @apply z-999 rounded bg-[#22252c] select-none;
-    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    /* Layout */
+    @apply fixed top-5 left-1/2 z-999 -translate-x-1/2;
+    @apply flex items-center justify-between;
+    @apply h-16 w-[75dvw] max-w-7xl min-w-[600px];
+    @apply max-xl:w-[90dvw];
+    @apply px-8;
+
+    /* Styling */
+    @apply rounded select-none;
+    @apply bg-background/70 backdrop-blur-xl;
+    @apply border-border border shadow-lg;
+
+    @apply overflow-visible;
+
+    /* Animation */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Left Section: Logo + Static Content */
 .desktop-navbar .static-content {
-    @apply flex items-center justify-center gap-2;
+    @apply flex items-center gap-6;
+}
+
+/* Logo */
+.static-content img {
+    @apply h-9 w-fit;
+    @apply cursor-pointer object-contain;
+    @apply transition-opacity hover:opacity-80;
+}
+
+/* About Link & Search Icon */
+.static-content button,
+.static-content .search-icon {
+    @apply text-muted-foreground;
+    @apply transition-colors duration-200;
 }
 
 .static-content button {
-    @apply my-auto;
+    @apply rounded-lg px-4 py-2;
+    @apply text-sm font-medium;
+    @apply hover:text-foreground hover:bg-muted;
 }
 
-/* Project Logo */
-.static-content img {
-    @apply ms-2 h-full;
-    @apply object-contain object-center;
+.static-content button.active {
+    @apply text-foreground bg-muted;
 }
 
+.static-content .search-icon {
+    @apply h-5 w-5 cursor-pointer;
+    @apply hover:text-foreground;
+}
+
+/* Center Section: Navigation Links */
 .desktop-navbar .links {
-    @apply mx-auto me-2 flex items-center justify-end gap-2;
+    @apply flex items-center gap-1;
+    @apply m-0 list-none p-0;
+    @apply flex-1 justify-center;
 }
 
+.desktop-navbar .links.links-right {
+    @apply flex-none justify-end;
+    @apply ms-auto me-0!;
+}
+
+.desktop-navbar .links li {
+    @apply m-0 p-0;
+}
+
+/* Navigation Link Buttons */
 .desktop-navbar .link {
-    @apply bg-secondary/0 font-inter text-fluid-0.625 hover:bg-secondary cursor-pointer rounded p-1 align-middle transition-all duration-500 ease-in-out hover:scale-90;
+    @apply flex items-center gap-2;
+    @apply rounded px-4 py-2;
+    @apply text-sm font-medium whitespace-nowrap;
+    @apply text-muted-foreground bg-transparent;
+    @apply cursor-pointer border-0;
+    @apply transition-all duration-200;
+    @apply hover:text-foreground hover:bg-muted;
+
+    @apply text-fluid-0.625 overflow-hidden text-ellipsis;
+}
+
+.desktop-navbar .link:focus-visible {
+    @apply ring-ring ring-2 ring-offset-2 outline-none;
 }
 
 .desktop-navbar .link.active {
-    @apply text-secondary font-bold;
+    @apply text-primary bg-primary/10;
 }
 
+.desktop-navbar .link.active:hover {
+    @apply bg-primary/15;
+}
+
+/* Right Section: Profile */
 .profile {
-    @apply flex items-center justify-center;
+    @apply relative flex items-center justify-center;
 }
 
 .profile img {
-    @apply me-2 size-10 rounded-full border-2;
-    border-style: groove;
+    @apply h-10 w-10 rounded-full;
+    @apply cursor-pointer object-cover;
+    @apply border-primary/20 border-2;
+    @apply transition-all duration-200;
+    @apply hover:border-primary/40;
+}
+
+/* Dark Mode Enhancements */
+.dark .desktop-navbar {
+    @apply shadow-2xl;
+}
+
+.dark .profile img {
+    @apply border-primary/30;
+}
+
+.dark .profile img:hover {
+    @apply border-primary/50;
+}
+
+/* Focus States for Accessibility */
+.static-content button:focus-visible,
+.desktop-navbar .link:focus-visible,
+.profile img:focus-visible {
+    @apply ring-ring ring-offset-background ring-2 ring-offset-2 outline-none;
+}
+
+.profile-dropdown {
+    @apply absolute top-full right-0 z-9999 mt-2;
+    @apply flex flex-col gap-1;
+    @apply w-40 p-2;
+    @apply border-border bg-popover text-foreground rounded-md border;
+    @apply shadow-xl;
+    @apply animate-in fade-in slide-in-from-top-2;
+}
+
+/* Style dropdown buttons independently of navbar buttons */
+.profile-dropdown .link {
+    @apply w-full justify-start;
+    @apply text-muted-foreground text-sm;
+    @apply hover:text-foreground hover:bg-muted bg-transparent;
+}
+
+.desktop-navbar .link svg,
+.static-content button svg {
+    @apply shrink-0;
 }
