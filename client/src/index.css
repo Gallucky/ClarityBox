@@ -11,6 +11,7 @@
 @import "./components/layout/Navbar/mobileNav.css";
 @import "./pages/Registration/registrationPageStyles.css";
 @import "./components/layout/Navbar/desktopNav.css";
+@import "./components/layout/Footer/footer.css";
 
 @custom-variant dark (&:is(.dark *));
 
