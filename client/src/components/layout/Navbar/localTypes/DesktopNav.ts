@@ -6,4 +6,5 @@ export type DesktopNavItem = {
     ariaLabel?: string;
     dropDown?: boolean;
     icon?: LucideIcon;
+    active?: boolean;
 };

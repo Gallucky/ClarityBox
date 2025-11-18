@@ -1,5 +1,6 @@
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import GlassCard from "@/components/form/GlassCard";
 import DarkVeil from "@/components/layout/DarkVeil";
 import {
@@ -15,7 +16,6 @@ import registerSchema from "@/schemas/registerSchema";
 import type { RegisterFormData } from "@/types/forms/RegisterFormData";
 import RegistrationForm from "./RegistrationForm";
 import defaultValues from "./registrationFormInitialValues";
-import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
     const {

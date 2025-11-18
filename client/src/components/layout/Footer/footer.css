@@ -2,6 +2,6 @@ footer {
     @apply h-12 w-full;
     @apply flex items-center justify-center;
     @apply absolute bottom-0 left-1/2 -translate-x-1/2;
-    @apply border-border bg-background/95 supports-backdrop-filter:bg-background/60;
+    @apply border-border bg-background/70;
     @apply border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-1px_rgba(0,0,0,0.06)] backdrop-blur;
 }

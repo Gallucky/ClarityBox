@@ -1,4 +1,5 @@
 import { Box, LayoutDashboard, Package, Shield } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import useMediaQuery from "@hooks/useMediaQuery";
 import useAuth from "@/app/providers/Auth/useAuth";
 import DesktopNav from "./DesktopNav";
@@ -9,6 +10,12 @@ import type { MobileNavItem } from "./localTypes/MobileNav";
 const Navbar = () => {
     const { user } = useAuth();
     const isMobile = useMediaQuery("(max-width: 768px)");
+    const location = useLocation();
+
+    const isCurrentLocation = (href: string, forNested = false): boolean => {
+        if (forNested) return location.pathname.startsWith(href);
+        return location.pathname === href;
+    };
 
     const renderMobileNav = (items: MobileNavItem[]) => (
         <MobileNav items={items} />
@@ -24,27 +31,66 @@ const Navbar = () => {
 
     // Mobile Mode.
     if (isMobile) {
+        const staticItems: MobileNavItem[] = [
+            {
+                text: "Home",
+                href: "/",
+                link: true,
+                active: isCurrentLocation("/"),
+            },
+            {
+                text: "About",
+                href: "/about",
+                link: true,
+                active: isCurrentLocation("/about"),
+            },
+        ];
+
         const guestItems: MobileNavItem[] = [
-            { text: "Home", href: "/", link: true, active: true },
-            { text: "About", href: "/about", link: true },
-            { text: "Login", href: "/login", link: true },
-            { text: "Register", href: "/registration", link: true },
+            ...staticItems,
+            {
+                text: "Login",
+                href: "/login",
+                link: true,
+                active: isCurrentLocation("/login"),
+            },
+            {
+                text: "Register",
+                href: "/registration",
+                link: true,
+                active: isCurrentLocation("/registration"),
+            },
         ];
         const userItems: MobileNavItem[] = [
-            { text: "Home", href: "/", link: true, active: true },
-            { text: "About", href: "/about", link: true },
+            ...staticItems,
             {
                 text: "Gratitude Boxes",
                 href: "/dashboard/gratitude-boxes",
                 link: true,
+                active: isCurrentLocation("/dashboard/gratitude-boxes"),
             },
-            { text: "Projects", href: "/projects", link: true },
-            { text: "Profile", href: "/profile", link: true },
+            {
+                text: "Projects",
+                href: "/projects",
+                link: true,
+                active: isCurrentLocation("/projects"),
+            },
+            {
+                text: "Profile",
+                href: "/profile",
+                link: true,
+                active: isCurrentLocation("/profile"),
+            },
             { text: "Logout", href: "/", link: true },
         ];
 
         const adminExtras: MobileNavItem[] = [
-            { text: "CRM", href: "/crm", link: true },
+            {
+                text: "CRM",
+                href: "/crm",
+                link: true,
+                active: isCurrentLocation("/crm"),
+            },
         ];
 
         if (!user) return renderMobileNav(guestItems);
@@ -58,11 +104,13 @@ const Navbar = () => {
             label: "Login",
             href: "/login",
             ariaLabel: "Login",
+            active: isCurrentLocation("/login"),
         },
         {
             label: "Register",
             href: "/registration",
             ariaLabel: "Register",
+            active: isCurrentLocation("/registration"),
         },
     ];
     const userItems: DesktopNavItem[] = [
@@ -71,18 +119,21 @@ const Navbar = () => {
             href: "/dashboard",
             ariaLabel: "Dashboard",
             icon: LayoutDashboard,
+            active: isCurrentLocation("/dashboard"),
         },
         {
             label: "Projects",
-            href: "/projects",
+            href: "/dashboard/projects",
             ariaLabel: "Projects",
             icon: Package,
+            active: isCurrentLocation("/dashboard/projects", true),
         },
         {
             label: "Gratitude Boxes",
-            href: "/gratitude-boxes",
+            href: "/dashboard/gratitude-boxes",
             ariaLabel: "Gratitude Boxes",
             icon: Box,
+            active: isCurrentLocation("/dashboard/gratitude-boxes", true),
         },
     ];
     const adminExtras: DesktopNavItem[] = [
@@ -91,6 +142,7 @@ const Navbar = () => {
             href: "/crm",
             ariaLabel: "crm",
             icon: Shield,
+            active: isCurrentLocation("/crm"),
         },
     ];
 

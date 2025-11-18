@@ -1,6 +1,6 @@
 import { BookOpen, Search } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "@/app/providers/Auth/useAuth";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import type { DesktopNavItem } from "./localTypes/DesktopNav";
@@ -15,6 +15,7 @@ const DesktopNav = (props: DesktopNavProps) => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+    const location = useLocation();
 
     const themeToggle = (
         <div
@@ -36,7 +37,7 @@ const DesktopNav = (props: DesktopNavProps) => {
                     </abbr>
                     <button
                         type="button"
-                        className="link active"
+                        className={`link ${location.pathname === "/about" ? "active" : ""}`}
                         aria-label="static-link-about"
                         onClick={() => navigate("/about")}
                     >
@@ -58,7 +59,7 @@ const DesktopNav = (props: DesktopNavProps) => {
                             >
                                 <button
                                     type="button"
-                                    className="link"
+                                    className={`link ${link.active ? "active" : ""}`}
                                     aria-label={link.ariaLabel}
                                     onClick={() => navigate(link.href)}
                                 >
