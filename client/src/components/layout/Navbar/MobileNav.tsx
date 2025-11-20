@@ -57,6 +57,7 @@ const MobileNav = (props: MobileNavProps) => {
 
             <div
                 id="navbar-overlay"
+                className={`${open ? "static" : "hidden"}`}
                 onClick={() => {
                     setOpen(false);
                 }}
