@@ -65,9 +65,9 @@ const Navbar = () => {
             ...staticItems,
             {
                 text: "Gratitude Boxes",
-                href: "/dashboard/gratitude-boxes",
+                href: "/gratitude-boxes",
                 link: true,
-                active: isCurrentLocation("/dashboard/gratitude-boxes"),
+                active: isCurrentLocation("/gratitude-boxes"),
             },
             {
                 text: "Projects",
@@ -123,17 +123,17 @@ const Navbar = () => {
         },
         {
             label: "Projects",
-            href: "/dashboard/projects",
+            href: "/projects",
             ariaLabel: "Projects",
             icon: Package,
-            active: isCurrentLocation("/dashboard/projects", true),
+            active: isCurrentLocation("/projects", true),
         },
         {
             label: "Gratitude Boxes",
-            href: "/dashboard/gratitude-boxes",
+            href: "/gratitude-boxes",
             ariaLabel: "Gratitude Boxes",
             icon: Box,
-            active: isCurrentLocation("/dashboard/gratitude-boxes", true),
+            active: isCurrentLocation("/gratitude-boxes", true),
         },
     ];
     const adminExtras: DesktopNavItem[] = [

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "@app/providers/Auth/useAuth";
 import { FieldSeparator } from "@components/ui/shadcn/field";
@@ -45,6 +45,10 @@ const MobileNav = (props: MobileNavProps) => {
         // Navigating.
         navigate(item.href);
     };
+
+    useEffect(() => {
+        setCurrentItems(items);
+    }, [items]);
 
     return (
         <>
@@ -121,6 +125,7 @@ const MobileNav = (props: MobileNavProps) => {
                                     className="nav-text"
                                 >
                                     {item.text}
+                                    {void console.log(currentItems)}
                                 </span>
                             </li>
                         ))}

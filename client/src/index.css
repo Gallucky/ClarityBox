@@ -14,8 +14,9 @@
 @import "./components/layout/Footer/footer.css";
 @import "./pages/Error/errorPageStyles.css";
 @import "./pages/Dashboard/dashboard.css";
+@import "./pages/Gratitude/gratitude.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&: is(.dark *));
 
 * {
     padding: 0;

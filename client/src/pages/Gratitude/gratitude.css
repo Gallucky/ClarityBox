@@ -1,0 +1,64 @@
+.gratitude-page {
+    @apply h-full w-[90dvw] overflow-hidden;
+    @apply bg-card;
+    @apply shadow shadow-black/20;
+    @apply border-border/50 rounded border;
+}
+
+.gratitude-page .header {
+    @apply p-4;
+    @apply border-border/50 border-b;
+    @apply flex flex-col items-center justify-center;
+}
+
+.gratitude-page .content {
+    @apply grid grid-cols-1 lg:grid-cols-[210px_1fr];
+}
+
+.gratitude-page .content aside {
+    @apply h-full;
+    @apply border-border/50 border-r;
+}
+
+.gratitude-page .content .main {
+    @apply flex flex-col gap-2;
+}
+
+/* Links */
+.gratitude-page aside ul {
+    @apply flex gap-2 p-4;
+    @apply overflow-x-scroll;
+
+    /* Scrollbar */
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af transparent;
+
+    &::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        @apply rounded-full bg-gray-400;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-500;
+    }
+}
+
+.gratitude-page .link {
+    @apply font-montserrat text-fluid-0.9 text-secondary;
+    @apply inline-block min-w-[1fr] shrink-0 rounded px-2 select-none;
+    @apply hover:bg-secondary/5 hover:cursor-pointer;
+    @apply transition-all duration-500 ease-in-out;
+    @apply w-[1fr] text-center md:text-left;
+}
+
+.gratitude-page .link.active {
+    @apply bg-secondary/10 font-semibold;
+}

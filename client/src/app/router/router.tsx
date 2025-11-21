@@ -52,31 +52,33 @@ const router = createBrowserRouter([
                         ),
                     },
                     {
-                        // Allowed for logged in users
+                        // Dashboard
                         path: "/dashboard",
                         element: (
                             <RouteGuard role="authenticated">
                                 {lazyLoad(Dashboard)}
                             </RouteGuard>
                         ),
-                        children: [
-                            {
-                                path: "projects",
-                                element: (
-                                    <RouteGuard role="authenticated">
-                                        {lazyLoad(Projects)}
-                                    </RouteGuard>
-                                ),
-                            },
-                            {
-                                path: "gratitude-boxes",
-                                element: (
-                                    <RouteGuard role="authenticated">
-                                        {lazyLoad(Gratitude)}
-                                    </RouteGuard>
-                                ),
-                            },
-                        ],
+                    },
+
+                    {
+                        // Projects
+                        path: "/projects",
+                        element: (
+                            <RouteGuard role="authenticated">
+                                {lazyLoad(Projects)}
+                            </RouteGuard>
+                        ),
+                    },
+
+                    {
+                        // Gratitude Boxes
+                        path: "/gratitude-boxes",
+                        element: (
+                            <RouteGuard role="authenticated">
+                                {lazyLoad(Gratitude)}
+                            </RouteGuard>
+                        ),
                     },
                     {
                         // Allowed for admin

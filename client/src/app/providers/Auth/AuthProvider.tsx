@@ -130,6 +130,7 @@ const AuthProvider = (props: AuthProviderProps) => {
         localStorage.removeItem("token");
         api.removeHeader("x-auth-token");
         toast.success("Logged out successfully!");
+        window.location.href = "/";
     };
 
     const register = async (data: RegisterFormData): AuthPromise => {
