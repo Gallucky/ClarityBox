@@ -9,9 +9,11 @@ const App = () => {
     const { themeValue } = useTheme();
 
     return (
-        <>
-            <Navbar />
-            <main>
+        <div className="relative flex min-h-dvh w-full flex-col">
+            <header>
+                <Navbar />
+            </header>
+            <main className="flex w-full grow flex-col items-center justify-center bg-yellow-200 pt-15! pb-15! md:pt-29! md:pb-20!">
                 <Outlet />
                 <ToastContainer
                     position="top-right"
@@ -28,7 +30,7 @@ const App = () => {
                 />
             </main>
             <Footer />
-        </>
+        </div>
     );
 };
 

@@ -8,7 +8,7 @@ const Footer = () => {
     const isDark = themeValue === "dark";
 
     return (
-        <footer className="max-sm:hidden!">
+        <footer className="fixed bottom-0 max-sm:hidden!">
             <div className="flex w-full items-center justify-between px-52!">
                 <p className="text-muted-foreground text-sm select-none hover:text-gray-900 dark:hover:text-gray-500">
                     2025 &copy; Gal Ben Abu
