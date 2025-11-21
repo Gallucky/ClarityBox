@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/shadcn/field";
 import { Input } from "@/components/ui/shadcn/input";
 import loginSchema from "@/schemas/loginSchema";
-import type { LoginFormData } from "@/types/forms/LoginFormData";
+import type { LoginFormData } from "@/types/forms/user/LoginFormData";
 
 const Login = () => {
     const form = useForm<LoginFormData>({

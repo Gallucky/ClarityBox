@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/shadcn/field";
 import { Input } from "@/components/ui/shadcn/input";
 import registerSchema from "@/schemas/registerSchema";
-import type { RegisterFormData } from "@/types/forms/RegisterFormData";
+import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import RegistrationForm from "./RegistrationForm";
 import defaultValues from "./registrationFormInitialValues";
 

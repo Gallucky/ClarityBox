@@ -1,14 +1,12 @@
-import { jwtDecode } from "jwt-decode";
 import { useState, type ReactNode } from "react";
 
 import { toast } from "react-toastify";
 import useQuery from "@app/providers/Query/useQuery";
 
-import InvalidCredentialsError from "@/errors/InvalidCredentialsError";
+import useUsers from "@/hooks/api/useUsers";
 import type { Auth, AuthPromise } from "@/types/AuthPromise";
-import type { RegisterFormData } from "@/types/forms/RegisterFormData";
+import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
-import type { Token } from "@/types/Token";
 import type { User } from "@/types/User";
 
 import { parseError } from "@/utils/parseError";
@@ -97,6 +95,8 @@ const AuthProvider = (props: AuthProviderProps) => {
         return { ok: false, error: parsedError };
     };
 
+    const { loginUser, getUserByToken, registerUser, error } = useUsers();
+
     // The auth methods.
     const login = async (credentials: LoginPayload): AuthPromise => {
         try {
@@ -104,32 +104,11 @@ const AuthProvider = (props: AuthProviderProps) => {
 
             api.removeHeader("x-auth-token");
 
-            const userToken = await api.post("/users/login", credentials);
+            const userToken: string = await loginUser(credentials);
+            if (error) throw error;
 
-            if (!userToken) {
-                return {
-                    ok: false,
-                    error: new InvalidCredentialsError(
-                        "The email or password were incorrect at this login attempt."
-                    ),
-                };
-            }
-
-            // Decoding the token.
-            const decodedToken = jwtDecode<Token>(userToken);
-            // Getting the user id from the decoded token.
-            const userId = decodedToken._id;
-
-            // Fetching the user data.
-            api.addHeader("x-auth-token", userToken);
-            const user = await api.get(`/users/${userId}`);
-
-            if (!user) {
-                return {
-                    ok: false,
-                    error: new InvalidCredentialsError("User data could not be loaded."),
-                };
-            }
+            const user = await getUserByToken(userToken);
+            if (error) throw error;
 
             // Saving the token in the context.
             setToken(userToken);
@@ -153,11 +132,13 @@ const AuthProvider = (props: AuthProviderProps) => {
         toast.success("Logged out successfully!");
     };
 
-    const registerUser = async (data: RegisterFormData): AuthPromise => {
+    const register = async (data: RegisterFormData): AuthPromise => {
         try {
             setLoading(true);
             // Sending the user registration request.
-            await api.post("/users/", data);
+            // await api.post("/users/", data);
+            await registerUser(data);
+            if (error) throw error;
 
             return { ok: true };
         } catch (error) {
@@ -175,10 +156,11 @@ const AuthProvider = (props: AuthProviderProps) => {
                 isAuthenticated,
                 login,
                 logout,
-                registerUser,
+                register,
                 loading,
                 restoring,
-            }}>
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

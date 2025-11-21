@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 import type { AuthPromise } from "@/types/AuthPromise";
-import type { RegisterFormData } from "@/types/forms/RegisterFormData";
+import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
 import type { User } from "@/types/User";
 
@@ -12,7 +12,7 @@ type AuthContextType = {
     isAuthenticated: boolean;
     login: (credentials: LoginPayload) => AuthPromise;
     logout: () => void;
-    registerUser: (data: RegisterFormData) => AuthPromise;
+    register: (data: RegisterFormData) => AuthPromise;
     loading: boolean;
     restoring: boolean;
 };

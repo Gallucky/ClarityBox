@@ -5,9 +5,9 @@ import { createContext } from "react";
  */
 type QueryContextType = {
     get: (url: string) => Promise<any>;
-    post: (url: string, data: any) => Promise<any>;
-    put: (url: string, data: any) => Promise<any>;
-    patch: (url: string, data: any) => Promise<any>;
+    post: (url: string, data?: any) => Promise<any>;
+    put: (url: string, data?: any) => Promise<any>;
+    patch: (url: string, data?: any) => Promise<any>;
     delete: (url: string) => Promise<any>;
     addHeader: (key: string, value: string) => void;
     removeHeader: (key: string) => void;

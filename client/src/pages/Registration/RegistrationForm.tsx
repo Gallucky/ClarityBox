@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "@/app/providers/Auth/useAuth";
 import { Button } from "@/components/ui/shadcn/button";
-import type { RegisterFormData } from "@/types/forms/RegisterFormData";
+import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { UseFormHandleSubmit } from "react-hook-form";
 
 type RegistrationFormProps = {
@@ -19,7 +19,7 @@ const RegistrationForm = (props: RegistrationFormProps) => {
     const navigate = useNavigate();
 
     const onSubmit = async (data: RegisterFormData) => {
-        const { ok, error } = await auth.registerUser(data);
+        const { ok, error } = await auth.register(data);
 
         if (!ok) {
             const errorMessage = error.message ?? "Something went wrong!";
