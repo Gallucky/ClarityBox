@@ -34,7 +34,7 @@ const Registration = () => {
     return (
         <>
             <div className="relative h-dvh w-dvw">
-                <DarkVeil />
+                <DarkVeil hueShift={38} />
                 <GlassCard centered className={`h-7/12! w-[90%]! md:h-fit!`}>
                     <RegistrationForm
                         handleSubmit={handleSubmit}

@@ -74,7 +74,7 @@ const Login = () => {
     return (
         <>
             <div className="relative h-dvh w-dvw overflow-hidden">
-                <DarkVeil />
+                <DarkVeil hueShift={38} />
                 <GlassCard centered className="h-7/12! w-[90%]!">
                     <form
                         id="login-form"
@@ -82,7 +82,7 @@ const Login = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="flex w-full flex-col items-center justify-center"
                     >
-                        <h1 className="app-primary-fg text-outline overflow-clip font-[Inter] font-semibold">
+                        <h1 className="app-primary-fg text-outline font-inter overflow-clip font-semibold">
                             Login Page
                         </h1>
                         <FieldGroup className="mt-10! flex flex-col items-center max-sm:gap-10 md:w-7/12">

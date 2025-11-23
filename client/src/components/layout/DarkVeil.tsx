@@ -1,4 +1,3 @@
- 
 // Added from: https://reactbits.dev/
 import { Renderer, Program, Mesh, Triangle, Vec2 } from "ogl";
 import { useRef, useEffect } from "react";
@@ -137,7 +136,8 @@ export default function DarkVeil({
         let frame = 0;
 
         const loop = () => {
-            program.uniforms.uTime.value = ((performance.now() - start) / 1000) * speed;
+            program.uniforms.uTime.value =
+                ((performance.now() - start) / 1000) * speed;
             program.uniforms.uHueShift.value = hueShift;
             program.uniforms.uNoise.value = noiseIntensity;
             program.uniforms.uScan.value = scanlineIntensity;
@@ -162,5 +162,5 @@ export default function DarkVeil({
         warpAmount,
         resolutionScale,
     ]);
-    return <canvas ref={ref} className="w-full h-full block" />;
+    return <canvas ref={ref} className="block h-full w-full" />;
 }

@@ -15,8 +15,10 @@
 @import "./pages/Error/errorPageStyles.css";
 @import "./pages/Dashboard/dashboard.css";
 @import "./pages/Gratitude/gratitude.css";
+@import "./pages/Gratitude/components/gratitudeBox.css";
 
-@custom-variant dark (&: is(.dark *));
+@custom-variant dark
+    (&: is(.dark *));
 
 * {
     padding: 0;
@@ -41,27 +43,6 @@
     line-clamp: 1; /* standard property for compatibility - fallback */
     -webkit-box-orient: vertical;
     overflow: hidden;
-}
-
-/* Scrollbar styling */
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    @apply bg-[#f1f1f1] dark:bg-[#2a2a2a];
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    @apply rounded-lg bg-[#888] dark:bg-[#555];
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    @apply bg-[#555] dark:bg-[#999];
 }
 
 @theme inline {
@@ -108,5 +89,38 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+
+    /* WebKit (Chromium, Safari, Edge) */
+    *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px; /* horizontal scrollbars */
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 0.5rem;
+        @apply border border-black/10;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        border-radius: 0.5rem;
+        background: #888;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Dark-mode (if you use the `dark` class on <html> or <body>) */
+    .dark *::-webkit-scrollbar-track {
+        background: #2a2a2a;
+        @apply border border-white/10;
+    }
+    .dark *::-webkit-scrollbar-thumb {
+        background: #555;
+    }
+    .dark *::-webkit-scrollbar-thumb:hover {
+        background: #999;
     }
 }

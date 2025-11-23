@@ -13,7 +13,7 @@ const App = () => {
             <header>
                 <Navbar />
             </header>
-            <main className="flex w-full grow flex-col items-center justify-center pt-15! pb-15! md:pt-29! md:pb-20!">
+            <main className="">
                 <Outlet />
                 <ToastContainer
                     position="top-right"
