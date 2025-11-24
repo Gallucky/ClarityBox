@@ -1,19 +1,13 @@
 .gratitude-box {
-    @apply h-[20dvh] w-[40dvw] rounded-2xl border border-gray-200;
-    @apply flex flex-col items-start justify-between p-5;
+    @apply h-[20dvh] w-[95%] rounded-2xl border border-gray-200;
+    @apply mx-auto my-5 flex flex-col items-start justify-between p-5;
     @apply bg-linear-to-br from-white to-gray-50;
     @apply shadow-sm hover:shadow-md;
     @apply transition-all duration-300 ease-in-out;
     @apply hover:border-gray-300;
 
     /* Mobile/Phone mode only. */
-    @apply max-sm:h-fit max-sm:min-h-[15dvh] max-sm:w-[85vw] max-sm:p-4;
-}
-
-.gratitude-box .content {
-    @apply font-raleway cursor-default;
-    @apply leading-relaxed text-gray-800;
-    @apply w-full flex-1 overflow-y-auto;
+    @apply max-sm:h-fit max-sm:min-h-[15dvh] max-sm:w-[90%] max-sm:p-4;
 }
 
 .gratitude-box .info {
@@ -22,11 +16,17 @@
     @apply border-t border-gray-100;
     @apply text-gray-500 select-none;
     @apply font-assistant text-xs italic;
-    @apply -mb-3 bg-transparent;
+    @apply relative -mb-3 bg-transparent;
     @apply transition-colors duration-200;
 
     /* Mobile/Phone mode only. */
-    @apply max-sm:flex-wrap max-sm:gap-2;
+    @apply gap-2 md:gap-0;
+}
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+    .gratitude-box .info {
+        @apply mt-7.5;
+    }
 }
 
 .gratitude-box .info .created-by {

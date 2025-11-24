@@ -1,4 +1,87 @@
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import GratitudeBox from "./components/GratitudeBox";
+
 const Gratitude = () => {
+    const items = [
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui.Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+        {
+            _id: "sdfsdfsdfds",
+            content:
+                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
+            creator: {
+                profilePicture: "vite.svg",
+                nickname: "Gallucky",
+            },
+            createdAt: "23/11/2025",
+            likes: 0,
+        },
+    ];
+
     return (
         <>
             <div className="gratitude-container">
@@ -23,260 +106,11 @@ const Gratitude = () => {
                                 </ul>
                             </nav>
                         </aside>
-                        <div className="main">
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                            <div>
-                                Ad duis dolor et est fugiat commodo irure
-                                deserunt. Nisi ullamco nostrud consectetur culpa
-                                minim officia irure id officia. Deserunt ad
-                                aliquip velit exercitation minim commodo culpa
-                                proident ea in. Dolore nisi nulla dolore cillum
-                                quis. Culpa excepteur Lorem quis officia labore
-                                do consequat.
-                            </div>
-                        </div>
+                        <ScrollArea className="main">
+                            {items.map((item) => (
+                                <GratitudeBox key={item._id} {...item} />
+                            ))}
+                        </ScrollArea>
                     </div>
                 </section>
             </div>
