@@ -25,8 +25,8 @@ const GratitudeBox = (props: GratitudeBoxProps) => {
                 <p className="relative">
                     {content.substring(0, textPreviewAmount)}...{" "}
                 </p>
+                <ReadMore className="read-more right-0 bottom-[5dvh]" />
                 <div className="info">
-                    <ReadMore className="read-more right-0 bottom-[5dvh]" />
                     <p className="created-by">
                         <img
                             src={creator.profilePicture}
