@@ -1,13 +1,17 @@
 .gratitude-box {
-    @apply h-[20dvh] w-[95%] rounded-2xl border border-gray-200;
+    @apply min-h-[180px] w-[95%] rounded-2xl border border-gray-200;
     @apply mx-auto my-5 flex flex-col items-start justify-between p-5;
     @apply bg-linear-to-br from-white to-gray-50;
     @apply shadow-sm hover:shadow-md;
     @apply transition-all duration-300 ease-in-out;
-    @apply hover:border-gray-300;
+    @apply relative hover:border-gray-300;
 
     /* Mobile/Phone mode only. */
     @apply max-sm:h-fit max-sm:min-h-[15dvh] max-sm:w-[90%] max-sm:p-4;
+}
+
+.gratitude-box .read-more {
+    @apply me-2 self-end justify-self-center md:right-5 md:bottom-10 md:mb-2;
 }
 
 .gratitude-box .info {

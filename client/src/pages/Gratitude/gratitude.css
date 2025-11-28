@@ -1,21 +1,14 @@
 .gratitude-container {
-    @apply flex w-full grow flex-col items-center justify-center pt-15! pb-15! md:pt-29! md:pb-20!;
+    @apply mt-[10dvh] flex h-[calc(80dvh)] min-h-[80dvh] w-full items-center justify-center;
 }
 
 .gratitude-page {
-    @apply h-full w-[60dvw] overflow-hidden;
+    @apply h-full w-[90dvw] max-w-[1200px] overflow-hidden;
     @apply bg-card;
     @apply shadow shadow-black/20;
     @apply border-border/50 rounded border;
-
-    @apply max-sm:w-[90dvw];
 }
 
-@media (min-width: 1024px) and (max-width: 1440px) {
-    .gratitude-page {
-        @apply w-[90dvw];
-    }
-}
 .gratitude-page .header {
     @apply p-4;
     @apply border-border/50 border-b;
@@ -32,7 +25,7 @@
 }
 
 .gratitude-page .content .main {
-    @apply h-[60dvh] w-full rounded-md border;
+    @apply h-[calc(90dvh-200px)] w-full rounded-md border;
 }
 
 /* Links */

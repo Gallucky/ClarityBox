@@ -14,7 +14,7 @@ const ReadMore = (props: ReadMoreProps) => {
 
     const classList = `
         text-primary text-fluid-0.75!
-        absolute right-0 bottom-0 flex
+        absolute flex
         italic transition-all!
         duration-300 ease-in-out select-none
         hover:scale-95 hover:cursor-pointer hover:underline
