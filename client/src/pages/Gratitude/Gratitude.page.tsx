@@ -1,7 +1,79 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useEffect, useState } from "react";
+import usePosts from "@/hooks/api/usePosts";
+import useUsers from "@/hooks/api/useUsers";
 import GratitudeBox from "./components/GratitudeBox";
 
+type GratitudeBoxData = {
+    _id: string;
+    content: string;
+    creator: {
+        profilePicture: string;
+        nickname: string;
+    };
+    createdAt: string;
+    likes: number;
+};
+
 const Gratitude = () => {
+    const posts = usePosts();
+    const users = useUsers();
+
+    const [gratitudeBoxes, setGratitudeBoxes] = useState<
+        GratitudeBoxData[] | undefined
+    >(undefined);
+
+    useEffect(() => {
+        const sync = async () => {
+            const publicPosts = await posts.getAllPublicPosts();
+            if (!publicPosts) return;
+
+            const unknownUser = {
+                profilePicture:
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png",
+                nickname: "Unknown User",
+            };
+
+            // Map posts to GratitudeBoxData properly
+            const boxes: GratitudeBoxData[] = await Promise.all(
+                publicPosts.map(async (post) => {
+                    let creator: { profilePicture: string; nickname: string };
+
+                    if (post.createdBy) {
+                        try {
+                            const user = await users.getUserBasicInfo(
+                                post.createdBy,
+                            );
+                            creator = {
+                                profilePicture:
+                                    user?.profileImage.url ??
+                                    unknownUser.profilePicture,
+                                nickname:
+                                    user?.nickname ?? unknownUser.nickname,
+                            };
+                        } catch {
+                            creator = unknownUser;
+                        }
+                    } else {
+                        creator = unknownUser;
+                    }
+
+                    return {
+                        _id: post._id,
+                        content: post.content,
+                        creator, // ✅ now matches GratitudeBoxData
+                        createdAt: post.createdAt,
+                        likes: post.likes.length,
+                    };
+                }),
+            );
+
+            setGratitudeBoxes(boxes); // ✅ now fully typed
+        };
+
+        sync();
+    }, []); // run once on mount
+
     const items = [
         {
             _id: "sdfsdfsdfds",
@@ -107,9 +179,16 @@ const Gratitude = () => {
                             </nav>
                         </aside>
                         <ScrollArea className="main">
-                            {items.map((item) => (
-                                <GratitudeBox key={item._id} {...item} />
-                            ))}
+                            {gratitudeBoxes &&
+                                gratitudeBoxes.map((gratitudeBox) => (
+                                    <GratitudeBox
+                                        key={gratitudeBox._id}
+                                        content={gratitudeBox.content}
+                                        creator={gratitudeBox.creator}
+                                        createdAt={gratitudeBox.createdAt}
+                                        likes={gratitudeBox.likes}
+                                    />
+                                ))}
                         </ScrollArea>
                     </div>
                 </section>

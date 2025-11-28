@@ -91,6 +91,26 @@ router.get("/:id", auth, async (req, res) => {
     }
 });
 
+router.get("/basic-info/:id", async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const user = await getUser(id);
+
+        const basicInfo = {
+            _id: user._id,
+            nickname: user.nickname,
+            profileImage: {
+                url: user.profileImage.url,
+                alt: `${user.nickname}'s profile picture.`,
+            },
+        };
+        return res.send(basicInfo);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
+
 //endregion | ------ Get ------ |
 
 //region | ------ Post ------ |

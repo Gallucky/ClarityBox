@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useQuery from "@app/providers/Query/useQuery";
 import { TaskRequestError } from "@errors/RequestErrors";
-import type { TaskFromData } from "@/types/forms/task/TaskFormData";
+import type { TaskFormData } from "@/types/forms/task/TaskFormData";
 import type { Task } from "@/types/models/Task";
 
 const useTasks = () => {
@@ -63,7 +63,7 @@ const useTasks = () => {
 
     //region | ====== Post ====== |
 
-    const createTask = async (task: TaskFromData) => {
+    const createTask = async (task: TaskFormData) => {
         try {
             setLoading(true);
             setError(null);
@@ -82,7 +82,7 @@ const useTasks = () => {
 
     //region | ====== Put ====== |
 
-    const updateTask = async (taskId: string, task: TaskFromData) => {
+    const updateTask = async (taskId: string, task: TaskFormData) => {
         try {
             setLoading(true);
             setError(null);
