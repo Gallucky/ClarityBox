@@ -2,9 +2,9 @@
 
 import { createBrowserRouter } from "react-router-dom";
 
-import { lazyImportPage, lazyLoad } from "@utils/lazyLoad";
+import AnimatedLayout from "@components/layout/AnimatedLayout";
+import { lazyImport, lazyImportPage, lazyLoad } from "@utils/lazyLoad";
 import App from "@/App.tsx";
-import AnimatedLayout from "@/components/layout/AnimatedLayout";
 import RouteGuard from "./RouteGuard";
 
 const Home = lazyImportPage("Home");
@@ -14,6 +14,9 @@ const Registration = lazyImportPage("Registration");
 const Dashboard = lazyImportPage("Dashboard");
 const Projects = lazyImportPage("Projects");
 const Gratitude = lazyImportPage("Gratitude");
+const GratitudeBoxDetails = lazyImport(
+    "../pages/Gratitude/components/GratitudeBoxDetails.tsx",
+);
 const Admin = lazyImportPage("Admin");
 const Profile = lazyImportPage("Profile");
 const ErrorPage = lazyImportPage("Error");
@@ -77,6 +80,15 @@ const router = createBrowserRouter([
                         element: (
                             <RouteGuard role="authenticated">
                                 {lazyLoad(Gratitude)}
+                            </RouteGuard>
+                        ),
+                    },
+                    {
+                        // Gratitude Boxes details
+                        path: "/gratitude-boxes/:id",
+                        element: (
+                            <RouteGuard role="authenticated">
+                                {lazyLoad(GratitudeBoxDetails)}
                             </RouteGuard>
                         ),
                     },

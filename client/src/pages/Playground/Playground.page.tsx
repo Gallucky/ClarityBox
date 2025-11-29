@@ -16,6 +16,7 @@ const Playground = () => {
                         }}
                         createdAt={"23/11/2025"}
                         likes={0}
+                        _id={""}
                     />
                     <GratitudeBox
                         content={
@@ -27,6 +28,7 @@ const Playground = () => {
                         }}
                         createdAt={"23/11/2025"}
                         likes={0}
+                        _id={""}
                     />
                     <GratitudeBox
                         content={
@@ -38,6 +40,7 @@ const Playground = () => {
                         }}
                         createdAt={"23/11/2025"}
                         likes={0}
+                        _id={""}
                     />
                 </ScrollArea>
             </div>

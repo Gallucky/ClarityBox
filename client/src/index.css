@@ -16,6 +16,7 @@
 @import "./pages/Dashboard/dashboard.css";
 @import "./pages/Gratitude/gratitude.css";
 @import "./pages/Gratitude/components/gratitudeBox.css";
+@import "./pages/Gratitude/components/gratitudeBoxDetails.css";
 
 @custom-variant dark
     (&: is(.dark *));

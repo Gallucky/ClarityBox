@@ -1,7 +1,7 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
-import usePosts from "@/hooks/api/usePosts";
-import useUsers from "@/hooks/api/useUsers";
+import usePosts from "@hooks/api/usePosts";
+import useUsers from "@hooks/api/useUsers";
 import GratitudeBox from "./components/GratitudeBox";
 
 type GratitudeBoxData = {
@@ -12,7 +12,7 @@ type GratitudeBoxData = {
         nickname: string;
     };
     createdAt: string;
-    likes: number;
+    likes: string[];
 };
 
 const Gratitude = () => {
@@ -35,7 +35,7 @@ const Gratitude = () => {
             };
 
             // Map posts to GratitudeBoxData properly
-            const boxes: GratitudeBoxData[] = await Promise.all(
+            const settled = await Promise.allSettled(
                 publicPosts.map(async (post) => {
                     let creator: { profilePicture: string; nickname: string };
 
@@ -61,98 +61,27 @@ const Gratitude = () => {
                     return {
                         _id: post._id,
                         content: post.content,
-                        creator, // ✅ now matches GratitudeBoxData
+                        creator,
                         createdAt: post.createdAt,
-                        likes: post.likes.length,
+                        likes: post.likes,
                     };
                 }),
             );
 
-            setGratitudeBoxes(boxes); // ✅ now fully typed
+            // Extracted only successful and valid promises.
+            const boxes: GratitudeBoxData[] = settled
+                .filter(
+                    (r): r is PromiseFulfilledResult<GratitudeBoxData> =>
+                        r.status === "fulfilled",
+                )
+                .map((r) => r.value);
+
+            setGratitudeBoxes(boxes);
         };
 
         sync();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // run once on mount
-
-    const items = [
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui.Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-        {
-            _id: "sdfsdfsdfds",
-            content:
-                "Sint mollit ipsum occaecat non elit voluptate incididunt nisi qui. Enim eu officia id eu qui ex incididunt. Excepteur ex officia sit aliqua aliquip laboris. Incididunt quis cupidatat Lorem sint veniam laboris consequat do eu in. Commodo non magna voluptate voluptate officia et sit. Nostrud reprehenderit voluptate ex esse minim nulla qui. Cillum irure tempor amet velit.",
-            creator: {
-                profilePicture: "vite.svg",
-                nickname: "Gallucky",
-            },
-            createdAt: "23/11/2025",
-            likes: 0,
-        },
-    ];
 
     return (
         <>
@@ -183,6 +112,7 @@ const Gratitude = () => {
                                 gratitudeBoxes.map((gratitudeBox) => (
                                     <GratitudeBox
                                         key={gratitudeBox._id}
+                                        _id={gratitudeBox._id}
                                         content={gratitudeBox.content}
                                         creator={gratitudeBox.creator}
                                         createdAt={gratitudeBox.createdAt}

@@ -87,8 +87,16 @@
     @apply scale-110;
 }
 
+.gratitude-box .info .likes.liked svg {
+    @apply fill-red-500 text-red-500;
+}
+
 .gratitude-box .info .likes span {
     @apply shrink-0 px-0.5;
+}
+
+.gratitude-box .info .likes.liked span {
+    @apply font-bold text-red-500;
 }
 
 .dark {
