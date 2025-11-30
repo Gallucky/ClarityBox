@@ -1,9 +1,12 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
 import useAuth from "@app/providers/Auth/useAuth";
+
 import usePosts from "@hooks/api/usePosts";
 import useUsers from "@hooks/api/useUsers";
 import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
+import GratitudeBoxesTableLayout from "./components/GratitudeBoxesTableLayout";
+import LayoutToggle from "./components/LayoutToggle";
 import type { GratitudeBoxData } from "./types/GratitudeBoxData";
 
 const Gratitude = () => {
@@ -73,7 +76,7 @@ const Gratitude = () => {
 
         sync();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // run once on mount
+    }, [gratitudeBoxes]); // run once on mount
 
     const [view, setView] = useState<"browse" | "my-boxes" | "liked-boxes">(
         "browse",
@@ -131,6 +134,8 @@ const Gratitude = () => {
         filtered();
     }, [gratitudeBoxes, user._id, user.nickname, view]);
 
+    const [layout, setLayout] = useState<"list" | "table">("list");
+
     return (
         <>
             <div className="gratitude-container">
@@ -143,6 +148,10 @@ const Gratitude = () => {
                             Here are some gratitude boxes to inspire your own.
                         </p>
                     </div>
+                    <LayoutToggle
+                        setLayout={setLayout}
+                        toggledLayout={layout}
+                    />
                     <div className="content">
                         <aside>
                             <nav>
@@ -177,11 +186,18 @@ const Gratitude = () => {
                                 </ul>
                             </nav>
                         </aside>
-                        <ScrollArea className="main">
-                            <GratitudeBoxesView
+                        {layout === "list" && (
+                            <ScrollArea className="main">
+                                <GratitudeBoxesView
+                                    gratitudeBoxes={viewedGratitudeBoxes}
+                                />
+                            </ScrollArea>
+                        )}
+                        {layout === "table" && (
+                            <GratitudeBoxesTableLayout
                                 gratitudeBoxes={viewedGratitudeBoxes}
                             />
-                        </ScrollArea>
+                        )}
                     </div>
                 </section>
             </div>

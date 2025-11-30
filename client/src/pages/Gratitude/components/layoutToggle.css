@@ -1,0 +1,11 @@
+.layout-toggle {
+    @apply my-2.5 me-5 flex items-center justify-center gap-2 lg:justify-end;
+}
+
+.layout-toggle .layout {
+    @apply data-[state=on]:bg-secondary hover:bg-accent! rounded px-2 data-[state=on]:*:font-bold;
+}
+
+.layout-toggle .layout span {
+    @apply text-fluid-0.75 font-thin;
+}
