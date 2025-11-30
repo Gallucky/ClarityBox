@@ -10,6 +10,7 @@ const {
     createPost,
     updatePost,
     deletePost,
+    toggleLike,
 } = require("@features/posts/services/postsService");
 
 const { auth } = require("@auth/authService");
@@ -165,6 +166,24 @@ router.put("/:id", auth, async (req, res) => {
 //endregion | ------ Put ------ |
 
 //region | ------ Patch ------ |
+
+router.patch("/:id", auth, async (req, res) => {
+    RouterLogger.patch(
+        "A like/unlike toggle request has been received.",
+        "ToggleLike",
+        new Error()
+    );
+
+    try {
+        const { _id } = req.user;
+        const postId = req.params.id;
+        const post = await toggleLike(postId, _id);
+        const status = responseOKContent(post);
+        return res.status(status).send(post);
+    } catch (error) {
+        handleWebError(res, error);
+    }
+});
 
 //endregion | ------ Patch ------ |
 

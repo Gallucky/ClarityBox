@@ -6,6 +6,7 @@ const {
     create,
     update,
     remove,
+    likeUnlike,
 } = require("@features/posts/models/postsDataAccessService");
 const {
     validatePost,
@@ -95,6 +96,15 @@ exports.updatePost = async (postId, rawPost) => {
 //endregion | ====== Put ====== |
 
 //region | ====== Patch ====== |
+
+exports.toggleLike = async (postId, userId) => {
+    try {
+        const post = await likeUnlike(postId, userId);
+        return Promise.resolve(post);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
 
 //endregion | ====== Patch ====== |
 

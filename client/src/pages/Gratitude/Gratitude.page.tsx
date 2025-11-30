@@ -1,23 +1,15 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
+import useAuth from "@app/providers/Auth/useAuth";
 import usePosts from "@hooks/api/usePosts";
 import useUsers from "@hooks/api/useUsers";
-import GratitudeBox from "./components/GratitudeBox";
-
-type GratitudeBoxData = {
-    _id: string;
-    content: string;
-    creator: {
-        profilePicture: string;
-        nickname: string;
-    };
-    createdAt: string;
-    likes: string[];
-};
+import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
+import type { GratitudeBoxData } from "./types/GratitudeBoxData";
 
 const Gratitude = () => {
     const posts = usePosts();
     const users = useUsers();
+    const { user } = useAuth();
 
     const [gratitudeBoxes, setGratitudeBoxes] = useState<
         GratitudeBoxData[] | undefined
@@ -83,6 +75,62 @@ const Gratitude = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // run once on mount
 
+    const [view, setView] = useState<"browse" | "my-boxes" | "liked-boxes">(
+        "browse",
+    );
+
+    const handleChangeView = (view: "browse" | "my-boxes" | "liked-boxes") => {
+        setView(view);
+
+        const ul = document.getElementById("gratitude-boxes-page-views");
+        if (!ul) return;
+
+        const views = ul.querySelectorAll("li.link");
+        views.forEach((v) => {
+            v.classList.remove("active");
+
+            const dataView = v.getAttribute("data-view");
+            if (!dataView) return;
+
+            if (dataView === view) {
+                v.classList.add("active");
+            }
+        });
+    };
+
+    const [viewedGratitudeBoxes, setViewedGratitudeBoxes] = useState<
+        GratitudeBoxData[] | undefined
+    >(undefined);
+
+    useEffect(() => {
+        const filtered = () => {
+            if (!gratitudeBoxes) return;
+
+            if (view === "browse") {
+                setViewedGratitudeBoxes(gratitudeBoxes);
+                return;
+            }
+
+            if (view === "my-boxes") {
+                const myBoxes = gratitudeBoxes.filter(
+                    (box) => box.creator.nickname === user.nickname,
+                );
+                setViewedGratitudeBoxes(myBoxes);
+                return;
+            }
+
+            if (view === "liked-boxes") {
+                const likedBoxes = gratitudeBoxes.filter((box) =>
+                    box.likes.includes(user._id),
+                );
+                setViewedGratitudeBoxes(likedBoxes);
+                return;
+            }
+        };
+
+        filtered();
+    }, [gratitudeBoxes, user._id, user.nickname, view]);
+
     return (
         <>
             <div className="gratitude-container">
@@ -98,27 +146,41 @@ const Gratitude = () => {
                     <div className="content">
                         <aside>
                             <nav>
-                                <ul>
-                                    <li className="link active">Browse</li>
-                                    <li className="link">My Boxes</li>
-                                    <li className="link">
-                                        Liked Boxes - Coming Soon!
+                                <ul id="gratitude-boxes-page-views">
+                                    <li
+                                        data-view="browse"
+                                        className="link active"
+                                        onClick={() =>
+                                            handleChangeView("browse")
+                                        }
+                                    >
+                                        Browse
+                                    </li>
+                                    <li
+                                        data-view="my-boxes"
+                                        className="link"
+                                        onClick={() =>
+                                            handleChangeView("my-boxes")
+                                        }
+                                    >
+                                        My Boxes
+                                    </li>
+                                    <li
+                                        data-view="liked-boxes"
+                                        className="link"
+                                        onClick={() =>
+                                            handleChangeView("liked-boxes")
+                                        }
+                                    >
+                                        Liked Boxes
                                     </li>
                                 </ul>
                             </nav>
                         </aside>
                         <ScrollArea className="main">
-                            {gratitudeBoxes &&
-                                gratitudeBoxes.map((gratitudeBox) => (
-                                    <GratitudeBox
-                                        key={gratitudeBox._id}
-                                        _id={gratitudeBox._id}
-                                        content={gratitudeBox.content}
-                                        creator={gratitudeBox.creator}
-                                        createdAt={gratitudeBox.createdAt}
-                                        likes={gratitudeBox.likes}
-                                    />
-                                ))}
+                            <GratitudeBoxesView
+                                gratitudeBoxes={viewedGratitudeBoxes}
+                            />
                         </ScrollArea>
                     </div>
                 </section>

@@ -14,13 +14,14 @@ type EnrichedPost = Post & {
 
 const GratitudeBoxDetails = () => {
     const { id } = useParams();
-    const { getPostById } = usePosts();
+    const { user } = useAuth();
+    const { getPostById, likeUnlikePostToggle } = usePosts();
     const { getUserBasicInfo } = useUsers();
     const [postData, setPostData] = useState<EnrichedPost | undefined>(
         undefined,
     );
     const [loading, setLoading] = useState(false);
-    const { user } = useAuth();
+    const [localLikes, setLocalLikes] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +37,7 @@ const GratitudeBoxDetails = () => {
                 if (!creator) return;
 
                 setPostData({ ...postData, creator });
+                setLocalLikes(postData.likes);
             } finally {
                 setLoading(false); // correct place
             }
@@ -44,6 +46,20 @@ const GratitudeBoxDetails = () => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const handleLikeUnlikeToggle = async () => {
+        try {
+            if (!postData) return;
+
+            const updatedPost = await likeUnlikePostToggle(postData._id);
+
+            if (!updatedPost) return;
+
+            setLocalLikes(updatedPost.likes); // <- UI updates instantly
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     if (!loading && !postData)
         return (
@@ -72,15 +88,10 @@ const GratitudeBoxDetails = () => {
                         <span>{formatDateTimeLocale(postData.createdAt)}</span>
                     </p>
                     <p
-                        className={`likes ${postData.likes.includes(user._id) ? "liked" : ""}`}
-                        onClick={() => {
-                            const likesElement = document.querySelector(
-                                ".gratitude-box-details .info .likes",
-                            );
-                            likesElement?.classList.toggle("liked");
-                        }}
+                        className={`likes ${localLikes.includes(user._id) ? "liked" : ""}`}
+                        onClick={handleLikeUnlikeToggle}
                     >
-                        <span>{postData.likes.length}</span>
+                        <span>{localLikes?.length}</span>
                         <Heart />
                     </p>
                 </div>

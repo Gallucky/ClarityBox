@@ -119,6 +119,31 @@ exports.update = async (postId, normalizedPost) => {
 
 //region | ###### Patch ###### |
 
+exports.likeUnlike = async (postId, userId) => {
+    if (DB === "MONGODB") {
+        try {
+            const post = await Post.findById(postId);
+            if (!post) return handleBadRequest("Mongoose", "Post not found");
+
+            const hasLiked = post.likes.includes(userId);
+
+            const updated = await Post.findByIdAndUpdate(
+                postId,
+                hasLiked
+                    ? { $pull: { likes: userId } } // unlike
+                    : { $addToSet: { likes: userId } }, // like
+                { new: true }
+            );
+
+            return Promise.resolve(updated);
+        } catch (error) {
+            return handleBadRequest("Mongoose", error);
+        }
+    }
+
+    return Promise.resolve("Post updated not in mongodb!");
+};
+
 //endregion | ###### Patch ###### |
 
 //region | ###### Delete ###### |

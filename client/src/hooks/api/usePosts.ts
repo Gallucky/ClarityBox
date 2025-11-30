@@ -161,6 +161,18 @@ const usePosts = () => {
     //region | ====== Patch ====== |
 
     // Todo: Add Non-MVP patch methods.
+    const likeUnlikePostToggle = async (postId: string) => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response: Post = await api.patch(`/posts/${postId}`);
+            return response;
+        } catch (error) {
+            handlePostError(error, "likeUnlikePostToggle");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     //endregion | ====== Patch ====== |
 
@@ -197,6 +209,7 @@ const usePosts = () => {
         getPostsByUserId,
         createPost,
         updatePost,
+        likeUnlikePostToggle,
         deletePost,
     };
 };
