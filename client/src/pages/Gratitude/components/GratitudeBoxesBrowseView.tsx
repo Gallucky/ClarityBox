@@ -3,10 +3,11 @@ import type { GratitudeBoxData } from "@pages/Gratitude/types/GratitudeBoxData";
 
 type GratitudeBoxesViewProps = {
     gratitudeBoxes?: GratitudeBoxData[];
+    setReload: (reload: boolean | ((prev: boolean) => boolean)) => void;
 };
 
 const GratitudeBoxesView = (props: GratitudeBoxesViewProps) => {
-    const { gratitudeBoxes } = props;
+    const { gratitudeBoxes, setReload } = props;
 
     return (
         <>
@@ -19,6 +20,7 @@ const GratitudeBoxesView = (props: GratitudeBoxesViewProps) => {
                         creator={gratitudeBox.creator}
                         createdAt={gratitudeBox.createdAt}
                         likes={gratitudeBox.likes}
+                        setReload={setReload}
                     />
                 ))}
         </>
