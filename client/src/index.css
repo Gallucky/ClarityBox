@@ -18,9 +18,9 @@
 @import "./pages/Gratitude/components/gratitudeBox.css";
 @import "./pages/Gratitude/components/gratitudeBoxDetails.css";
 @import "./pages/Gratitude/components/layoutToggle.css";
+@import "./components/ui/FLoatingButton/floatingButton.css";
 
-@custom-variant dark
-    (&: is(.dark *));
+@custom-variant dark (&: is(.dark *));
 
 * {
     padding: 0;

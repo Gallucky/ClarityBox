@@ -2,6 +2,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
 import useAuth from "@app/providers/Auth/useAuth";
 
+import FloatingButton from "@components/ui/FloatingButton/FloatingButton";
 import usePosts from "@hooks/api/usePosts";
 import useUsers from "@hooks/api/useUsers";
 import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
@@ -152,6 +153,7 @@ const Gratitude = () => {
                         setLayout={setLayout}
                         toggledLayout={layout}
                     />
+                    <FloatingButton />
                     <div className="content">
                         <aside>
                             <nav>
