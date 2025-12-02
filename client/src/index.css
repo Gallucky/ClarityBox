@@ -19,6 +19,8 @@
 @import "./pages/Gratitude/components/gratitudeBoxDetails.css";
 @import "./pages/Gratitude/components/layoutToggle.css";
 @import "./components/ui/FLoatingButton/floatingButton.css";
+@import "./pages/Home/home.css";
+@import "./pages/About/about.css";
 
 @custom-variant dark (&: is(.dark *));
 
