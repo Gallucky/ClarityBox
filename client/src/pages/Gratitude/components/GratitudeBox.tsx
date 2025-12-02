@@ -2,9 +2,9 @@ import { Heart } from "lucide-react";
 import { useState } from "react";
 import useAuth from "@app/providers/Auth/useAuth";
 import ReadMore from "@components/utils/ReadMore";
+import usePosts from "@hooks/api/usePosts";
 import useMediaQuery from "@hooks/useMediaQuery";
 import formatDateTimeLocale from "@utils/formatDateTime";
-import usePosts from "@/hooks/api/usePosts";
 
 type GratitudeBoxProps = {
     _id: string;
@@ -15,11 +15,13 @@ type GratitudeBoxProps = {
     };
     createdAt: string;
     likes: string[];
+    setReload: (reload: boolean | ((prev: boolean) => boolean)) => void;
     className?: string;
 };
 
 const GratitudeBox = (props: GratitudeBoxProps) => {
-    const { _id, content, creator, createdAt, likes } = props;
+    const { _id, content, creator, createdAt, likes, setReload, className } =
+        props;
     const isMobile = useMediaQuery("(max-width: 768px)");
     const { user } = useAuth();
     const { likeUnlikePostToggle } = usePosts();
@@ -35,6 +37,7 @@ const GratitudeBox = (props: GratitudeBoxProps) => {
             if (!updatedPost) return;
 
             setLocalLikes(updatedPost.likes); // <- UI updates instantly
+            setReload((prev) => !prev);
         } catch (e) {
             console.error(e);
         }
@@ -42,7 +45,7 @@ const GratitudeBox = (props: GratitudeBoxProps) => {
 
     return (
         <>
-            <div className="gratitude-box">
+            <div className={`gratitude-box ${className}`}>
                 <p className="relative">
                     {content.substring(0, textPreviewAmount)}...{" "}
                 </p>

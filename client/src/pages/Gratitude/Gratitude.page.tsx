@@ -9,6 +9,14 @@ import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
 import GratitudeBoxesTableLayout from "./components/GratitudeBoxesTableLayout";
 import LayoutToggle from "./components/LayoutToggle";
 import type { GratitudeBoxData } from "./types/GratitudeBoxData";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogTitle,
+    DialogTrigger,
+} from "@radix-ui/react-dialog";
+import { DialogHeader } from "@/components/ui/dialog";
 
 const Gratitude = () => {
     const posts = usePosts();
@@ -18,6 +26,8 @@ const Gratitude = () => {
     const [gratitudeBoxes, setGratitudeBoxes] = useState<
         GratitudeBoxData[] | undefined
     >(undefined);
+
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         const sync = async () => {
@@ -77,7 +87,7 @@ const Gratitude = () => {
 
         sync();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [gratitudeBoxes]); // run once on mount
+    }, [reload]); // run once on mount
 
     const [view, setView] = useState<"browse" | "my-boxes" | "liked-boxes">(
         "browse",
@@ -100,6 +110,8 @@ const Gratitude = () => {
                 v.classList.add("active");
             }
         });
+
+        setReload(!reload);
     };
 
     const [viewedGratitudeBoxes, setViewedGratitudeBoxes] = useState<
@@ -153,7 +165,24 @@ const Gratitude = () => {
                         setLayout={setLayout}
                         toggledLayout={layout}
                     />
-                    <FloatingButton />
+                    <Dialog>
+                        <form>
+                            <DialogTrigger>
+                                <FloatingButton />
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>
+                                        Create a gratitude box
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                        Put things that you are grateful for in
+                                        the box.
+                                    </DialogDescription>
+                                </DialogHeader>
+                            </DialogContent>
+                        </form>
+                    </Dialog>
                     <div className="content">
                         <aside>
                             <nav>
@@ -192,6 +221,7 @@ const Gratitude = () => {
                             <ScrollArea className="main">
                                 <GratitudeBoxesView
                                     gratitudeBoxes={viewedGratitudeBoxes}
+                                    setReload={setReload}
                                 />
                             </ScrollArea>
                         )}
