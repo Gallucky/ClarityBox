@@ -7,7 +7,16 @@
     "compilerOptions": {
         "paths": {
             "@/*": ["./src/*"],
-            "@types/*": ["./src/types/*"]
+            "@types/*": ["./src/types/*"],
+            "@app/*": ["./src/app/*"],
+            "@assets/*": ["./src/assets/*"],
+            "@components/*": ["./src/components/*"],
+            "@errors/*": ["./src/errors/*"],
+            "@hooks/*": ["./src/hooks/*"],
+            "@lib/*": ["./src/lib/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@utils/*": ["./src/utils/*"]
         }
     }
 }
