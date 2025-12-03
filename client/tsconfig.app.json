@@ -20,7 +20,23 @@
         "strict": true,
         "erasableSyntaxOnly": true,
         "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true
+        "noUncheckedSideEffectImports": true,
+
+        /* Path aliases - baseUrl not needed with moduleResolution: bundler */
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@app/*": ["./src/app/*"],
+            "@assets/*": ["./src/assets/*"],
+            "@errors/*": ["./src/errors/*"],
+            "@components/*": ["./src/components/*"],
+            "@hooks/*": ["./src/hooks/*"],
+            "@lib/*": ["./src/lib/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@types/*": ["./src/types/*"],
+            "@utils/*": ["./src/utils/*"]
+        }
     },
     "include": ["src"]
 }
