@@ -33,6 +33,7 @@ export default defineConfig({
         outDir: "dist",
     },
     preview: {
-        allowedHosts: ["https://claritybox-frontend-client-side.onrender.com"],
+        port: Number(process.env.VITE_PORT) || 3000,
+        host: "0.0.0.0",
     },
 });
