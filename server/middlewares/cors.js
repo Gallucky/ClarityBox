@@ -18,19 +18,20 @@ if (process.env.ENV === "development") {
     app.use(
         cors({
             origin: (origin, callback) => {
-                // 2. Allow requests with no origin (like Postman or Server-to-Server calls)
                 if (!origin) return callback(null, true);
 
-                // 3. Check exact match against the array
-                if (ALLOWED_ORIGINS.includes(origin)) {
+                // exact match
+                if (allowedOrigins.includes(origin)) return callback(null, true);
+
+                // wildcard for vercel preview domains
+                if (/^https:\/\/clarity-box-git-.*\.vercel\.app$/.test(origin)) {
                     return callback(null, true);
-                } else {
-                    console.error(`Blocked by CORS: ${origin}`); // Helpful for prod debugging
-                    return callback(new Error("Not allowed by CORS"));
                 }
+
+                console.error(`Blocked by CORS: ${origin}`);
+                return callback(new Error("Not allowed by CORS"));
             },
-            credentials: true, // ✅ Usually needed in Prod for Cookies/Auth
-            optionsSuccessStatus: 200,
+            credentials: true,
         })
     );
 }
