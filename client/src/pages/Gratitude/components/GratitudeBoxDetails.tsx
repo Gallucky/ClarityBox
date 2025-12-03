@@ -78,7 +78,7 @@ const GratitudeBoxDetails = () => {
                 <div className="info">
                     <p className="created-by">
                         <img
-                            src={postData.creator.profileImage.url}
+                            src={postData.creator.profileImage?.url}
                             alt={`${postData.creator.nickname}'s profile picture`}
                             className="profile-picture"
                         />

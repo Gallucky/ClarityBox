@@ -52,7 +52,7 @@ const Gratitude = () => {
                             );
                             creator = {
                                 profilePicture:
-                                    user?.profileImage.url ??
+                                    user?.profileImage?.url ??
                                     unknownUser.profilePicture,
                                 nickname:
                                     user?.nickname ?? unknownUser.nickname,
