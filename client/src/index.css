@@ -18,7 +18,7 @@
 @import "./pages/Gratitude/components/gratitudeBox.css";
 @import "./pages/Gratitude/components/gratitudeBoxDetails.css";
 @import "./pages/Gratitude/components/layoutToggle.css";
-@import "./components/ui/FLoatingButton/floatingButton.css";
+@import "./components/ui/FloatingButton/floatingButton.css";
 @import "./pages/Home/home.css";
 @import "./pages/About/about.css";
 
