@@ -34,14 +34,12 @@ const Navbar = () => {
         const staticItems: MobileNavItem[] = [
             {
                 text: "Home",
-                href: "/",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/"),
             },
             {
                 text: "About",
-                href: "/about",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/about"),
             },
         ];
@@ -50,14 +48,12 @@ const Navbar = () => {
             ...staticItems,
             {
                 text: "Login",
-                href: "/login",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/login"),
             },
             {
                 text: "Register",
-                href: "/registration",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/registration"),
             },
         ];
@@ -65,30 +61,26 @@ const Navbar = () => {
             ...staticItems,
             {
                 text: "Gratitude Boxes",
-                href: "/gratitude-boxes",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/gratitude-boxes"),
             },
             {
                 text: "Projects",
-                href: "/projects",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/projects"),
             },
             {
                 text: "Profile",
-                href: "/profile",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/profile"),
             },
-            { text: "Logout", href: "/", link: true },
+            { text: "Logout", link: false },
         ];
 
         const adminExtras: MobileNavItem[] = [
             {
                 text: "CRM",
-                href: "/crm",
-                link: true,
+                link: false,
                 active: isCurrentLocation("/crm"),
             },
         ];
