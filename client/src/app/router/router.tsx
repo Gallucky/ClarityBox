@@ -2,9 +2,9 @@
 
 import { createBrowserRouter } from "react-router-dom";
 
-import AnimatedLayout from "@components/layout/AnimatedLayout";
-import { lazyImport, lazyImportPage, lazyLoad } from "@utils/lazyLoad";
 import App from "@/App.tsx";
+import AnimatedLayout from "@components/layout/AnimatedLayout";
+import { lazyImport, lazyImportPage, lazyLoad } from "@utils/lazyLoad.tsx";
 import RouteGuard from "./RouteGuard";
 
 const Home = lazyImportPage("Home");
