@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
-import Spinner from "@/components/ui/Spinner";
 import type { LazyModuleMap, LazyComponent } from "@/types/lazyTypes";
+import Spinner from "@components/ui/Spinner";
 import type { ComponentType, JSX } from "react";
 
 // Importing all the pages and components.

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useQuery from "@app/providers/Query/useQuery";
-import { PostRequestError } from "@errors/RequestErrors";
 import type { PostFormData } from "@/types/forms/post/PostFormData";
 import type { Post } from "@/types/models/Post";
+import useQuery from "@app/providers/Query/useQuery";
+import { PostRequestError } from "@errors/RequestErrors";
 
 const usePosts = () => {
     const api = useQuery();

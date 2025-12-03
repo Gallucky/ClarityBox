@@ -125,7 +125,6 @@ const MobileNav = (props: MobileNavProps) => {
                                     className="nav-text"
                                 >
                                     {item.text}
-                                    {void console.log(currentItems)}
                                 </span>
                             </li>
                         ))}

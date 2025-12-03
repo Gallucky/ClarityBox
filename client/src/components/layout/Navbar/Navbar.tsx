@@ -1,7 +1,7 @@
 import { Box, LayoutDashboard, Package, Shield } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import useMediaQuery from "@hooks/useMediaQuery";
 import useAuth from "@/app/providers/Auth/useAuth";
+import useMediaQuery from "@hooks/useMediaQuery";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import type { DesktopNavItem } from "./localTypes/DesktopNav";

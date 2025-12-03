@@ -1,6 +1,6 @@
 import { Moon, Sun } from "lucide-react";
-import MotionSwitch from "@components/utils/MotionSwitch";
 import { useTheme } from "@/app/providers/Theme/useTheme";
+import MotionSwitch from "@components/utils/MotionSwitch";
 
 type ThemeToggleProps = {
     className?: string;

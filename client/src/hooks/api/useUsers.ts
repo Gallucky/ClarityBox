@@ -1,13 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
-import useQuery from "@app/providers/Query/useQuery";
-import InvalidCredentialsError from "@errors/InvalidCredentialsError";
-import { UserRequestError } from "@errors/RequestErrors";
 import type { BasicUserInfo } from "@/types/BasicUserInfo";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
 import type { User } from "@/types/models/User";
 import type { Token } from "@/types/Token";
+import useQuery from "@app/providers/Query/useQuery";
+import InvalidCredentialsError from "@errors/InvalidCredentialsError";
+import { UserRequestError } from "@errors/RequestErrors";
 
 const useUsers = () => {
     const api = useQuery();
@@ -148,7 +148,6 @@ const useUsers = () => {
                 "/users/login",
                 credentials,
             );
-            console.log("loginUser response:", response);
 
             if (!response) {
                 throw new InvalidCredentialsError(

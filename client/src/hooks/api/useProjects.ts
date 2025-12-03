@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useQuery from "@app/providers/Query/useQuery";
-import { ProjectRequestError } from "@errors/RequestErrors";
 import type { ProjectFormData } from "@/types/forms/project/ProjectFormData";
 import type { Project } from "@/types/models/Project";
+import useQuery from "@app/providers/Query/useQuery";
+import { ProjectRequestError } from "@errors/RequestErrors";
 
 const useProjects = () => {
     const api = useQuery();

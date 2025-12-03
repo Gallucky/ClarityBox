@@ -1,5 +1,5 @@
-import GratitudeBox from "./GratitudeBox";
 import type { GratitudeBoxData } from "@pages/Gratitude/types/GratitudeBoxData";
+import GratitudeBox from "./GratitudeBox";
 
 type GratitudeBoxesViewProps = {
     gratitudeBoxes?: GratitudeBoxData[];

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useQuery from "@app/providers/Query/useQuery";
-import { TaskRequestError } from "@errors/RequestErrors";
 import type { TaskFormData } from "@/types/forms/task/TaskFormData";
 import type { Task } from "@/types/models/Task";
+import useQuery from "@app/providers/Query/useQuery";
+import { TaskRequestError } from "@errors/RequestErrors";
 
 const useTasks = () => {
     const api = useQuery();

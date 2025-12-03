@@ -1,8 +1,8 @@
 import { Hexagon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import GlassCard from "@/components/form/GlassCard";
-import BlurText from "@/components/text/BlurText";
-import { Button } from "@/components/ui/shadcn/button";
+import GlassCard from "@components/form/GlassCard";
+import BlurText from "@components/text/BlurText";
+import { Button } from "@components/ui/shadcn/button";
 
 const Error = () => {
     const navigate = useNavigate();

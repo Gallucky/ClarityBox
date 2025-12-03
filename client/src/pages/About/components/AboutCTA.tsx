@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/shadcn/button";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@components/ui/shadcn/button";
 
 const AboutCTA = () => {
     const navigate = useNavigate();
@@ -8,26 +8,29 @@ const AboutCTA = () => {
     return (
         <section className="relative w-full px-4 py-16 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-4xl">
-                <div className="rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/10 to-secondary/10 p-8 sm:p-12 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+                <div className="border-primary/20 from-primary/10 to-secondary/10 rounded-2xl border bg-linear-to-r p-8 text-center sm:p-12">
+                    <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
                         Ready to Experience Clarity?
                     </h2>
-                    <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Join our community of users who have transformed the way they work.
-                        Start your free trial today with no credit card required.
+                    <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-lg">
+                        Join our community of users who have transformed the way
+                        they work. Start your free trial today with no credit
+                        card required.
                     </p>
-                    <div className="flex flex-col gap-3 sm:flex-row justify-center">
+                    <div className="flex flex-col justify-center gap-3 sm:flex-row">
                         <Button
                             onClick={() => navigate("/registration")}
-                            className="gap-2 bg-primary hover:bg-primary/90"
-                            size="lg">
+                            className="bg-primary hover:bg-primary/90 gap-2"
+                            size="lg"
+                        >
                             Get Started Free
                             <ArrowRight size={18} />
                         </Button>
                         <Button
                             onClick={() => navigate("/")}
                             variant="outline"
-                            size="lg">
+                            size="lg"
+                        >
                             Back to Home
                         </Button>
                     </div>

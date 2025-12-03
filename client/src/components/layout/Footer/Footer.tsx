@@ -1,7 +1,7 @@
 import { useTheme } from "@app/providers/Theme/useTheme";
 import GitHub from "@components/Icons/GitHub";
 import LinkedIn from "@components/Icons/LinkedIn";
-import CustomLink from "@/components/utils/CustomLink";
+import CustomLink from "@components/utils/CustomLink";
 
 const Footer = () => {
     const { themeValue } = useTheme();

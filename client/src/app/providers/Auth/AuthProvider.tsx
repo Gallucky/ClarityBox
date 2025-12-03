@@ -1,7 +1,6 @@
 import { useState, type ReactNode } from "react";
 
 import { toast } from "react-toastify";
-import useQuery from "@app/providers/Query/useQuery";
 
 import useUsers from "@/hooks/api/useUsers";
 import type { Auth, AuthPromise } from "@/types/AuthPromise";
@@ -10,6 +9,7 @@ import type { LoginPayload } from "@/types/LoginPayload";
 import type { User } from "@/types/models/User";
 
 import { parseError } from "@/utils/parseError";
+import useQuery from "@app/providers/Query/useQuery";
 import AuthContext from "./AuthContext";
 import useRestoreSession from "./helpers/useRestoreSession";
 

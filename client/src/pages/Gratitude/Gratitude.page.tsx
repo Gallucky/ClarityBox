@@ -8,11 +8,11 @@ import {
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
 import useAuth from "@app/providers/Auth/useAuth";
+import { DialogHeader } from "@components/ui/dialog";
 
 import FloatingButton from "@components/ui/FloatingButton/FloatingButton";
 import usePosts from "@hooks/api/usePosts";
 import useUsers from "@hooks/api/useUsers";
-import { DialogHeader } from "@/components/ui/dialog";
 import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
 import GratitudeBoxesTableLayout from "./components/GratitudeBoxesTableLayout";
 import LayoutToggle from "./components/LayoutToggle";

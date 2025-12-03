@@ -8,7 +8,7 @@ import {
     ConfigurationError,
     ServerError,
 } from "@errors/customErrors";
-import ErrorCodes from "@/utils/errorCodes";
+import ErrorCodes from "@utils/errorCodes";
 
 const isError = (prefix: string) => {
     return (message: string) => message.startsWith(`[${prefix} Error]:`);

@@ -4,18 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { Slide, toast } from "react-toastify";
 import useAuth from "@/app/providers/Auth/useAuth";
 import { useTheme } from "@/app/providers/Theme/useTheme";
-import GlassCard from "@/components/form/GlassCard";
-import DarkVeil from "@/components/layout/DarkVeil";
-import { Button } from "@/components/ui/shadcn/button";
+import loginSchema from "@/schemas/loginSchema";
+import type { LoginFormData } from "@/types/forms/user/LoginFormData";
+import GlassCard from "@components/form/GlassCard";
+import DarkVeil from "@components/layout/DarkVeil";
+import { Button } from "@components/ui/shadcn/button";
 import {
     Field,
     FieldError,
     FieldGroup,
     FieldLabel,
-} from "@/components/ui/shadcn/field";
-import { Input } from "@/components/ui/shadcn/input";
-import loginSchema from "@/schemas/loginSchema";
-import type { LoginFormData } from "@/types/forms/user/LoginFormData";
+} from "@components/ui/shadcn/field";
+import { Input } from "@components/ui/shadcn/input";
 
 const Login = () => {
     const form = useForm<LoginFormData>({

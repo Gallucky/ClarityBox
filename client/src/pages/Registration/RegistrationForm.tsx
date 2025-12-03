@@ -2,8 +2,8 @@ import { type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "@/app/providers/Auth/useAuth";
-import { Button } from "@/components/ui/shadcn/button";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
+import { Button } from "@components/ui/shadcn/button";
 import type { UseFormHandleSubmit } from "react-hook-form";
 
 type RegistrationFormProps = {

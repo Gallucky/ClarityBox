@@ -1,12 +1,12 @@
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import type { BasicUserInfo } from "@/types/BasicUserInfo";
+import type { Post } from "@/types/models/Post";
 import useAuth from "@app/providers/Auth/useAuth";
 import usePosts from "@hooks/api/usePosts";
 import useUsers from "@hooks/api/useUsers";
 import formatDateTimeLocale from "@utils/formatDateTime";
-import type { BasicUserInfo } from "@/types/BasicUserInfo";
-import type { Post } from "@/types/models/Post";
 
 type EnrichedPost = Post & {
     creator: BasicUserInfo;

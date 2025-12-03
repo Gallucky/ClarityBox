@@ -8,8 +8,8 @@ import {
     TableHeader,
     TableRow,
 } from "@components/ui/shadcn/table";
-import formatDateTimeLocale from "@utils/formatDateTime";
 import type { GratitudeBoxData } from "@pages/Gratitude/types/GratitudeBoxData";
+import formatDateTimeLocale from "@utils/formatDateTime";
 
 type GratitudeBoxesTableLayoutProps = {
     gratitudeBoxes?: GratitudeBoxData[];

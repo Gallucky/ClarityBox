@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { Shield, Zap, Users, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/shadcn/button";
+import { useNavigate } from "react-router-dom";
 import type { User } from "@/types/models/User";
+import { Button } from "@components/ui/shadcn/button";
 
 interface HomeUserFeaturesProps {
     user: User | null;
@@ -28,7 +28,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             description: "View all your activity and stats",
             action: () => navigate("/dashboard"),
             buttonText: "Go to Dashboard",
-            colorClass: "text-primary border-primary/30 hover:border-primary/60",
+            colorClass:
+                "text-primary border-primary/30 hover:border-primary/60",
         },
     ];
 
@@ -39,7 +40,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             description: "Overview of your projects and tasks",
             action: () => navigate("/dashboard"),
             buttonText: "Open Dashboard",
-            colorClass: "text-primary border-primary/30 hover:border-primary/60",
+            colorClass:
+                "text-primary border-primary/30 hover:border-primary/60",
         },
         {
             icon: Users,
@@ -47,7 +49,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             description: "Manage and track your projects",
             action: () => navigate("/projects"),
             buttonText: "View Projects",
-            colorClass: "text-secondary border-secondary/30 hover:border-secondary/60",
+            colorClass:
+                "text-secondary border-secondary/30 hover:border-secondary/60",
         },
         {
             icon: CheckCircle2,
@@ -55,7 +58,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             description: "Track your gratitude and reflections",
             action: () => navigate("/gratitude-boxes"),
             buttonText: "Open Boxes",
-            colorClass: "text-primary border-primary/30 hover:border-primary/60",
+            colorClass:
+                "text-primary border-primary/30 hover:border-primary/60",
         },
     ];
 
@@ -64,29 +68,37 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
     return (
         <section className="relative w-full px-4 py-16 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-6xl">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+                <div className="mb-12 text-center">
+                    <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
                         Your Features
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
                         {isAdmin
                             ? "Access all admin tools and user management features"
                             : "Manage your projects, tasks, and gratitude boxes"}
                     </p>
                 </div>
 
-                <div className={`grid gap-8 ${isAdmin ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+                <div
+                    className={`grid gap-8 ${isAdmin ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}
+                >
                     {features.map((feature, idx) => (
                         <div
                             key={idx}
-                            className={`rounded-xl border bg-card p-6 hover:shadow-lg transition-all duration-300 ${feature.colorClass}`}>
-                            <feature.icon className="h-10 w-10 mb-4" />
-                            <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                            <p className="text-muted-foreground mb-4">{feature.description}</p>
+                            className={`bg-card rounded-xl border p-6 transition-all duration-300 hover:shadow-lg ${feature.colorClass}`}
+                        >
+                            <feature.icon className="mb-4 h-10 w-10" />
+                            <h3 className="mb-2 text-lg font-semibold">
+                                {feature.title}
+                            </h3>
+                            <p className="text-muted-foreground mb-4">
+                                {feature.description}
+                            </p>
                             <Button
                                 onClick={feature.action}
                                 size="sm"
-                                className="w-full">
+                                className="w-full"
+                            >
                                 {feature.buttonText}
                             </Button>
                         </div>
