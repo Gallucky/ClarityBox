@@ -3,7 +3,7 @@ import { createContext } from "react";
 import type { AuthPromise } from "@/types/AuthPromise";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
-import type { User } from "@/types/User";
+import type { User } from "@/types/models/User";
 
 // Defining the date structure.
 type AuthContextType = {

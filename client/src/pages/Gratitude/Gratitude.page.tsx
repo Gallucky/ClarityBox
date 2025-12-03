@@ -1,14 +1,3 @@
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useEffect, useState } from "react";
-import useAuth from "@app/providers/Auth/useAuth";
-
-import FloatingButton from "@components/ui/FloatingButton/FloatingButton";
-import usePosts from "@hooks/api/usePosts";
-import useUsers from "@hooks/api/useUsers";
-import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
-import GratitudeBoxesTableLayout from "./components/GratitudeBoxesTableLayout";
-import LayoutToggle from "./components/LayoutToggle";
-import type { GratitudeBoxData } from "./types/GratitudeBoxData";
 import {
     Dialog,
     DialogContent,
@@ -16,7 +5,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@radix-ui/react-dialog";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useEffect, useState } from "react";
+import useAuth from "@app/providers/Auth/useAuth";
+
+import FloatingButton from "@components/ui/FloatingButton/FloatingButton";
+import usePosts from "@hooks/api/usePosts";
+import useUsers from "@hooks/api/useUsers";
 import { DialogHeader } from "@/components/ui/dialog";
+import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
+import GratitudeBoxesTableLayout from "./components/GratitudeBoxesTableLayout";
+import LayoutToggle from "./components/LayoutToggle";
+import type { GratitudeBoxData } from "./types/GratitudeBoxData";
 
 const Gratitude = () => {
     const posts = usePosts();
@@ -128,6 +128,11 @@ const Gratitude = () => {
             }
 
             if (view === "my-boxes") {
+                if (!user) {
+                    setView("browse");
+                    return;
+                }
+
                 const myBoxes = gratitudeBoxes.filter(
                     (box) => box.creator.nickname === user.nickname,
                 );
@@ -136,6 +141,10 @@ const Gratitude = () => {
             }
 
             if (view === "liked-boxes") {
+                if (!user) {
+                    setView("browse");
+                    return;
+                }
                 const likedBoxes = gratitudeBoxes.filter((box) =>
                     box.likes.includes(user._id),
                 );
@@ -145,7 +154,7 @@ const Gratitude = () => {
         };
 
         filtered();
-    }, [gratitudeBoxes, user._id, user.nickname, view]);
+    }, [gratitudeBoxes, user, view]);
 
     const [layout, setLayout] = useState<"list" | "table">("list");
 

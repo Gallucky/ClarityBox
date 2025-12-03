@@ -88,7 +88,7 @@ const GratitudeBoxDetails = () => {
                         <span>{formatDateTimeLocale(postData.createdAt)}</span>
                     </p>
                     <p
-                        className={`likes ${localLikes.includes(user._id) ? "liked" : ""}`}
+                        className={`likes ${user && localLikes.includes(user._id) ? "liked" : ""}`}
                         onClick={handleLikeUnlikeToggle}
                     >
                         <span>{localLikes?.length}</span>

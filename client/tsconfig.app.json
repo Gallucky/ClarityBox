@@ -18,28 +18,23 @@
 
         /* Linting */
         "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
         "erasableSyntaxOnly": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
 
-        /* Temporary until TS 7 — silence baseUrl/paths deprecation warnings */
-        "ignoreDeprecations": "6.0",
-
-        /* Path aliases (for @/ imports in Vite + React) */
-        "baseUrl": "./src",
+        /* Path aliases - baseUrl not needed with moduleResolution: bundler */
         "paths": {
-            "@/*": ["*"],
-            "@app/*": ["app/*"],
-            "@assets/*": ["assets/*"],
-            "@errors/*": ["errors/*"],
-            "@components/*": ["components/*"],
-            "@hooks/*": ["hooks/*"],
-            "@lib/*": ["lib/*"],
-            "@pages/*": ["pages/*"],
-            "@styles/*": ["styles/*"],
-            "@utils/*": ["utils/*"]
+            "@/*": ["./src/*"],
+            "@app/*": ["./src/app/*"],
+            "@assets/*": ["./src/assets/*"],
+            "@errors/*": ["./src/errors/*"],
+            "@components/*": ["./src/components/*"],
+            "@hooks/*": ["./src/hooks/*"],
+            "@lib/*": ["./src/lib/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@types/*": ["./src/types/*"],
+            "@utils/*": ["./src/utils/*"]
         }
     },
     "include": ["src"]

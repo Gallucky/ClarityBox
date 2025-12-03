@@ -7,7 +7,7 @@ import useUsers from "@/hooks/api/useUsers";
 import type { Auth, AuthPromise } from "@/types/AuthPromise";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
-import type { User } from "@/types/User";
+import type { User } from "@/types/models/User";
 
 import { parseError } from "@/utils/parseError";
 import AuthContext from "./AuthContext";
