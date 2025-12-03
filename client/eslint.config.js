@@ -1,5 +1,3 @@
-// eslint.config.js
-import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -9,7 +7,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
-export default defineConfig([
+export default [
     {
         ignores: [
             "dist",
@@ -23,23 +21,33 @@ export default defineConfig([
         ],
     },
 
+    js.configs.recommended,
+    ...tseslint.configs.recommended,
+
     {
-        files: ["src/**/*.{js,jsx,ts,tsx}"],
+        files: ["**/*.{js,jsx,ts,tsx}"],
 
         languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",
             globals: globals.browser,
             parserOptions: {
-                tsconfigRootDir: import.meta.dirname,
+                ecmaFeatures: {
+                    jsx: true,
+                },
             },
         },
 
         settings: {
             react: { version: "detect" },
             "import/resolver": {
-                node: true,
-                typescript: true,
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: "./tsconfig.json",
+                },
+                node: {
+                    extensions: [".js", ".jsx", ".ts", ".tsx"],
+                },
             },
             "boundaries/elements": [
                 { type: "app", pattern: "src/app/**" },
@@ -60,26 +68,29 @@ export default defineConfig([
             "react-refresh": reactRefresh,
         },
 
-        extends: [
-            js.configs.recommended,
-            ...tseslint.configs.recommended, // no type-checking needed
-        ],
-
         rules: {
             // General hygiene
             "no-console": ["warn", { allow: ["warn", "error"] }],
-            "func-style": ["error", "expression"],
-            "max-lines": ["warn", { max: 200, skipBlankLines: true, skipComments: true }],
+            "max-lines": [
+                "warn",
+                { max: 200, skipBlankLines: true, skipComments: true },
+            ],
 
             // TypeScript
-            "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
+            "@typescript-eslint/consistent-type-imports": [
+                "error",
+                { prefer: "type-imports" },
+            ],
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-unused-vars": "off",
 
             // Hooks
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",
-            "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+            "react-refresh/only-export-components": [
+                "warn",
+                { allowConstantExport: true },
+            ],
 
             // Imports
             "unused-imports/no-unused-imports": "error",
@@ -96,7 +107,63 @@ export default defineConfig([
                         "type",
                     ],
                     alphabetize: { order: "asc", caseInsensitive: true },
-                    pathGroups: [{ pattern: "@/**", group: "internal", position: "after" }],
+                    pathGroups: [
+                        {
+                            pattern: "@/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@app/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@assets/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@components/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@errors/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@hooks/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@lib/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@pages/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@styles/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@types/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                        {
+                            pattern: "@utils/**",
+                            group: "internal",
+                            position: "after",
+                        },
+                    ],
                     pathGroupsExcludedImportTypes: ["builtin"],
                 },
             ],
@@ -107,8 +174,9 @@ export default defineConfig([
                 {
                     patterns: [
                         {
-                            group: ["**/../*", "**/../../*", "**/../../../*"],
-                            message: "Use path aliases (e.g. '@/utils') instead of relative paths.",
+                            group: ["../*", "../../*", "../../../*"],
+                            message:
+                                "Use path aliases (e.g. '@/utils') instead of relative paths.",
                         },
                     ],
                 },
@@ -127,11 +195,18 @@ export default defineConfig([
                         },
                         {
                             from: ["pages", "components", "hooks"],
-                            allow: ["components", "hooks", "utils", "lib", "types", "app"],
+                            allow: [
+                                "components",
+                                "hooks",
+                                "utils",
+                                "lib",
+                                "types",
+                                "app",
+                            ],
                         },
                     ],
                 },
             ],
         },
     },
-]);
+];

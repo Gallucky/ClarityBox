@@ -2,11 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [react(), tailwindcss()],
-    base: process.env.VITE_BASE_PATH || "/clarity-box",
+    plugins: [react(), tailwindcss(), tsconfigPaths()],
+    base: process.env.VITE_BASE_PATH || "/clarity-box/",
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
@@ -27,5 +28,17 @@ export default defineConfig({
             usePolling: true,
         },
         host: true,
+    },
+    build: {
+        outDir: "dist",
+        sourcemap: false,
+        minify: "esbuild",
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ["react", "react-dom", "react-router-dom"],
+                },
+            },
+        },
     },
 });

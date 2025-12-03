@@ -8,17 +8,21 @@
         "skipLibCheck": true,
 
         /* Bundler mode */
-        "moduleResolution": "bundler",
+        "moduleResolution": "Bundler",
         "allowImportingTsExtensions": true,
         "verbatimModuleSyntax": true,
         "moduleDetection": "force",
         "noEmit": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
 
         /* Linting */
         "strict": true,
-        "erasableSyntaxOnly": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true
     },
     "include": ["vite.config.ts"]
 }

@@ -9,20 +9,24 @@
         "skipLibCheck": true,
 
         /* Bundler mode */
-        "moduleResolution": "bundler",
+        "moduleResolution": "Bundler",
         "allowImportingTsExtensions": true,
         "verbatimModuleSyntax": true,
         "moduleDetection": "force",
         "noEmit": true,
         "jsx": "react-jsx",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
 
         /* Linting */
         "strict": true,
-        "erasableSyntaxOnly": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true,
 
-        /* Path aliases - baseUrl not needed with moduleResolution: bundler */
+        /* Path aliases */
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"],
