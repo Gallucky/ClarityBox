@@ -16,6 +16,7 @@ const createAxiosInstance = () => {
         headers: {
             "Content-Type": "application/json",
         },
+        withCredentials: true,
     });
 };
 
