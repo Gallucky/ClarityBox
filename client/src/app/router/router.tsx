@@ -4,9 +4,8 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App.tsx";
 import AnimatedLayout from "@components/layout/AnimatedLayout";
+import { lazyImport, lazyImportPag1e, lazyLoad } from "@utils/lazyLoad";
 import RouteGuard from "./RouteGuard";
-// eslint-disable-next-line no-restricted-imports
-import { lazyImport, lazyImportPage, lazyLoad } from "../../utils/lazyLoad";
 
 const Home = lazyImportPage("Home");
 const About = lazyImportPage("About");
