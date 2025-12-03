@@ -4,6 +4,13 @@ import ConfigurationError from "@errors/ConfigurationError";
 const createAxiosInstance = () => {
     const baseURL = import.meta.env.VITE_API_URL;
 
+    console.log(
+        "baseURL",
+        baseURL,
+        "baseURL undefined/null?",
+        !baseURL ? "True (Yes)" : "False (No)",
+    );
+
     if (!baseURL) {
         const message =
             "VITE_API_URL is missing in the environment in at least one of the .env files.";
