@@ -1,5 +1,4 @@
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Outlet } from "react-router-dom";
 import { Slide, ToastContainer } from "react-toastify";
 import { useTheme } from "@app/providers/Theme/useTheme";
 
@@ -12,7 +11,11 @@ const App = () => {
             <header>{/* <Navbar /> */}</header>
             <main className="">
                 <SpeedInsights />
-                <Outlet />
+                {/* <Outlet /> */}
+                <p className="absolute-center">
+                    Testing only the App component to see if it works and where
+                    to check
+                </p>
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}
