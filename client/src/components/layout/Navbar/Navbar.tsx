@@ -1,14 +1,13 @@
 import { Box, LayoutDashboard, Package, Shield } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import useAuth from "@/app/providers/Auth/useAuth";
-import useMediaQuery from "@hooks/useMediaQuery";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import type { NavItem } from "./localTypes/NavItem";
 
 const Navbar = () => {
     const { user } = useAuth();
-    const isMobile = useMediaQuery("(max-width: 768px)");
+    const isMobile = false; //useMediaQuery("(max-width: 768px)");
     const location = useLocation();
 
     const isCurrentLocation = (href: string, forNested = false): boolean => {
