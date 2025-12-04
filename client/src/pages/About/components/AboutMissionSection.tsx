@@ -7,18 +7,18 @@ const AboutMissionSection = () => {
                 <div className="flex flex-col items-center justify-center gap-2">
                     <div className="bg-primary/10 text-primary font-inter inline-flex items-center gap-2 rounded-full px-4! py-1! font-semibold">
                         <Target size={16} />
-                        <span className="text-fluid-0.75!">Our Mission</span>
+                        <span className="text-fluid!">Our Mission</span>
                     </div>
-                    <h2 className="text-fluid-1.5! font-inter mx-auto font-bold">
+                    <h2 className="text-fluid-2! font-inter mx-auto font-bold">
                         Bringing Clarity to Your Work
                     </h2>
-                    <p className="text-muted-foreground mb-6">
+                    <p className="text-muted-foreground text-fluid-1.25! mb-6!">
                         In a world full of distractions and endless to-do lists,
                         it's easy to lose sight of what truly matters. Our
                         mission is to provide a simple yet powerful platform
                         that helps you:
                     </p>
-                    <ul className="space-y-4">
+                    <ul className="space-y-4!">
                         {[
                             "Organize your projects and tasks efficiently",
                             "Collaborate seamlessly with your team",
@@ -32,7 +32,9 @@ const AboutMissionSection = () => {
                                         className="text-primary"
                                     />
                                 </div>
-                                <span className="text-foreground">{item}</span>
+                                <span className="text-foreground text-fluid! w-full">
+                                    {item}
+                                </span>
                             </li>
                         ))}
                     </ul>

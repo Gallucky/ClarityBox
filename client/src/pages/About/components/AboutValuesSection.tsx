@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Lightbulb, Heart, Zap, Users } from "lucide-react";
 
 const AboutValuesSection = () => {
@@ -25,28 +26,33 @@ const AboutValuesSection = () => {
     ];
 
     return (
-        <section className="relative w-full px-4 py-16 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-6xl">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-                        Our Core Values
-                    </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        These principles guide everything we do
-                    </p>
-                </div>
+        <section className="relative w-full">
+            <div className="mb-6! flex flex-col items-center justify-center">
+                <h2 className="text-fluid-2.5! mb-4 text-center font-bold tracking-tight">
+                    Our Core Values
+                </h2>
+                <p className="text-muted-foreground text-fluid-1.25! mx-auto w-[90%] max-w-2xl text-center">
+                    These principles guide everything we do
+                </p>
+            </div>
 
-                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-                    {values.map((value, idx) => (
-                        <div
-                            key={idx}
-                            className="group rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-lg transition-all duration-300 text-center">
-                            <value.icon className="h-10 w-10 text-primary mx-auto mb-4 group-hover:scale-110 transition-transform" />
-                            <h3 className="text-lg font-semibold mb-2">{value.title}</h3>
-                            <p className="text-sm text-muted-foreground">{value.description}</p>
-                        </div>
-                    ))}
-                </div>
+            <div className="mx-auto! grid grid-cols-1 gap-6 select-none lg:w-1/2 lg:grid-cols-2">
+                {values.map((value, index) => (
+                    <motion.div
+                        key={index}
+                        whileHover={{ scale: 0.9 }}
+                        transition={{ duration: 0.3 }}
+                        className="border-border bg-card hover:border-primary/50 mx-auto! w-full max-w-[90%] place-items-center items-center justify-center rounded-[calc(0.25rem+4px)] border px-12! py-6! text-center transition-all duration-300 hover:shadow-lg lg:max-w-[500px]"
+                    >
+                        <value.icon className="text-primary size-10 transition-transform group-hover:scale-110" />
+                        <h3 className="text-fluid-1.5 font-semibold">
+                            {value.title}
+                        </h3>
+                        <p className="text-muted-foreground text-fluid! max-w-[80%]">
+                            {value.description}
+                        </p>
+                    </motion.div>
+                ))}
             </div>
         </section>
     );
