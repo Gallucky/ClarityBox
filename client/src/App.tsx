@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Slide, ToastContainer } from "react-toastify";
 import { useTheme } from "@app/providers/Theme/useTheme";
-import Footer from "@components/layout/Footer/Footer";
-import Navbar from "@components/layout/Navbar/Navbar";
 
 // Components, elements, designs etc that are shared/needed across all pages.
 const App = () => {
@@ -10,9 +8,7 @@ const App = () => {
 
     return (
         <div className="relative flex min-h-dvh w-full flex-col">
-            <header>
-                <Navbar />
-            </header>
+            <header>{/* <Navbar /> */}</header>
             <main className="">
                 <Outlet />
                 <ToastContainer
@@ -29,7 +25,7 @@ const App = () => {
                     transition={Slide}
                 />
             </main>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 };
