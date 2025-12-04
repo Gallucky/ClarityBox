@@ -41,6 +41,6 @@
             "@utils/*": ["./src/utils/*"]
         }
     },
-    "include": ["src"],
+    "include": ["src", "@components/Carousel.tsx"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,5 +1,6 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useAuth from "@/app/providers/Auth/useAuth";
+import AboutFeaturesSection from "./components/AboutFeaturesSection";
 import AboutHeroSection from "./components/AboutHeroSection";
 import AboutMissionSection from "./components/AboutMissionSection";
 import AboutValuesSection from "./components/AboutValuesSection";
@@ -12,8 +13,8 @@ const About = () => {
             <AboutHeroSection />
             <AboutMissionSection />
             <AboutValuesSection />
-            {/* <AboutFeaturesSection />
-            <AboutTechSection />
+            <AboutFeaturesSection />
+            {/* <AboutTechSection />
             {user && <AboutRoleSection user={user} />}
             {!user && <AboutCTA />}
             <AboutFAQSection /> */}
