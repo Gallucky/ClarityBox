@@ -4,12 +4,12 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App.tsx";
 import AnimatedLayout from "@components/layout/AnimatedLayout";
+import About from "@pages/About/About.page.tsx";
+import Home from "@pages/Home/Home.page.tsx";
+import Login from "@pages/Login/Login.page.tsx";
 import { lazyImport, lazyImportPage, lazyLoad } from "@utils/lazyLoad";
 import RouteGuard from "./RouteGuard";
 
-const Home = lazyImportPage("Home");
-const About = lazyImportPage("About");
-const Login = lazyImportPage("Login");
 const Registration = lazyImportPage("Registration");
 const Dashboard = lazyImportPage("Dashboard");
 const Projects = lazyImportPage("Projects");
@@ -32,16 +32,16 @@ const router = createBrowserRouter([
             {
                 element: <AnimatedLayout />,
                 children: [
-                    { path: "/", element: lazyLoad(Home) },
-                    { path: "/home", element: lazyLoad(Home) },
-                    { path: "/about", element: lazyLoad(About) },
+                    { path: "/", element: <Home /> },
+                    { path: "/home", element: <Home /> },
+                    { path: "/about", element: <About /> },
                     { path: "/playground", element: lazyLoad(PlaygroundPage) },
                     {
                         // GuestOnly
                         path: "/login",
                         element: (
                             <RouteGuard role="guest">
-                                {lazyLoad(Login)}
+                                <Login />
                             </RouteGuard>
                         ),
                     },

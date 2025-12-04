@@ -1,3 +1,4 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Outlet } from "react-router-dom";
 import { Slide, ToastContainer } from "react-toastify";
 import { useTheme } from "@app/providers/Theme/useTheme";
@@ -10,6 +11,7 @@ const App = () => {
         <div className="relative flex min-h-dvh w-full flex-col">
             <header>{/* <Navbar /> */}</header>
             <main className="">
+                <SpeedInsights />
                 <Outlet />
                 <ToastContainer
                     position="top-right"
