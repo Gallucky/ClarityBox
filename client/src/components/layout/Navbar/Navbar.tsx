@@ -4,8 +4,7 @@ import useAuth from "@/app/providers/Auth/useAuth";
 import useMediaQuery from "@hooks/useMediaQuery";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
-import type { DesktopNavItem } from "./localTypes/DesktopNav";
-import type { MobileNavItem } from "./localTypes/MobileNav";
+import type { NavItem } from "./localTypes/NavItem";
 
 const Navbar = () => {
     const { user } = useAuth();
@@ -17,11 +16,9 @@ const Navbar = () => {
         return location.pathname === href;
     };
 
-    const renderMobileNav = (items: MobileNavItem[]) => (
-        <MobileNav items={items} />
-    );
+    const renderMobileNav = (items: NavItem[]) => <MobileNav items={items} />;
 
-    const renderCardNav = (items: DesktopNavItem[]) => (
+    const renderCardNav = (items: NavItem[]) => (
         <DesktopNav
             logo={"/claritybox-logo.svg"}
             logoAlt="ClarityBox's Logo"
@@ -31,64 +28,56 @@ const Navbar = () => {
 
     // Mobile Mode.
     if (isMobile) {
-        const staticItems: MobileNavItem[] = [
+        const staticItems: NavItem[] = [
             {
-                text: "Home",
+                label: "Home",
                 href: "/",
-                link: true,
                 active: isCurrentLocation("/"),
             },
             {
-                text: "About",
+                label: "About",
                 href: "/about",
-                link: true,
                 active: isCurrentLocation("/about"),
             },
         ];
 
-        const guestItems: MobileNavItem[] = [
+        const guestItems: NavItem[] = [
             ...staticItems,
             {
-                text: "Login",
+                label: "Login",
                 href: "/login",
-                link: true,
                 active: isCurrentLocation("/login"),
             },
             {
-                text: "Register",
+                label: "Register",
                 href: "/registration",
-                link: true,
                 active: isCurrentLocation("/registration"),
             },
         ];
-        const userItems: MobileNavItem[] = [
+        const userItems: NavItem[] = [
             ...staticItems,
             {
-                text: "Gratitude Boxes",
+                label: "Gratitude Boxes",
                 href: "/gratitude-boxes",
-                link: true,
                 active: isCurrentLocation("/gratitude-boxes"),
             },
             {
-                text: "Projects",
+                label: "Projects",
                 href: "/projects",
-                link: true,
                 active: isCurrentLocation("/projects"),
             },
             {
-                text: "Profile",
+                label: "Profile",
                 href: "/profile",
-                link: true,
                 active: isCurrentLocation("/profile"),
             },
-            { text: "Logout", href: "/", link: true },
+            { label: "Logout", href: "/" },
         ];
 
-        const adminExtras: MobileNavItem[] = [
+        const adminExtras: NavItem[] = [
             {
-                text: "CRM",
+                label: "CRM",
                 href: "/crm",
-                link: true,
                 active: isCurrentLocation("/crm"),
             },
         ];
@@ -99,7 +88,7 @@ const Navbar = () => {
         return renderMobileNav([...userItems, ...adminExtras]);
     }
 
-    const guestItems: DesktopNavItem[] = [
+    const guestItems: NavItem[] = [
         {
             label: "Login",
             href: "/login",
@@ -113,7 +102,7 @@ const Navbar = () => {
             active: isCurrentLocation("/registration"),
         },
     ];
-    const userItems: DesktopNavItem[] = [
+    const userItems: NavItem[] = [
         {
             label: "Dashboard",
             href: "/dashboard",
@@ -136,7 +125,7 @@ const Navbar = () => {
             active: isCurrentLocation("/gratitude-boxes", true),
         },
     ];
-    const adminExtras: DesktopNavItem[] = [
+    const adminExtras: NavItem[] = [
         {
             label: "CRM",
             href: "/crm",

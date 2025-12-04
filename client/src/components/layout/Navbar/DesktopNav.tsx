@@ -3,10 +3,10 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "@/app/providers/Auth/useAuth";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import type { DesktopNavItem } from "./localTypes/DesktopNav";
+import type { NavItem } from "./localTypes/NavItem";
 
 type DesktopNavProps = {
-    links: DesktopNavItem[];
+    links: NavItem[];
     logo: string;
     logoAlt: string;
 };

@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 
-export type DesktopNavItem = {
+export type NavItem = {
     label: string;
     href: string;
     ariaLabel?: string;

@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "@app/providers/Auth/useAuth";
 import { FieldSeparator } from "@components/ui/shadcn/field";
-import type { MobileNavItem } from "./localTypes/MobileNav";
+import type { NavItem } from "./localTypes/NavItem";
 
 type MobileNavProps = {
-    items: MobileNavItem[];
+    items: NavItem[];
 };
 
 const MobileNav = (props: MobileNavProps) => {
@@ -26,13 +26,10 @@ const MobileNav = (props: MobileNavProps) => {
                 : `${user.name.first} ${user.name.last}`)) ||
         undefined;
 
-    const [currentItems, setCurrentItems] = useState<MobileNavItem[]>(items);
+    const [currentItems, setCurrentItems] = useState<NavItem[]>(items);
 
-    const linkAction = (item: MobileNavItem, index: number) => {
+    const linkAction = (item: NavItem, index: number) => {
         if (!item.href) return;
-
-        // Execute onClick if it exists
-        item.onClick?.();
 
         const updatedItems = currentItems.map((navItem, i) =>
             i === index
@@ -124,7 +121,7 @@ const MobileNav = (props: MobileNavProps) => {
                                     aria-label={item.ariaLabel}
                                     className="nav-text"
                                 >
-                                    {item.text}
+                                    {item.label}
                                 </span>
                             </li>
                         ))}
