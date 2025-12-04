@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "prod": "vite --mode production --port 5173",
         "build": "tsc -b && vite build",
         "preview": "vite preview",
         "format": "prettier . --write",

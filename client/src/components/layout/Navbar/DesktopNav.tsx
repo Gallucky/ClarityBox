@@ -24,6 +24,7 @@ const DesktopNav = (props: DesktopNavProps) => {
             <ThemeToggle className="" />
         </div>
     );
+
     return (
         <>
             <nav className="desktop-navbar">
@@ -46,9 +47,7 @@ const DesktopNav = (props: DesktopNavProps) => {
                     </button>
                     <Search className="search-icon" />
                 </div>
-
                 {!user && themeToggle}
-
                 <ul className={`links ${!user ? "links-right" : ""}`}>
                     {props.links.map((link, index) => {
                         const Icon = link.icon ? link.icon : null;
@@ -70,9 +69,7 @@ const DesktopNav = (props: DesktopNavProps) => {
                         );
                     })}
                 </ul>
-
                 {user && themeToggle}
-
                 {user && (
                     <div className="profile-container">
                         <div
@@ -92,7 +89,6 @@ const DesktopNav = (props: DesktopNavProps) => {
                                 }
                             />
                         </div>
-
                         {/* 3. Move the dropdown *inside* this wrapper */}
                         {profileDropdownOpen && (
                             <div className="profile-dropdown">

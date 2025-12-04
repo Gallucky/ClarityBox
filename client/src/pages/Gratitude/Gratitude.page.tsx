@@ -177,7 +177,7 @@ const Gratitude = () => {
                     <Dialog>
                         <form>
                             <DialogTrigger>
-                                <FloatingButton />
+                                <FloatingButton as="div" />
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogHeader>
