@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import {
+    Book,
     BookOpen,
     Box,
     Key,
@@ -18,12 +19,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FieldSeparator } from "@/components/ui/shadcn/field";
 import useAuth from "@app/providers/Auth/useAuth";
 import ThemeToggle from "@components/ui/ThemeToggle";
-import useMediaQuery from "@hooks/useMediaQuery";
 import type { NavItem } from "./localTypes/NavItem";
 
 const Navbar = () => {
     const { user, logout } = useAuth();
-    const isMobile = useMediaQuery("(max-width: 768px)", false);
     const location = useLocation();
     const navigate = useNavigate();
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -237,7 +236,7 @@ const Navbar = () => {
                 onClick={() => setOpenMobileNav(!openMobileNav)}
                 className="absolute top-3 right-5 z-50 lg:hidden"
             >
-                <Menu className="size-6" color="white" />
+                <Menu className="text-foreground size-6" />
             </button>
 
             <div
@@ -297,10 +296,25 @@ const Navbar = () => {
                         >
                             <X className="size-6" />
                         </button>
+
+                        <ThemeToggle className="mx-auto!" />
                     </div>
                     <FieldSeparator className="my-5!" />
                     <ul className="nav-items list-none">
                         {/* Nav Links */}
+                        <li
+                            key={"About"}
+                            onClick={() => navigate("/about")}
+                            className={`nav-item`}
+                        >
+                            <span
+                                aria-label="About Navbar Link"
+                                className="nav-text text-secondary! flex items-center justify-center gap-2"
+                            >
+                                <Book className="size-6" />
+                                About
+                            </span>
+                        </li>
                         {shownLinks.map((item, index) => (
                             <li
                                 key={index}

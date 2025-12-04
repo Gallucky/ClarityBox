@@ -39,7 +39,7 @@ const AboutFeaturesSection = () => {
                     Everything you need to stay organized and productive
                 </p>
             </div>
-            <div className="mx-auto! grid w-1/2 gap-8 overflow-clip perspective-midrange md:grid-cols-2">
+            <div className="mx-auto! grid w-[90%] gap-8 overflow-clip perspective-midrange md:grid-cols-2 lg:w-1/2">
                 {features.map((feature, idx) => (
                     <motion.div
                         whileHover={{
