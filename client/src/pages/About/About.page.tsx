@@ -3,6 +3,7 @@ import useAuth from "@/app/providers/Auth/useAuth";
 import AboutFeaturesSection from "./components/AboutFeaturesSection";
 import AboutHeroSection from "./components/AboutHeroSection";
 import AboutMissionSection from "./components/AboutMissionSection";
+import AboutTechSection from "./components/AboutTechSection";
 import AboutValuesSection from "./components/AboutValuesSection";
 
 const About = () => {
@@ -14,8 +15,8 @@ const About = () => {
             <AboutMissionSection />
             <AboutValuesSection />
             <AboutFeaturesSection />
-            {/* <AboutTechSection />
-            {user && <AboutRoleSection user={user} />}
+            <AboutTechSection />
+            {/* {user && <AboutRoleSection user={user} />}
             {!user && <AboutCTA />}
             <AboutFAQSection /> */}
         </ScrollArea>
