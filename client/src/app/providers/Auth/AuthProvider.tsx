@@ -95,7 +95,7 @@ const AuthProvider = (props: AuthProviderProps) => {
         return { ok: false, error: parsedError };
     };
 
-    const { loginUser, getUserByToken, registerUser, error } = useUsers();
+    const { loginUser, registerUser, error } = useUsers();
 
     // The auth methods.
     const login = async (credentials: LoginPayload): AuthPromise => {
@@ -104,11 +104,16 @@ const AuthProvider = (props: AuthProviderProps) => {
 
             api.removeHeader("x-auth-token");
 
-            const userToken: string = await loginUser(credentials);
-            if (error) throw error;
+            const loginResponse = await loginUser(credentials);
+            if (
+                error ||
+                !loginResponse ||
+                loginResponse === "" ||
+                typeof loginResponse !== "object"
+            )
+                throw error ?? new Error("Login failed");
 
-            const user = await getUserByToken(userToken);
-            if (error) throw error;
+            const { token: userToken, user } = loginResponse;
 
             // Saving the token in the context.
             setToken(userToken);

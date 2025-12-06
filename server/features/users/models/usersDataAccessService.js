@@ -131,7 +131,8 @@ exports.login = async (normalizedUser) => {
             }
 
             const token = generateAuthToken(user);
-            return Promise.resolve(token);
+            const userWithoutPassword = _.omit(user.toObject(), "password");
+            return Promise.resolve({ token, user: userWithoutPassword });
         } catch (error) {
             return handleBadRequest("Mongoose", error);
         }
