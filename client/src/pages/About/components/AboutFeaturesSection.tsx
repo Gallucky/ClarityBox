@@ -39,7 +39,7 @@ const AboutFeaturesSection = () => {
                     Everything you need to stay organized and productive
                 </p>
             </div>
-            <div className="mx-auto! grid w-[90%] gap-8 overflow-clip perspective-midrange md:grid-cols-2 lg:w-1/2">
+            <div className="mx-auto! grid w-[90%] gap-8 overflow-clip perspective-midrange md:w-1/2 md:grid-cols-2">
                 {features.map((feature, idx) => (
                     <motion.div
                         whileHover={{
@@ -50,11 +50,9 @@ const AboutFeaturesSection = () => {
                             transition: { duration: 0.3 },
                         }}
                         style={{ perspective: 1000 }}
+                        key={idx}
                     >
-                        <div
-                            key={idx}
-                            className="border-border bg-card hover:border-primary/50 mx-auto! h-full max-h-[300px] w-full max-w-[600px] rounded-[calc(0.25rem+4px)] border p-8! transition-all duration-300 select-none transform-3d hover:shadow-lg"
-                        >
+                        <div className="border-border bg-card hover:border-primary/50 mx-auto! h-full max-h-[300px] w-full max-w-[600px] rounded-[calc(0.25rem+4px)] border p-8! transition-all duration-300 select-none transform-3d hover:shadow-lg">
                             <feature.icon className="text-primary h-12 w-12" />
                             <h3 className="mb-3 text-xl font-semibold">
                                 {feature.title}

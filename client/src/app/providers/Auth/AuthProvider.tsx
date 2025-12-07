@@ -96,7 +96,7 @@ const AuthProvider = (props: AuthProviderProps) => {
         return { ok: false, error: parsedError };
     };
 
-    const { loginUser, getUserByToken, registerUser, error } = useUsers();
+    const { loginUser, registerUser, error } = useUsers();
 
     // The auth methods.
     const login = async (credentials: LoginPayload): AuthPromise => {

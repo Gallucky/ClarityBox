@@ -30,11 +30,12 @@
 }
 
 /* Smooth transitions for interactive elements */
-button {
+.about-page button {
+    @apply cursor-pointer rounded-full px-2;
     transition: all 0.3s ease;
 }
 
-button:hover {
+.about-page button:hover {
     transform: translateY(-2px);
 }
 
