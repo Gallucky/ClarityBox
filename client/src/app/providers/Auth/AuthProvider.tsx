@@ -6,6 +6,7 @@ import useUsers from "@/hooks/api/useUsers";
 import type { Auth, AuthPromise } from "@/types/AuthPromise";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
+import type { LoginResponse } from "@/types/LoginResponse";
 import type { User } from "@/types/models/User";
 
 import { parseError } from "@/utils/parseError";
@@ -104,17 +105,13 @@ const AuthProvider = (props: AuthProviderProps) => {
 
             api.removeHeader("x-auth-token");
 
-            const userToken: string = await loginUser(credentials);
-            if (error) throw error;
-
-            const user = await getUserByToken(userToken);
-            if (error) throw error;
+            const LoginResponse: LoginResponse = await loginUser(credentials);
 
             // Saving the token in the context.
-            setToken(userToken);
+            setToken(LoginResponse.token);
             // Saving the token in the local storage.
-            localStorage.setItem("token", userToken);
-            setUser(user ?? null);
+            localStorage.setItem("token", LoginResponse.token);
+            setUser(LoginResponse.user ?? null);
 
             return { ok: true };
         } catch (error: any) {
@@ -139,7 +136,6 @@ const AuthProvider = (props: AuthProviderProps) => {
             // Sending the user registration request.
             // await api.post("/users/", data);
             await registerUser(data);
-            if (error) throw error;
 
             return { ok: true };
         } catch (error) {

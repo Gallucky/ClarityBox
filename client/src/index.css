@@ -21,6 +21,7 @@
 @import "./components/ui/FloatingButton/floatingButton.css";
 @import "./pages/Home/home.css";
 @import "./pages/About/about.css";
+@import "./components/text/TextAnimator/textAnimator.css";
 
 @custom-variant dark (&: is(.dark *));
 

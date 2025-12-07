@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import useAuth from "@app/providers/Auth/useAuth";
-import Spinner from "@components/ui/Spinner";
+import SpinnerBox3DTumble from "@components/ui/Spinner3DTrumblingBox";
 import type { ReactNode } from "react";
 
 type Role = "guest" | "authenticated" | "admin";
@@ -16,7 +16,18 @@ const RouteGuard = (props: RouteGuardProps) => {
     const { user, loading, restoring } = useAuth();
 
     // Wait for the user to be loaded.
-    if (loading || restoring) return <Spinner />;
+    if (loading || restoring)
+        return (
+            <SpinnerBox3DTumble
+                className="absolute-center"
+                size="xl"
+                textSize="md"
+                textClassName="font-montserrat"
+                text="Loading..."
+                textAnimation="dots-wave"
+                direction="horizontal"
+            />
+        );
 
     // If there are no restrictions skip checking.
     const noRestrictions = !role;

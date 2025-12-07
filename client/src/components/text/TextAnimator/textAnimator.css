@@ -1,0 +1,43 @@
+/* 1. Define the custom keyframes for the bounce effect */
+@keyframes wave-bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(
+            -15px
+        ); /* Adjust -10px for desired bounce height */
+    }
+}
+
+/* 2. Define the class that applies the animation */
+.animate-wave-bounce {
+    /* Crucial: inline-block allows the transform (translateY) to work correctly */
+    display: inline-block;
+
+    /* Apply the animation: name, duration, iteration count, timing function */
+    animation: wave-bounce 1s infinite ease-in-out;
+}
+
+/* 1. Define the custom keyframes for the bounce effect */
+@keyframes dots-wave-bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(
+            -5px
+        ); /* Adjust -10px for desired bounce height */
+    }
+}
+
+/* 2. Define the class that applies the animation */
+.animate-dots-wave-bounce {
+    /* Crucial: inline-block allows the transform (translateY) to work correctly */
+    display: inline-block;
+
+    /* Apply the animation: name, duration, iteration count, timing function */
+    animation: dots-wave-bounce 1s infinite ease-in-out;
+}

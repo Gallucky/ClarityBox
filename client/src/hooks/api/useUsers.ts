@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { BasicUserInfo } from "@/types/BasicUserInfo";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
+import type { LoginResponse } from "@/types/LoginResponse";
 import type { User } from "@/types/models/User";
 import type { Token } from "@/types/Token";
 import useQuery from "@app/providers/Query/useQuery";
@@ -25,7 +26,7 @@ const useUsers = () => {
             errorAsError,
         );
         setError(err);
-        return "";
+        throw err;
     };
 
     //region | ====== Get ====== |
@@ -144,7 +145,7 @@ const useUsers = () => {
             setLoading(true);
             setError(null);
 
-            const response: string = await api.post(
+            const response: LoginResponse = await api.post(
                 "/users/login",
                 credentials,
             );
