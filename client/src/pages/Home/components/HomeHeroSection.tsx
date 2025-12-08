@@ -12,8 +12,8 @@ const HomeHeroSection = ({ user }: HomeHeroSectionProps) => {
     const isAdmin = user?.isAdmin ?? false;
 
     return (
-        <section className="relative my-auto! w-full">
-            <div className="mx-auto! mt-[15dvh]! grid max-w-2/3 gap-12 lg:mt-0! lg:grid-cols-2 lg:items-center lg:gap-8">
+        <section className="relative w-full">
+            <div className="mx-auto! grid max-w-[80dvw] gap-12 lg:grid-cols-2 lg:items-center lg:gap-8">
                 <div className="flex flex-col gap-6">
                     <div className="space-y-4!">
                         <div className="bg-primary/10 text-primary text-fluid-1.25! inline-flex items-center gap-2 rounded-full px-3! py-1! font-medium">
@@ -124,9 +124,9 @@ const HomeHeroSection = ({ user }: HomeHeroSectionProps) => {
                     </div>
                 </div>
 
-                <div className="relative hidden h-dvh items-center justify-center lg:flex">
+                <div className="relative hidden h-[50dvh] items-center justify-center bg-transparent! lg:flex">
                     <div className="home-hero-visual relative h-96 w-full">
-                        <div className="from-primary/20 to-secondary/20 absolute inset-0 rounded-2xl bg-linear-to-br blur-3xl"></div>
+                        <div className="from-primary/20 to-secondary/20 absolute inset-1 rounded-2xl bg-linear-to-br blur-3xl"></div>
                         <div className="border-primary/20 bg-card/50 relative flex h-full w-full flex-col items-center justify-center gap-6 rounded-2xl border p-8 backdrop-blur-sm">
                             <div className="w-full space-y-4">
                                 <div className="bg-primary/30 h-3 w-3/4 rounded-full"></div>

@@ -20,7 +20,9 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             description: "Manage users and system settings",
             action: () => navigate("/crm"),
             buttonText: "Access CRM",
-            colorClass: "text-accent border-accent/30 hover:border-accent/60",
+            colorClass:
+                "text-accent group-hover:fill-accent border-accent/30 hover:border-accent/60",
+            buttonClass: "bg-accent hover:bg-accent/80",
         },
         {
             icon: Zap,
@@ -29,7 +31,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             action: () => navigate("/dashboard"),
             buttonText: "Go to Dashboard",
             colorClass:
-                "text-primary border-primary/30 hover:border-primary/60",
+                "text-primary group-hover:fill-primary border-primary/30 hover:border-primary/60",
+            buttonClass: "bg-primary hover:bg-primary/90",
         },
     ];
 
@@ -41,7 +44,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             action: () => navigate("/dashboard"),
             buttonText: "Open Dashboard",
             colorClass:
-                "text-primary border-primary/30 hover:border-primary/60",
+                "text-primary group-hover:fill-primary border-primary/30 hover:border-primary/60",
+            buttonClass: "bg-primary hover:bg-primary/90",
         },
         {
             icon: Users,
@@ -50,7 +54,8 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             action: () => navigate("/projects"),
             buttonText: "View Projects",
             colorClass:
-                "text-secondary border-secondary/30 hover:border-secondary/60",
+                "text-secondary group-hover:fill-secondary border-secondary/30 hover:border-secondary/60",
+            buttonClass: "bg-secondary hover:bg-secondary/90",
         },
         {
             icon: CheckCircle2,
@@ -59,51 +64,50 @@ const HomeUserFeatures = ({ user }: HomeUserFeaturesProps) => {
             action: () => navigate("/gratitude-boxes"),
             buttonText: "Open Boxes",
             colorClass:
-                "text-primary border-primary/30 hover:border-primary/60",
+                "text-primary group-hover:fill-primary border-primary/30 hover:border-primary/60",
+            buttonClass: "bg-primary hover:bg-primary/90",
         },
     ];
 
     const features = isAdmin ? adminFeatures : userFeatures;
 
     return (
-        <section className="relative w-full px-4 py-16 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-6xl">
-                <div className="mb-12 text-center">
-                    <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-                        Your Features
-                    </h2>
-                    <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-                        {isAdmin
-                            ? "Access all admin tools and user management features"
-                            : "Manage your projects, tasks, and gratitude boxes"}
-                    </p>
-                </div>
+        <section className="font-montserrat relative w-[90dvw]">
+            <div className="flex flex-col items-center justify-center text-center">
+                <h2 className="text-fluid-2! font-bold">Your Features</h2>
+                <p className="text-muted-foreground text-fluid! mx-auto max-w-2xl">
+                    {isAdmin
+                        ? "Access all admin tools and user management features"
+                        : "Manage your projects, tasks, and gratitude boxes"}
+                </p>
+            </div>
 
-                <div
-                    className={`grid gap-8 ${isAdmin ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}
-                >
-                    {features.map((feature, idx) => (
-                        <div
-                            key={idx}
-                            className={`bg-card rounded-xl border p-6 transition-all duration-300 hover:shadow-lg ${feature.colorClass}`}
+            <div
+                className={`grid gap-8 p-6! select-none ${isAdmin ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}
+            >
+                {features.map((feature, idx) => (
+                    <div
+                        key={idx}
+                        className={`bg-card group flex flex-col items-center justify-center rounded-2xl border p-6! transition-all duration-300 hover:shadow-lg ${feature.colorClass}`}
+                    >
+                        <feature.icon
+                            className={`${feature.colorClass} mb-4 size-10 transition-transform group-hover:scale-110`}
+                        />
+                        <h3 className="mb-2 text-lg font-semibold">
+                            {feature.title}
+                        </h3>
+                        <p className="text-muted-foreground mb-4">
+                            {feature.description}
+                        </p>
+                        <Button
+                            onClick={feature.action}
+                            size="sm"
+                            className={`mt-6! ${feature.buttonClass} w-1/2 rounded-2xl`}
                         >
-                            <feature.icon className="mb-4 h-10 w-10" />
-                            <h3 className="mb-2 text-lg font-semibold">
-                                {feature.title}
-                            </h3>
-                            <p className="text-muted-foreground mb-4">
-                                {feature.description}
-                            </p>
-                            <Button
-                                onClick={feature.action}
-                                size="sm"
-                                className="w-full"
-                            >
-                                {feature.buttonText}
-                            </Button>
-                        </div>
-                    ))}
-                </div>
+                            {feature.buttonText}
+                        </Button>
+                    </div>
+                ))}
             </div>
         </section>
     );
