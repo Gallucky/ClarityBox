@@ -149,7 +149,7 @@ const MobileNav = (props: MobileNavProps) => {
                             navigate("/");
                             setOpenMobileNav(false);
                         }}
-                        className={`nav-item absolute bottom-10`}
+                        className={`nav-item absolute bottom-10 ${!user ? "hidden!" : ""}`}
                     >
                         <span
                             aria-label="logout mobile navbar link"

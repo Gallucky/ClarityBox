@@ -25,7 +25,6 @@ const TextAnimator = (props: TextAnimatorProps) => {
             .split("")
             .filter((char) => char !== ".")
             .join("");
-        console.log(textWithoutDots);
     }
 
     return (

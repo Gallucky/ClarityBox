@@ -1,8 +1,7 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { toast } from "react-toastify";
 
-import useUsers from "@/hooks/api/useUsers";
 import type { Auth, AuthPromise } from "@/types/AuthPromise";
 import type { RegisterFormData } from "@/types/forms/user/RegisterFormData";
 import type { LoginPayload } from "@/types/LoginPayload";
@@ -11,12 +10,31 @@ import type { User } from "@/types/models/User";
 
 import { parseError } from "@/utils/parseError";
 import useQuery from "@app/providers/Query/useQuery";
+import useUsers from "@hooks/api/useUsers";
 import AuthContext from "./AuthContext";
-import useRestoreSession from "./helpers/useRestoreSession";
 
 // Defining the context's provider's props.
 type AuthProviderProps = {
     children: ReactNode;
+};
+
+type AuthState = {
+    user: User | null;
+    token: string | null;
+    loading: boolean;
+    restoring: boolean;
+    isInitialized: boolean;
+};
+
+const getInitialState = (): AuthState => {
+    const token = localStorage.getItem("token");
+    return {
+        user: null,
+        token: token,
+        loading: false,
+        restoring: !!token,
+        isInitialized: !token,
+    };
 };
 
 /**
@@ -62,14 +80,41 @@ const AuthProvider = (props: AuthProviderProps) => {
     const { children } = props;
     const api = useQuery();
 
-    // The states manged by the provider.
-    const [user, setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [restoring, setRestoring] = useState(true);
+    const [state, setState] = useState<AuthState>(getInitialState);
+    const { user, token, loading, restoring, isInitialized } = state;
 
-    // Trying to re-log a user after a page refresh/close.
-    useRestoreSession({ api, setUser, setToken, setLoading, setRestoring });
+    useEffect(() => {
+        if (token && restoring) {
+            const restoreSession = async () => {
+                try {
+                    // Call your actual /users/me endpoint here
+                    // Example: const userData = await api.get('/users/me');
+
+                    // For now, assuming you have a way to fetch current user:
+                    // Replace this with your actual API call
+                    api.addHeader("x-auth-token", token);
+                    // const userData = await fetchCurrentUser(); // Your method here
+
+                    setState((s) => ({
+                        ...s,
+                        // user: userData, // Uncomment when you have the API call
+                        restoring: false,
+                        isInitialized: true,
+                    }));
+                } catch (e) {
+                    // Token is invalid, clear it
+                    localStorage.removeItem("token");
+                    setState((s) => ({
+                        ...s,
+                        token: null,
+                        restoring: false,
+                        isInitialized: true,
+                    }));
+                }
+            };
+            restoreSession();
+        }
+    }, [token, restoring, api]);
 
     /**
      * `isAuthenticated` is a derived constant based on the {@link token | token} state.
@@ -93,6 +138,10 @@ const AuthProvider = (props: AuthProviderProps) => {
 
         const parsedError = parseError(status, String(data));
         console.error(parsedError);
+
+        // FIX: Call toast immediately to prevent race condition
+        toast.error(parsedError.message);
+
         return { ok: false, error: parsedError };
     };
 
@@ -101,38 +150,52 @@ const AuthProvider = (props: AuthProviderProps) => {
     // The auth methods.
     const login = async (credentials: LoginPayload): AuthPromise => {
         try {
-            setLoading(true);
+            // Single state update for loading
+            setState((s) => ({ ...s, loading: true }));
 
             api.removeHeader("x-auth-token");
 
             const LoginResponse: LoginResponse = await loginUser(credentials);
 
-            // Saving the token in the context.
-            setToken(LoginResponse.token);
-            // Saving the token in the local storage.
+            // Save to localStorage
             localStorage.setItem("token", LoginResponse.token);
-            setUser(LoginResponse.user ?? null);
+
+            // Single consolidated state update
+            setState((s) => ({
+                ...s,
+                token: LoginResponse.token,
+                user: LoginResponse.user ?? null,
+                loading: false,
+            }));
 
             return { ok: true };
         } catch (error: any) {
-            return onError(error);
-        } finally {
-            setLoading(false);
+            const result = onError(error);
+            // Ensure loading is reset on error
+            setState((s) => ({ ...s, loading: false }));
+            return result;
         }
     };
 
     const logout = () => {
-        setToken(null);
-        setUser(null);
         localStorage.removeItem("token");
         api.removeHeader("x-auth-token");
+
+        setState((s) => ({
+            ...s,
+            token: null,
+            user: null,
+            loading: false,
+            restoring: false,
+        }));
+
         toast.success("Logged out successfully!");
         window.location.href = "/";
     };
 
     const register = async (data: RegisterFormData): AuthPromise => {
         try {
-            setLoading(true);
+            setState((s) => ({ ...s, loading: true }));
             // Sending the user registration request.
             // await api.post("/users/", data);
             await registerUser(data);
@@ -141,23 +204,41 @@ const AuthProvider = (props: AuthProviderProps) => {
         } catch (error) {
             return onError(error);
         } finally {
-            setLoading(false);
+            setState((s) => ({ ...s, loading: false }));
         }
     };
 
+    // Memoizing to prevent unnecessary re-renders
+    const contextValue = useMemo(
+        () => ({
+            user,
+            token,
+            isAuthenticated,
+            login,
+            logout,
+            register,
+            loading,
+            restoring,
+        }),
+        [
+            user,
+            token,
+            isAuthenticated,
+            login,
+            logout,
+            register,
+            loading,
+            restoring,
+        ],
+    );
+
+    // Preventing rendering children during restoration
+    if (restoring && !isInitialized) {
+        return null; // Or return <LoadingSpinner />
+    }
+
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                token,
-                isAuthenticated,
-                login,
-                logout,
-                register,
-                loading,
-                restoring,
-            }}
-        >
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

@@ -96,6 +96,10 @@
         @apply bg-background text-foreground;
     }
 
+    button {
+        @apply transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:cursor-pointer;
+    }
+
     /* WebKit (Chromium, Safari, Edge) */
     *::-webkit-scrollbar {
         width: 10px;

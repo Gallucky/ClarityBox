@@ -109,7 +109,7 @@ exports.login = async (normalizedUser) => {
                 }
             }
 
-            const validPassword = comparePassword(password, user.password);
+            const validPassword = await comparePassword(password, user.password);
 
             if (!validPassword) {
                 // Add strike.
