@@ -1,16 +1,19 @@
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogTitle,
     DialogTrigger,
 } from "@radix-ui/react-dialog";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+import GlassCard from "@/components/form/GlassCard";
+import { Textarea } from "@/components/ui/shadcn/textarea";
 import useAuth from "@app/providers/Auth/useAuth";
-import { DialogHeader } from "@components/ui/dialog";
+import { DialogFooter, DialogHeader } from "@components/ui/dialog";
 
-import FloatingButton from "@components/ui/FloatingButton/FloatingButton";
 import usePosts from "@hooks/api/usePosts";
 import useUsers from "@hooks/api/useUsers";
 import GratitudeBoxesView from "./components/GratitudeBoxesBrowseView";
@@ -176,19 +179,40 @@ const Gratitude = () => {
                     />
                     <Dialog>
                         <form>
-                            <DialogTrigger>
-                                <FloatingButton as="div" />
+                            <DialogTrigger className="bg-secondary scale-down disabled:bg-secondary/50 absolute right-30 bottom-20 z-50 flex size-20 items-center justify-center rounded-full p-2 transition-all duration-300 ease-in-out hover:cursor-pointer disabled:cursor-not-allowed disabled:hover:blur-[1px]">
+                                <Plus size={50} />
                             </DialogTrigger>
                             <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>
-                                        Create a gratitude box
-                                    </DialogTitle>
-                                    <DialogDescription>
-                                        Put things that you are grateful for in
-                                        the box.
-                                    </DialogDescription>
-                                </DialogHeader>
+                                <GlassCard
+                                    centered
+                                    lightSource
+                                    className="z-99 justify-center! gap-10"
+                                >
+                                    <DialogHeader>
+                                        <DialogTitle>
+                                            Create a gratitude box
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            Put things that you are grateful for
+                                            in the box.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <Textarea className="max-h-[300px] min-h-[200px] indent-1" />
+                                    <DialogFooter className="flex h-96 max-h-[50px] items-center justify-center">
+                                        <DialogClose
+                                            className="bg-muted hover:bg-muted/75 size-fit rounded-full px-4! py-0.5!"
+                                            type="submit"
+                                        >
+                                            Cancel
+                                        </DialogClose>
+                                        <DialogClose
+                                            className="bg-accent hover:bg-accent/75 size-fit rounded-full px-4! py-0.5!"
+                                            type="submit"
+                                        >
+                                            Submit
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </GlassCard>
                             </DialogContent>
                         </form>
                     </Dialog>
