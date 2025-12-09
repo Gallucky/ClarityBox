@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    type ReactNode,
+} from "react";
 
 import { toast } from "react-toastify";
 
@@ -132,7 +138,7 @@ const AuthProvider = (props: AuthProviderProps) => {
      */
     const isAuthenticated = !!token;
 
-    const onError = (error: any): Auth => {
+    const onError = useCallback((error: any): Auth => {
         const status = error.response?.status ?? error.status ?? 500;
         const data = error.response?.data ?? error.data ?? error.message;
 
@@ -143,41 +149,45 @@ const AuthProvider = (props: AuthProviderProps) => {
         toast.error(parsedError.message);
 
         return { ok: false, error: parsedError };
-    };
+    }, []);
 
     const { loginUser, registerUser, error } = useUsers();
 
     // The auth methods.
-    const login = async (credentials: LoginPayload): AuthPromise => {
-        try {
-            // Single state update for loading
-            setState((s) => ({ ...s, loading: true }));
+    const login = useCallback(
+        async (credentials: LoginPayload): AuthPromise => {
+            try {
+                // Single state update for loading
+                setState((s) => ({ ...s, loading: true }));
 
-            api.removeHeader("x-auth-token");
+                api.removeHeader("x-auth-token");
 
-            const LoginResponse: LoginResponse = await loginUser(credentials);
+                const LoginResponse: LoginResponse =
+                    await loginUser(credentials);
 
-            // Save to localStorage
-            localStorage.setItem("token", LoginResponse.token);
+                // Save to localStorage
+                localStorage.setItem("token", LoginResponse.token);
 
-            // Single consolidated state update
-            setState((s) => ({
-                ...s,
-                token: LoginResponse.token,
-                user: LoginResponse.user ?? null,
-                loading: false,
-            }));
+                // Single consolidated state update
+                setState((s) => ({
+                    ...s,
+                    token: LoginResponse.token,
+                    user: LoginResponse.user ?? null,
+                    loading: false,
+                }));
 
-            return { ok: true };
-        } catch (error: any) {
-            const result = onError(error);
-            // Ensure loading is reset on error
-            setState((s) => ({ ...s, loading: false }));
-            return result;
-        }
-    };
+                return { ok: true };
+            } catch (error: any) {
+                const result = onError(error);
+                // Ensure loading is reset on error
+                setState((s) => ({ ...s, loading: false }));
+                return result;
+            }
+        },
+        [api, loginUser, onError],
+    );
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem("token");
         api.removeHeader("x-auth-token");
 
@@ -191,22 +201,25 @@ const AuthProvider = (props: AuthProviderProps) => {
 
         toast.success("Logged out successfully!");
         window.location.href = "/";
-    };
+    }, [api]);
 
-    const register = async (data: RegisterFormData): AuthPromise => {
-        try {
-            setState((s) => ({ ...s, loading: true }));
-            // Sending the user registration request.
-            // await api.post("/users/", data);
-            await registerUser(data);
+    const register = useCallback(
+        async (data: RegisterFormData): AuthPromise => {
+            try {
+                setState((s) => ({ ...s, loading: true }));
+                // Sending the user registration request.
+                // await api.post("/users/", data);
+                await registerUser(data);
 
-            return { ok: true };
-        } catch (error) {
-            return onError(error);
-        } finally {
-            setState((s) => ({ ...s, loading: false }));
-        }
-    };
+                return { ok: true };
+            } catch (error) {
+                return onError(error);
+            } finally {
+                setState((s) => ({ ...s, loading: false }));
+            }
+        },
+        [registerUser, onError],
+    );
 
     // Memoizing to prevent unnecessary re-renders
     const contextValue = useMemo(
