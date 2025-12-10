@@ -35,6 +35,7 @@
             "@components/*": ["./src/components/*"],
             "@hooks/*": ["./src/hooks/*"],
             "@lib/*": ["./src/lib/*"],
+            "@schemas/*": ["./src/schemas/*"],
             "@pages/*": ["./src/pages/*"],
             "@styles/*": ["./src/styles/*"],
             "@types/*": ["./src/types/*"],

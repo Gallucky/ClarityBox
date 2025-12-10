@@ -117,6 +117,7 @@ const usePosts = () => {
         try {
             setLoading(true);
             setError(null);
+
             const response: Post = await api.post("/posts/", post);
 
             if (!response) {

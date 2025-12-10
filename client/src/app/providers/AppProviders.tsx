@@ -1,8 +1,8 @@
+import axios from "axios";
+import { useEffect, type ReactNode } from "react";
 import AuthProvider from "./Auth/AuthProvider";
 import { QueryProvider } from "./Query/QueryProvider";
 import { ThemeProvider } from "./Theme/ThemeProvider";
-
-import type { ReactNode } from "react";
 
 // Todo: Move this template for documentation and/or to the readme file.
 // How to create a new provider?
@@ -20,6 +20,34 @@ type AppProvidersProps = {
 };
 
 const AppProviders = (props: AppProvidersProps) => {
+    // Checking the server's health.
+    // If the server isn't up then it will wake it.
+
+    useEffect(() => {
+        const checkServerHealth = async () => {
+            try {
+                await axios.get("/health");
+                console.info("trying to wake server up...");
+            } catch (error) {
+                // Server is waking up or unreachable,
+                // ignore the error to not block the frontend workflow.
+                console.warn(
+                    "Server health check error has occurred but continuing.\nError:\n",
+                    error,
+                );
+            }
+        };
+
+        // Initial ping to wake the server up if it is down.
+        checkServerHealth();
+
+        // Trying to keep the server up every 10 minutes.
+        const interval = setInterval(checkServerHealth, 10 * 60 * 1000);
+
+        // Cleaning up the interval on component unmount.
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <>
             <QueryProvider>

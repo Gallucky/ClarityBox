@@ -22,6 +22,7 @@
 @import "./pages/Home/home.css";
 @import "./pages/About/about.css";
 @import "./components/text/TextAnimator/textAnimator.css";
+@import "./components/ui/switch.css";
 
 @custom-variant dark (&: is(.dark *));
 

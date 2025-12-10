@@ -1,0 +1,15 @@
+[role="switch"] {
+    @apply relative flex items-center justify-center;
+    @apply cursor-default gap-2 p-4! transition-all select-none;
+    @apply duration-300 ease-in-out;
+
+    & .track {
+        @apply flex h-7 w-4 min-w-[55px] hover:cursor-pointer;
+        @apply bg-muted/40 items-center rounded-2xl border px-1! group-data-[toggled=true]:bg-green-500/40;
+    }
+
+    & .knob {
+        @apply size-6 rounded-full border-2 transition-all duration-300 ease-in-out group-data-[toggled=true]:border-green-700/60 hover:cursor-pointer;
+        @apply bg-foreground/20 group-data-[toggled=true]:bg-green-600!;
+    }
+}
