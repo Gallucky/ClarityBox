@@ -88,9 +88,10 @@ const AuthProvider = (props: AuthProviderProps) => {
 
     const [state, setState] = useState<AuthState>(getInitialState);
     const { user, token, loading, restoring, isInitialized } = state;
+    const { getUserByToken } = useUsers();
 
     useEffect(() => {
-        if (token && restoring) {
+        if (token) {
             const restoreSession = async () => {
                 try {
                     // Call your actual /users/me endpoint here
@@ -99,11 +100,11 @@ const AuthProvider = (props: AuthProviderProps) => {
                     // For now, assuming you have a way to fetch current user:
                     // Replace this with your actual API call
                     api.addHeader("x-auth-token", token);
-                    // const userData = await fetchCurrentUser(); // Your method here
+                    const userData = await getUserByToken(token); // Your method here
 
                     setState((s) => ({
                         ...s,
-                        // user: userData, // Uncomment when you have the API call
+                        user: userData,
                         restoring: false,
                         isInitialized: true,
                     }));
@@ -120,7 +121,7 @@ const AuthProvider = (props: AuthProviderProps) => {
             };
             restoreSession();
         }
-    }, [token, restoring, api]);
+    }, [token, api, getUserByToken]);
 
     /**
      * `isAuthenticated` is a derived constant based on the {@link token | token} state.

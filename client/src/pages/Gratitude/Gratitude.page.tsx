@@ -1,5 +1,6 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
+import useConvert from "@/hooks/useConvert";
 import useAuth from "@app/providers/Auth/useAuth";
 
 import usePosts from "@hooks/api/usePosts";
@@ -20,59 +21,16 @@ const Gratitude = () => {
     >(undefined);
 
     const [reload, setReload] = useState(false);
+    const [createBox, setCreateBox] = useState(false);
+    const { convertPostToGratitudeBoxData } = useConvert();
 
     useEffect(() => {
         const sync = async () => {
             const publicPosts = await posts.getAllPublicPosts();
             if (!publicPosts) return;
 
-            const unknownUser = {
-                profilePicture:
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png",
-                nickname: "Unknown User",
-            };
-
             // Map posts to GratitudeBoxData properly
-            const settled = await Promise.allSettled(
-                publicPosts.map(async (post) => {
-                    let creator: { profilePicture: string; nickname: string };
-
-                    if (post.createdBy) {
-                        try {
-                            const user = await users.getUserBasicInfo(
-                                post.createdBy,
-                            );
-                            creator = {
-                                profilePicture:
-                                    user?.profileImage?.url ??
-                                    unknownUser.profilePicture,
-                                nickname:
-                                    user?.nickname ?? unknownUser.nickname,
-                            };
-                        } catch {
-                            creator = unknownUser;
-                        }
-                    } else {
-                        creator = unknownUser;
-                    }
-
-                    return {
-                        _id: post._id,
-                        content: post.content,
-                        creator,
-                        createdAt: post.createdAt,
-                        likes: post.likes,
-                    };
-                }),
-            );
-
-            // Extracted only successful and valid promises.
-            const boxes: GratitudeBoxData[] = settled
-                .filter(
-                    (r): r is PromiseFulfilledResult<GratitudeBoxData> =>
-                        r.status === "fulfilled",
-                )
-                .map((r) => r.value);
+            const boxes = await convertPostToGratitudeBoxData(publicPosts);
 
             setGratitudeBoxes(boxes);
         };
@@ -111,7 +69,7 @@ const Gratitude = () => {
     >(undefined);
 
     useEffect(() => {
-        const filtered = () => {
+        const filtered = async () => {
             if (!gratitudeBoxes) return;
 
             if (view === "browse") {
@@ -125,10 +83,11 @@ const Gratitude = () => {
                     return;
                 }
 
-                const myBoxes = gratitudeBoxes.filter(
-                    (box) => box.creator.nickname === user.nickname,
-                );
-                setViewedGratitudeBoxes(myBoxes);
+                const myBoxes = await posts.getMyPosts();
+                if (!myBoxes) return;
+
+                const allMyBoxes = await convertPostToGratitudeBoxData(myBoxes);
+                setViewedGratitudeBoxes(allMyBoxes);
                 return;
             }
 
@@ -146,7 +105,7 @@ const Gratitude = () => {
         };
 
         filtered();
-    }, [gratitudeBoxes, user, view]);
+    }, [gratitudeBoxes, user, view, createBox]);
 
     const [layout, setLayout] = useState<"list" | "table">("list");
 
@@ -166,7 +125,7 @@ const Gratitude = () => {
                         setLayout={setLayout}
                         toggledLayout={layout}
                     />
-                    <CreateBoxDialog />
+                    <CreateBoxDialog setCreateBox={setCreateBox} />
                     <div className="content">
                         <aside>
                             <nav>

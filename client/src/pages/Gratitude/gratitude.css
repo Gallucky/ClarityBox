@@ -25,7 +25,7 @@
 }
 
 .gratitude-page .content .main {
-    @apply h-[calc(90dvh-200px)] w-full rounded-md border;
+    @apply h-[calc(90dvh-200px)] w-full rounded-md border pb-20;
 }
 
 /* Links */

@@ -17,8 +17,15 @@ import { DialogFooter, DialogHeader } from "@components/ui/shadcn/dialog";
 import { Textarea } from "@components/ui/shadcn/textarea";
 import Switch from "@components/ui/Switch";
 import usePosts from "@hooks/api/usePosts";
+import type { Dispatch, SetStateAction } from "react";
 
-const CreateBoxDialog = () => {
+type CreateBoxDialogProps = {
+    setCreateBox: Dispatch<SetStateAction<boolean>>;
+};
+
+const CreateBoxDialog = (props: CreateBoxDialogProps) => {
+    const { setCreateBox } = props;
+
     const form = useForm<PostFormData>({
         defaultValues: {
             content: "",
@@ -32,9 +39,10 @@ const CreateBoxDialog = () => {
 
     const onSubmit = async (data: PostFormData) => {
         try {
-            await createPost(data);
+            const response = await createPost(data);
             toast.success("Post created successfully!");
             form.reset();
+            setCreateBox((prev) => !prev);
         } catch (error) {
             const err = error as Error;
             console.error(err);
@@ -112,7 +120,6 @@ const CreateBoxDialog = () => {
                                 className="bg-accent disabled:bg-accent/50 disabled:text-background/60 hover:bg-accent/75 size-1/2 rounded-full disabled:hover:cursor-not-allowed sm:size-fit sm:min-w-[150px] sm:px-4! sm:py-0.5!"
                                 type="submit"
                                 disabled={!form.formState.isValid}
-                                onClick={() => form.reset()}
                             >
                                 Submit
                             </button>
