@@ -3,11 +3,11 @@ import GratitudeBox from "./GratitudeBox";
 
 type GratitudeBoxesViewProps = {
     gratitudeBoxes?: GratitudeBoxData[];
-    setReload: (reload: boolean | ((prev: boolean) => boolean)) => void;
+    handleLike: (postId: string, newLikes: string[]) => void;
 };
 
 const GratitudeBoxesView = (props: GratitudeBoxesViewProps) => {
-    const { gratitudeBoxes, setReload } = props;
+    const { gratitudeBoxes, handleLike } = props;
 
     return (
         <>
@@ -20,7 +20,7 @@ const GratitudeBoxesView = (props: GratitudeBoxesViewProps) => {
                         creator={gratitudeBox.creator}
                         createdAt={gratitudeBox.createdAt}
                         likes={gratitudeBox.likes}
-                        setReload={setReload}
+                        handleLike={handleLike}
                     />
                 ))}
         </>

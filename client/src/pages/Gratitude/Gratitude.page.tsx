@@ -1,6 +1,8 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useState } from "react";
+import SpinnerBox3DTumble from "@/components/ui/Spinner3DTrumblingBox";
 import useConvert from "@/hooks/useConvert";
+import type { PostFormData } from "@/types/forms/post/PostFormData";
 import useAuth from "@app/providers/Auth/useAuth";
 
 import usePosts from "@hooks/api/usePosts";
@@ -21,11 +23,13 @@ const Gratitude = () => {
     >(undefined);
 
     const [reload, setReload] = useState(false);
-    const [createBox, setCreateBox] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { convertPostToGratitudeBoxData } = useConvert();
 
     useEffect(() => {
         const sync = async () => {
+            setLoading(true);
+
             const publicPosts = await posts.getAllPublicPosts();
             if (!publicPosts) return;
 
@@ -33,6 +37,7 @@ const Gratitude = () => {
             const boxes = await convertPostToGratitudeBoxData(publicPosts);
 
             setGratitudeBoxes(boxes);
+            setLoading(false);
         };
 
         sync();
@@ -72,14 +77,18 @@ const Gratitude = () => {
         const filtered = async () => {
             if (!gratitudeBoxes) return;
 
+            setLoading(true);
+
             if (view === "browse") {
                 setViewedGratitudeBoxes(gratitudeBoxes);
+                setLoading(false);
                 return;
             }
 
             if (view === "my-boxes") {
                 if (!user) {
                     setView("browse");
+                    setLoading(false);
                     return;
                 }
 
@@ -88,24 +97,71 @@ const Gratitude = () => {
 
                 const allMyBoxes = await convertPostToGratitudeBoxData(myBoxes);
                 setViewedGratitudeBoxes(allMyBoxes);
+                setLoading(false);
                 return;
             }
 
             if (view === "liked-boxes") {
                 if (!user) {
                     setView("browse");
+                    setLoading(false);
                     return;
                 }
                 const likedBoxes = gratitudeBoxes.filter((box) =>
                     box.likes.includes(user._id),
                 );
                 setViewedGratitudeBoxes(likedBoxes);
+                setLoading(false);
                 return;
             }
         };
 
         filtered();
-    }, [gratitudeBoxes, user, view, createBox]);
+    }, [gratitudeBoxes, view]);
+
+    const handleLike = (postId: string, newLikes: string[]) => {
+        if (!gratitudeBoxes) return;
+
+        const updatedGratitudeBoxes = gratitudeBoxes.map((box) => {
+            if (box._id === postId) {
+                return { ...box, likes: newLikes };
+            }
+            return box;
+        });
+
+        setGratitudeBoxes(updatedGratitudeBoxes);
+    };
+
+    const handleCreateBox = async (data: PostFormData) => {
+        if (!user) return;
+
+        const tempId = Date.now().toString();
+        const newBox: GratitudeBoxData = {
+            _id: tempId,
+            content: data.content,
+            creator: {
+                _id: user._id,
+                nickname: user.nickname,
+                profilePicture:
+                    user.profileImage.url ||
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png",
+            },
+            createdAt: new Date().toISOString(),
+            likes: [],
+            isPublic: data.isPublic,
+        };
+
+        setGratitudeBoxes((prev) => (prev ? [newBox, ...prev] : [newBox]));
+
+        const createdPost = await posts.createPost(data);
+        if (!createdPost) return;
+
+        const createdBox = await convertPostToGratitudeBoxData([createdPost]);
+
+        setGratitudeBoxes((prev) =>
+            prev?.map((box) => (box._id === tempId ? createdBox[0] : box)),
+        );
+    };
 
     const [layout, setLayout] = useState<"list" | "table">("list");
 
@@ -125,7 +181,7 @@ const Gratitude = () => {
                         setLayout={setLayout}
                         toggledLayout={layout}
                     />
-                    <CreateBoxDialog setCreateBox={setCreateBox} />
+                    <CreateBoxDialog handleCreateBox={handleCreateBox} />
                     <div className="content">
                         <aside>
                             <nav>
@@ -160,15 +216,28 @@ const Gratitude = () => {
                                 </ul>
                             </nav>
                         </aside>
-                        {layout === "list" && (
+
+                        {loading && (
+                            <SpinnerBox3DTumble
+                                className="absolute-center"
+                                size="xl"
+                                textSize="md"
+                                textClassName="font-montserrat"
+                                text="Loading..."
+                                textAnimation="dots-wave"
+                                direction="horizontal"
+                            />
+                        )}
+
+                        {!loading && layout === "list" && (
                             <ScrollArea className="main">
                                 <GratitudeBoxesView
                                     gratitudeBoxes={viewedGratitudeBoxes}
-                                    setReload={setReload}
+                                    handleLike={handleLike}
                                 />
                             </ScrollArea>
                         )}
-                        {layout === "table" && (
+                        {!loading && layout === "table" && (
                             <GratitudeBoxesTableLayout
                                 gratitudeBoxes={viewedGratitudeBoxes}
                             />

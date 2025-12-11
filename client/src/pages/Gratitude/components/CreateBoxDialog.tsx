@@ -16,15 +16,13 @@ import GlassCard from "@components/form/GlassCard";
 import { DialogFooter, DialogHeader } from "@components/ui/shadcn/dialog";
 import { Textarea } from "@components/ui/shadcn/textarea";
 import Switch from "@components/ui/Switch";
-import usePosts from "@hooks/api/usePosts";
-import type { Dispatch, SetStateAction } from "react";
 
 type CreateBoxDialogProps = {
-    setCreateBox: Dispatch<SetStateAction<boolean>>;
+    handleCreateBox: (data: PostFormData) => Promise<void>;
 };
 
 const CreateBoxDialog = (props: CreateBoxDialogProps) => {
-    const { setCreateBox } = props;
+    const { handleCreateBox } = props;
 
     const form = useForm<PostFormData>({
         defaultValues: {
@@ -35,14 +33,11 @@ const CreateBoxDialog = (props: CreateBoxDialogProps) => {
         resolver: joiResolver(postCreationSchema),
     });
 
-    const { createPost } = usePosts();
-
     const onSubmit = async (data: PostFormData) => {
         try {
-            const response = await createPost(data);
+            await handleCreateBox(data);
             toast.success("Post created successfully!");
             form.reset();
-            setCreateBox((prev) => !prev);
         } catch (error) {
             const err = error as Error;
             console.error(err);

@@ -15,12 +15,12 @@ type GratitudeBoxProps = {
     };
     createdAt: string;
     likes: string[];
-    setReload: (reload: boolean | ((prev: boolean) => boolean)) => void;
+    handleLike: (postId: string, newLikes: string[]) => void;
     className?: string;
 };
 
 const GratitudeBox = (props: GratitudeBoxProps) => {
-    const { _id, content, creator, createdAt, likes, setReload, className } =
+    const { _id, content, creator, createdAt, likes, handleLike, className } =
         props;
     const isMobile = useMediaQuery("(max-width: 768px)");
     const { user } = useAuth();
@@ -37,7 +37,7 @@ const GratitudeBox = (props: GratitudeBoxProps) => {
             if (!updatedPost) return;
 
             setLocalLikes(updatedPost.likes); // <- UI updates instantly
-            setReload((prev) => !prev);
+            handleLike(_id, updatedPost.likes);
         } catch (e) {
             console.error(e);
         }
