@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import SpinnerBox3DTumble from "@/components/ui/Spinner3DTrumblingBox";
 import useConvert from "@/hooks/useConvert";
 import type { PostFormData } from "@/types/forms/post/PostFormData";
+import type { Post } from "@/types/models/Post"; // Added import
 import useAuth from "@app/providers/Auth/useAuth";
 
 import usePosts from "@hooks/api/usePosts";
@@ -132,6 +133,27 @@ const Gratitude = () => {
         setGratitudeBoxes(updatedGratitudeBoxes);
     };
 
+    const handlePostUpdated = async (updatedPost: Post) => {
+        const updatedGratitudeBoxData = await convertPostToGratitudeBoxData([
+            updatedPost,
+        ]);
+
+        setGratitudeBoxes((prev) => {
+            if (!prev) return undefined;
+
+            return prev.map((box) =>
+                box._id === updatedPost._id ? updatedGratitudeBoxData[0] : box,
+            );
+        });
+    };
+
+    const handlePostDeleted = (postId: string) => {
+        setGratitudeBoxes((prev) => {
+            if (!prev) return undefined;
+            return prev.filter((box) => box._id !== postId);
+        });
+    };
+
     const handleCreateBox = async (data: PostFormData) => {
         if (!user) return;
 
@@ -234,6 +256,8 @@ const Gratitude = () => {
                                 <GratitudeBoxesView
                                     gratitudeBoxes={viewedGratitudeBoxes}
                                     handleLike={handleLike}
+                                    onPostUpdated={handlePostUpdated}
+                                    onPostDeleted={handlePostDeleted}
                                 />
                             </ScrollArea>
                         )}

@@ -61,12 +61,21 @@
     @apply whitespace-nowrap;
 }
 
+.gratitude-box .info .actions {
+    @apply flex items-center justify-center gap-5;
+    @apply ms-auto mr-0 justify-self-end;
+
+    & svg {
+        @apply size-4;
+    }
+}
+
 .gratitude-box .info .created-at span {
     @apply text-fluid-0.75 pr-2;
 }
 
 .gratitude-box .info .likes {
-    @apply text-fluid-0.75 ml-auto flex items-center justify-center gap-1.5;
+    @apply text-fluid-0.75 ml-3 flex items-center justify-center gap-1.5;
     @apply rounded-full px-3 py-1;
     @apply bg-gray-50 hover:bg-gray-100;
     @apply text-gray-600 hover:text-red-500;

@@ -6,6 +6,7 @@ const useConvert = () => {
     const users = useUsers();
 
     const unknownUser = {
+        _id: "unknown",
         profilePicture:
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png",
         nickname: "Unknown User",
@@ -14,7 +15,11 @@ const useConvert = () => {
     const convertPostToGratitudeBoxData = async (posts: Post[]) => {
         const settled = await Promise.allSettled(
             posts.map(async (post) => {
-                let creator: { profilePicture: string; nickname: string };
+                let creator: {
+                    _id: string;
+                    profilePicture: string;
+                    nickname: string;
+                };
 
                 if (post.createdBy) {
                     try {
@@ -22,6 +27,7 @@ const useConvert = () => {
                             post.createdBy,
                         );
                         creator = {
+                            _id: user?._id ?? unknownUser._id,
                             profilePicture:
                                 user?.profileImage?.url ??
                                 unknownUser.profilePicture,
@@ -40,6 +46,7 @@ const useConvert = () => {
                     creator,
                     createdAt: post.createdAt,
                     likes: post.likes,
+                    isPublic: post.isPublic,
                 };
             }),
         );

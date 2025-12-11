@@ -139,15 +139,20 @@ const usePosts = () => {
 
     //region | ====== Put ====== |
 
-    const updatePost = async (postId: string, post: PostFormData) => {
+    const updatePost = async (postId: string, postData: PostFormData) => {
         try {
             setLoading(true);
             setError(null);
-            const response: Post = await api.put(`/posts/${postId}`, post);
+            const response: Post = await api.put(`/posts/${postId}`, postData);
 
             if (!response) {
                 throw new PostRequestError("updatePost", "Post update failed.");
             }
+
+            setPosts((prevPosts) => {
+                if (!prevPosts) return undefined;
+                return prevPosts.map((p) => (p._id === postId ? response : p));
+            });
 
             return response;
         } catch (error) {
